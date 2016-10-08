@@ -4,8 +4,8 @@ module multi_LED_digit #(
   )(
     input clk,                // clock
     input rst,                // reset
-    input outC,
-    input outS,
+    input outC,               // expected output of Carry
+    input outS,               // expected output of sum
     output seg [7],           // LED segments
     output sel [DIGITS]       // Digit select
   ) {

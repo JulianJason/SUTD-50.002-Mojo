@@ -5,8 +5,8 @@ module led_digit (
 
   always {
     case (char) {
-      0: segs = 7b0111111;
-      1: segs = 7b0000110;
+      0: segs = 7b0111111;      // digit 0
+      1: segs = 7b0000110;      // digit 1
       2: segs = 7b1101101;      // S symbol
       3: segs = 7b0111001;      // C symbol
       default: segs = 7b0000000;

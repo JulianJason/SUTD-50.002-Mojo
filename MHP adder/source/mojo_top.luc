@@ -25,8 +25,8 @@ module mojo_top (
     reset_conditioner reset_cond;
     
     .rst(rst) {
-      multi_LED_digit multi_led;
-      logic logic;
+      multi_LED_digit multi_led;        // multi led decoder to determine led digits
+      logic logic;                      // full adder logic
       counter ctr (#SIZE(1), #DIV(24)); // creats a counter of size 1
     }
   }
@@ -39,9 +39,9 @@ module mojo_top (
     spi_channel = bzzzz;      // not using flags
     avr_rx = bz;              // not using serial port
    
-    logic.io_dip = io_dip;
-    multi_led.outC = logic.outC;
-    multi_led.outS = logic.outS;
+    logic.io_dip = io_dip;    // takes in the switch state and processes in the full adder
+    multi_led.outC = logic.outC;  // pipes the FA output Carry in to the multi_led
+    multi_led.outS = logic.outS;  // pipes the FA output Sum to the multi_led
     
     
     io_seg = ~multi_led.seg; // connect segments to the driver
