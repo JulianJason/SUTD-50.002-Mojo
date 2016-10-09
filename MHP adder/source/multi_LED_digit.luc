@@ -12,7 +12,7 @@ module multi_LED_digit #(
     input outS,               // real output of Sum
     output seg [7],           // LED segments
     output sel [DIGITS],      // Digit select
-    output matching_led[8]
+    output matching_led[8]    // middle LED array
   ) {
   
   // number of bits required to store DIGITS-1

@@ -4,7 +4,7 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-module logic_7 (
+module logic_3 (
     input clk,
     input rst,
     input [23:0] io_dip,

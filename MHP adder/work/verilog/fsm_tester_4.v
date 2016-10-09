@@ -4,7 +4,7 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-module fsm_tester_11 (
+module fsm_tester_4 (
     input clk,
     input rst,
     input outC,

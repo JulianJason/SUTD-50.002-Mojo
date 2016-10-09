@@ -4,7 +4,7 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-module led_digit_15 (
+module led_digit_6 (
     input [3:0] char,
     output reg [6:0] segs
   );
@@ -15,16 +15,10 @@ module led_digit_15 (
     
     case (char)
       1'h0: begin
-        segs = 7'h3f;
+        segs = 8'hbf;
       end
       1'h1: begin
-        segs = 7'h06;
-      end
-      2'h2: begin
-        segs = 7'h6d;
-      end
-      2'h3: begin
-        segs = 7'h39;
+        segs = 8'h06;
       end
       default: begin
         segs = 7'h00;

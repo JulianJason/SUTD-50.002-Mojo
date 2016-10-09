@@ -9,7 +9,7 @@
      DIGITS = 4
      DIV = 16
 */
-module multi_LED_digit_6 (
+module multi_LED_digit_2 (
     input clk,
     input rst,
     input expectedC,
@@ -28,7 +28,7 @@ module multi_LED_digit_6 (
   localparam DIGIT_BITS = 2'h2;
   
   wire [2-1:0] M_ctr_value;
-  counter_14 ctr (
+  counter_5 ctr (
     .clk(clk),
     .rst(rst),
     .value(M_ctr_value)
@@ -36,14 +36,14 @@ module multi_LED_digit_6 (
   
   wire [7-1:0] M_led_dec_segs;
   reg [4-1:0] M_led_dec_char;
-  led_digit_15 led_dec (
+  led_digit_6 led_dec (
     .char(M_led_dec_char),
     .segs(M_led_dec_segs)
   );
   
   wire [4-1:0] M_digit_dec_out;
   reg [2-1:0] M_digit_dec_in;
-  decoder_16 digit_dec (
+  decoder_7 digit_dec (
     .in(M_digit_dec_in),
     .out(M_digit_dec_out)
   );

@@ -7,15 +7,6 @@
 module mojo_top_0 (
     input clk,
     input rst_n,
-    input cclk,
-    output reg spi_miso,
-    input spi_ss,
-    input spi_mosi,
-    input spi_sck,
-    output reg [3:0] spi_channel,
-    input avr_tx,
-    output reg avr_rx,
-    input avr_rx_busy,
     output reg [23:0] io_led,
     output reg [7:0] io_seg,
     output reg [3:0] io_sel,
@@ -36,34 +27,6 @@ module mojo_top_0 (
     .in(M_reset_cond_in),
     .out(M_reset_cond_out)
   );
-  wire [1-1:0] M_s_conditioner_out;
-  reg [1-1:0] M_s_conditioner_in;
-  button_conditioner_2 s_conditioner (
-    .clk(clk),
-    .in(M_s_conditioner_in),
-    .out(M_s_conditioner_out)
-  );
-  wire [1-1:0] M_cout_conditioner_out;
-  reg [1-1:0] M_cout_conditioner_in;
-  button_conditioner_2 cout_conditioner (
-    .clk(clk),
-    .in(M_cout_conditioner_in),
-    .out(M_cout_conditioner_out)
-  );
-  wire [1-1:0] M_s_edge_out;
-  reg [1-1:0] M_s_edge_in;
-  edge_detector_4 s_edge (
-    .clk(clk),
-    .in(M_s_edge_in),
-    .out(M_s_edge_out)
-  );
-  wire [1-1:0] M_cout_edge_out;
-  reg [1-1:0] M_cout_edge_in;
-  edge_detector_4 cout_edge (
-    .clk(clk),
-    .in(M_cout_edge_in),
-    .out(M_cout_edge_out)
-  );
   wire [7-1:0] M_multi_led_seg;
   wire [4-1:0] M_multi_led_sel;
   wire [8-1:0] M_multi_led_matching_led;
@@ -71,7 +34,7 @@ module mojo_top_0 (
   reg [1-1:0] M_multi_led_expectedS;
   reg [1-1:0] M_multi_led_outC;
   reg [1-1:0] M_multi_led_outS;
-  multi_LED_digit_6 multi_led (
+  multi_LED_digit_2 multi_led (
     .clk(clk),
     .rst(rst),
     .expectedC(M_multi_led_expectedC),
@@ -85,72 +48,12 @@ module mojo_top_0 (
   wire [1-1:0] M_logic_expectedS;
   wire [1-1:0] M_logic_expectedC;
   reg [24-1:0] M_logic_io_dip;
-  logic_7 logic (
+  logic_3 logic (
     .clk(clk),
     .rst(rst),
     .io_dip(M_logic_io_dip),
     .expectedS(M_logic_expectedS),
     .expectedC(M_logic_expectedC)
-  );
-  wire [1-1:0] M_ctr_value;
-  counter_8 ctr (
-    .clk(clk),
-    .rst(rst),
-    .value(M_ctr_value)
-  );
-  wire [1-1:0] M_avr_spi_miso;
-  wire [4-1:0] M_avr_spi_channel;
-  wire [1-1:0] M_avr_tx;
-  wire [1-1:0] M_avr_new_sample;
-  wire [10-1:0] M_avr_sample;
-  wire [4-1:0] M_avr_sample_channel;
-  wire [1-1:0] M_avr_tx_busy;
-  wire [8-1:0] M_avr_rx_data;
-  wire [1-1:0] M_avr_new_rx_data;
-  reg [1-1:0] M_avr_cclk;
-  reg [1-1:0] M_avr_spi_mosi;
-  reg [1-1:0] M_avr_spi_sck;
-  reg [1-1:0] M_avr_spi_ss;
-  reg [1-1:0] M_avr_rx;
-  reg [4-1:0] M_avr_channel;
-  reg [8-1:0] M_avr_tx_data;
-  reg [1-1:0] M_avr_new_tx_data;
-  reg [1-1:0] M_avr_tx_block;
-  avr_interface_9 avr (
-    .clk(clk),
-    .rst(rst),
-    .cclk(M_avr_cclk),
-    .spi_mosi(M_avr_spi_mosi),
-    .spi_sck(M_avr_spi_sck),
-    .spi_ss(M_avr_spi_ss),
-    .rx(M_avr_rx),
-    .channel(M_avr_channel),
-    .tx_data(M_avr_tx_data),
-    .new_tx_data(M_avr_new_tx_data),
-    .tx_block(M_avr_tx_block),
-    .spi_miso(M_avr_spi_miso),
-    .spi_channel(M_avr_spi_channel),
-    .tx(M_avr_tx),
-    .new_sample(M_avr_new_sample),
-    .sample(M_avr_sample),
-    .sample_channel(M_avr_sample_channel),
-    .tx_busy(M_avr_tx_busy),
-    .rx_data(M_avr_rx_data),
-    .new_rx_data(M_avr_new_rx_data)
-  );
-  wire [4-1:0] M_detector_channel;
-  reg [24-1:0] M_detector_io_dip;
-  reg [10-1:0] M_detector_sample;
-  reg [4-1:0] M_detector_sample_channel;
-  reg [1-1:0] M_detector_new_sample;
-  avr_detector_10 detector (
-    .clk(clk),
-    .rst(rst),
-    .io_dip(M_detector_io_dip),
-    .sample(M_detector_sample),
-    .sample_channel(M_detector_sample_channel),
-    .new_sample(M_detector_new_sample),
-    .channel(M_detector_channel)
   );
   wire [8-1:0] M_autoTester_io_led;
   wire [8-1:0] M_autoTester_matching_led;
@@ -163,7 +66,7 @@ module mojo_top_0 (
   reg [1-1:0] M_autoTester_outC;
   reg [1-1:0] M_autoTester_outS;
   reg [5-1:0] M_autoTester_io_button;
-  fsm_tester_11 autoTester (
+  fsm_tester_4 autoTester (
     .clk(clk),
     .rst(rst),
     .outC(M_autoTester_outC),
@@ -184,32 +87,12 @@ module mojo_top_0 (
   always @* begin
     M_reset_cond_in = ~rst_n;
     rst = M_reset_cond_out;
-    M_avr_cclk = cclk;
-    M_avr_spi_ss = spi_ss;
-    M_avr_spi_mosi = spi_mosi;
-    M_avr_spi_sck = spi_sck;
-    M_avr_rx = avr_tx;
-    M_avr_tx_block = avr_rx_busy;
-    spi_miso = M_avr_spi_miso;
-    spi_channel = M_avr_spi_channel;
-    avr_rx = M_avr_tx;
-    M_avr_new_tx_data = 1'h0;
-    M_avr_tx_data = 8'bxxxxxxxx;
-    M_avr_channel = M_detector_channel;
-    M_detector_sample = M_avr_sample;
-    M_detector_sample_channel = M_avr_sample_channel;
-    M_detector_new_sample = M_avr_new_sample;
     M_autoTester_io_button = io_button;
     M_logic_io_dip = io_dip;
-    M_detector_io_dip = io_dip;
-    M_s_conditioner_in = from_adder_s;
-    M_cout_conditioner_in = from_adder_cout;
-    M_s_edge_in = M_s_conditioner_out;
-    M_cout_edge_in = M_cout_conditioner_out;
-    M_autoTester_outC = M_cout_edge_out;
-    M_autoTester_outS = M_s_edge_out;
-    M_multi_led_outC = M_cout_edge_out;
-    M_multi_led_outS = M_s_edge_out;
+    M_autoTester_outC = from_adder_cout;
+    M_autoTester_outS = from_adder_s;
+    M_multi_led_outC = from_adder_cout;
+    M_multi_led_outS = from_adder_s;
     testing = M_autoTester_testingState;
     if (testing) begin
       M_multi_led_expectedC = M_autoTester_expectedC;
