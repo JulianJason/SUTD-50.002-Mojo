@@ -9,7 +9,7 @@
      CPOL = 0
      CPHA = 0
 */
-module spi_slave_12 (
+module spi_slave_18 (
     input clk,
     input rst,
     input ss,

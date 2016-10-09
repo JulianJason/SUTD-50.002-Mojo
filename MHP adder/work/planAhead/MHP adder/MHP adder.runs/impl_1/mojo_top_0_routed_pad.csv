@@ -1,7 +1,7 @@
 #Release 14.7 - par P.20131013 (nt64)
 #Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-#Sun Oct 09 22:20:13 2016
+#Sun Oct 09 23:36:42 2016
 
 #
 ## NOTE: This file is designed to be imported into a spreadsheet program
@@ -20,11 +20,11 @@
 # -----,-----,-----,-----,-----,-----,-----,-----,-----,-----,-----,-----,-----,-----,-----,
 Pin Number,Signal Name,Pin Usage,Pin Name,Direction,IO Standard,IO Bank Number,Drive (mA),Slew Rate,Termination,IOB Delay,Voltage,Constraint,IO Register,Signal Integrity,
 P1,io_seg[6],IOB,IO_L83N_VREF_3,OUTPUT,LVTTL,3,12,SLOW,,,,LOCATED,NO,NONE,
-P2,io_seg[4],IOB,IO_L83P_3,OUTPUT,LVTTL,3,12,SLOW,,,,LOCATED,NO,NONE,
+P2,from_adder_cout,IOB,IO_L83P_3,INPUT,LVTTL,3,,,,NONE,,LOCATED,NO,NONE,
 P3,,,GND,,,,,,,,,,,,
 P4,,,VCCO_3,,,3,,,,,3.30,,,,
 P5,io_seg[0],IOB,IO_L52N_3,OUTPUT,LVTTL,3,12,SLOW,,,,LOCATED,NO,NONE,
-P6,io_seg[5],IOB,IO_L52P_3,OUTPUT,LVTTL,3,12,SLOW,,,,LOCATED,NO,NONE,
+P6,from_adder_s,IOB,IO_L52P_3,INPUT,LVTTL,3,,,,NONE,,LOCATED,NO,NONE,
 P7,io_sel[2],IOB,IO_L51N_3,OUTPUT,LVTTL,3,12,SLOW,,,,LOCATED,NO,NONE,
 P8,io_seg[1],IOB,IO_L51P_3,OUTPUT,LVTTL,3,12,SLOW,,,,LOCATED,NO,NONE,
 P9,io_sel[0],IOB,IO_L50N_3,OUTPUT,LVTTL,3,12,SLOW,,,,LOCATED,NO,NONE,
@@ -151,8 +151,8 @@ P129,,,VCCAUX,,,,,,,,3.3,,,,
 P130,,,GND,,,,,,,,,,,,
 P131,,IOBS,IO_L35N_GCLK16_0,UNUSED,,0,,,,,,,,,
 P132,,IOBM,IO_L35P_GCLK17_0,UNUSED,,0,,,,,,,,,
-P133,,IOBS,IO_L34N_GCLK18_0,UNUSED,,0,,,,,,,,,
-P134,,IOBM,IO_L34P_GCLK19_0,UNUSED,,0,,,,,,,,,
+P133,io_seg[5],IOB,IO_L34N_GCLK18_0,OUTPUT,LVTTL,0,12,SLOW,,,,UNLOCATED,NO,NONE,
+P134,io_seg[4],IOB,IO_L34P_GCLK19_0,OUTPUT,LVTTL,0,12,SLOW,,,,UNLOCATED,NO,NONE,
 P135,,,VCCO_0,,,0,,,,,3.30,,,,
 P136,,,GND,,,,,,,,,,,,
 P137,io_button(0),IOB,IO_L4N_0,INPUT,LVTTL,0,,,PULLDOWN,NONE,,LOCATED,NO,NONE,

@@ -9,7 +9,7 @@
      CLK_FREQ = 50000000
      BAUD = 500000
 */
-module avr_interface_5 (
+module avr_interface_9 (
     input clk,
     input rst,
     input cclk,
@@ -40,7 +40,7 @@ module avr_interface_5 (
   
   wire [1-1:0] M_cclk_detector_ready;
   reg [1-1:0] M_cclk_detector_cclk;
-  cclk_detector_11 cclk_detector (
+  cclk_detector_17 cclk_detector (
     .clk(clk),
     .rst(rst),
     .cclk(M_cclk_detector_cclk),
@@ -53,7 +53,7 @@ module avr_interface_5 (
   reg [1-1:0] M_spi_slave_mosi;
   reg [1-1:0] M_spi_slave_sck;
   reg [8-1:0] M_spi_slave_data_in;
-  spi_slave_12 spi_slave (
+  spi_slave_18 spi_slave (
     .clk(clk),
     .rst(n_rdy),
     .ss(M_spi_slave_ss),
@@ -67,7 +67,7 @@ module avr_interface_5 (
   wire [8-1:0] M_uart_rx_data;
   wire [1-1:0] M_uart_rx_new_data;
   reg [1-1:0] M_uart_rx_rx;
-  uart_rx_13 uart_rx (
+  uart_rx_19 uart_rx (
     .clk(clk),
     .rst(n_rdy),
     .rx(M_uart_rx_rx),
@@ -79,7 +79,7 @@ module avr_interface_5 (
   reg [1-1:0] M_uart_tx_block;
   reg [8-1:0] M_uart_tx_data;
   reg [1-1:0] M_uart_tx_new_data;
-  uart_tx_14 uart_tx (
+  uart_tx_20 uart_tx (
     .clk(clk),
     .rst(n_rdy),
     .block(M_uart_tx_block),

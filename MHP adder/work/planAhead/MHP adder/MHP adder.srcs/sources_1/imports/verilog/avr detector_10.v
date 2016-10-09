@@ -4,16 +4,14 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-module avr_detector_6 (
+module avr_detector_10 (
     input clk,
     input rst,
     input [23:0] io_dip,
     output reg [3:0] channel,
     input [9:0] sample,
     input [3:0] sample_channel,
-    input new_sample,
-    output reg outS,
-    output reg outC
+    input new_sample
   );
   
   
@@ -41,8 +39,6 @@ module avr_detector_6 (
         M_ch_d = 1'h0;
       end
     end
-    outS = 4'h0;
-    outC = 4'h0;
   end
   
   always @(posedge clk) begin

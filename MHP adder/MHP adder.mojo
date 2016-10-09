@@ -7,6 +7,7 @@
     <src top="true">mojo_top.luc</src>
     <src>fsm_tester.luc</src>
     <src>avr detector.luc</src>
+    <ucf>adder_in_out.ucf</ucf>
     <ucf lib="true">io_shield.ucf</ucf>
     <ucf lib="true">mojo.ucf</ucf>
     <component>decoder.luc</component>
@@ -14,6 +15,7 @@
     <component>uart_rx.luc</component>
     <component>cclk_detector.luc</component>
     <component>reset_conditioner.luc</component>
+    <component>pipeline.luc</component>
     <component>uart_tx.luc</component>
     <component>avr_interface.luc</component>
     <component>encoder.luc</component>

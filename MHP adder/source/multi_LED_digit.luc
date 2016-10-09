@@ -39,6 +39,8 @@ module multi_LED_digit #(
     digit_dec.in = ctr.value;             // decode active digit to one-hot       
     sel = digit_dec.out;                  // output the active digit
     
+    
+    // if manual test matches, turn on middle led
     if (outC == expectedC && outS == expectedS) {
     matching_led = 8hff;
   } else {

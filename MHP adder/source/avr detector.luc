@@ -5,9 +5,7 @@ module avr_detector (
     output channel[4],       // channel we want to sample
     input sample[10],        // sample value
     input sample_channel[4], // channel the sample is from
-    input new_sample,        // 1 = new sample
-    output outS,
-    output outC
+    input new_sample       // 1 = new sample
   ) {
    
   // This is used to convert 0 to 5 to its corresponding channel
@@ -38,7 +36,5 @@ module avr_detector (
         ch.d = 0;      // restart at 0   
       }                 
     }
-    outS = CHANNEL_LIST[0];
-    outC = CHANNEL_LIST[0];
   }
 }

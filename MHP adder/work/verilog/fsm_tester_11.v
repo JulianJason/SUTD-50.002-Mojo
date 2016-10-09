@@ -4,7 +4,7 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-module fsm_tester_7 (
+module fsm_tester_11 (
     input clk,
     input rst,
     input outC,
@@ -14,7 +14,10 @@ module fsm_tester_7 (
     output reg [7:0] matching_led,
     output reg testingState,
     output reg expectedS,
-    output reg expectedC
+    output reg expectedC,
+    output reg to_adder_a,
+    output reg to_adder_b,
+    output reg to_adder_cin
   );
   
   
@@ -28,7 +31,8 @@ module fsm_tester_7 (
   localparam AC_state = 4'd6;
   localparam BC_state = 4'd7;
   localparam ABC_state = 4'd8;
-  localparam END_state = 4'd9;
+  localparam SUCCESS_state = 4'd9;
+  localparam FAIL_state = 4'd10;
   
   reg [3:0] M_state_d, M_state_q = NOT_TESTING_state;
   reg [24:0] M_count_d, M_count_q = 1'h0;
@@ -54,82 +58,142 @@ module fsm_tester_7 (
     
     case (M_state_q)
       NOT_TESTING_state: begin
+        to_adder_a = 1'h0;
+        to_adder_b = 1'h0;
+        to_adder_cin = 1'h0;
         io_led = 8'h00;
         matching_led = 8'h00;
         expectedS = 1'h0;
         expectedC = 1'h0;
       end
       ZERO_state: begin
+        to_adder_a = 1'h0;
+        to_adder_b = 1'h0;
+        to_adder_cin = 1'h0;
         io_led = 8'h80;
         expectedS = 1'h0;
         expectedC = 1'h0;
         if (!outC && !outS) begin
-          matching_led = 8'hff;
+          matching_led = 8'h80;
+        end else begin
+          M_state_d = FAIL_state;
         end
       end
       A_state: begin
+        to_adder_a = 1'h1;
+        to_adder_b = 1'h0;
+        to_adder_cin = 1'h0;
         expectedS = 1'h1;
         expectedC = 1'h0;
         io_led = 8'h40;
         if (outS) begin
-          matching_led = 8'hff;
+          matching_led = 8'h40;
+        end else begin
+          M_state_d = FAIL_state;
         end
       end
       B_state: begin
+        to_adder_a = 1'h0;
+        to_adder_b = 1'h1;
+        to_adder_cin = 1'h0;
         expectedS = 1'h1;
         expectedC = 1'h0;
         io_led = 8'h20;
         if (outS) begin
-          matching_led = 8'hff;
+          matching_led = 8'h20;
+        end else begin
+          M_state_d = FAIL_state;
         end
       end
       C_state: begin
+        to_adder_a = 1'h0;
+        to_adder_b = 1'h0;
+        to_adder_cin = 1'h1;
         expectedS = 1'h1;
         expectedC = 1'h0;
         io_led = 8'h10;
         if (outS) begin
-          matching_led = 8'hff;
+          matching_led = 8'h10;
+        end else begin
+          M_state_d = FAIL_state;
         end
       end
       AB_state: begin
+        to_adder_a = 1'h1;
+        to_adder_b = 1'h1;
+        to_adder_cin = 1'h0;
         expectedS = 1'h0;
         expectedC = 1'h1;
         io_led = 8'h08;
         if (outC) begin
-          matching_led = 8'hff;
+          matching_led = 8'h08;
+        end else begin
+          M_state_d = FAIL_state;
         end
       end
       AC_state: begin
+        to_adder_b = 1'h0;
+        to_adder_cin = 1'h1;
+        to_adder_a = 1'h1;
         expectedS = 1'h0;
         expectedC = 1'h1;
         io_led = 8'h04;
         if (outC) begin
-          matching_led = 8'hff;
+          matching_led = 8'h04;
+        end else begin
+          M_state_d = FAIL_state;
         end
       end
       BC_state: begin
+        to_adder_a = 1'h0;
+        to_adder_b = 1'h1;
+        to_adder_cin = 1'h1;
         expectedS = 1'h0;
         expectedC = 1'h1;
         io_led = 8'h02;
         if (outC) begin
-          matching_led = 8'hff;
+          matching_led = 8'h02;
+        end else begin
+          M_state_d = FAIL_state;
         end
       end
       ABC_state: begin
+        to_adder_a = 1'h1;
+        to_adder_b = 1'h1;
+        to_adder_cin = 1'h1;
         expectedS = 1'h1;
         expectedC = 1'h1;
         io_led = 8'h01;
         if (outS && outC) begin
-          matching_led = 8'hff;
+          matching_led = 8'h01;
+        end else begin
+          M_state_d = FAIL_state;
         end
       end
-      END_state: begin
+      SUCCESS_state: begin
+        to_adder_a = 1'h0;
+        to_adder_b = 1'h0;
+        to_adder_cin = 1'h0;
         expectedS = 1'h0;
         expectedC = 1'h0;
-        io_led = 8'h00;
+        io_led = 8'hff;
+        matching_led = 8'hff;
+        M_testing_d = 1'h0;
+      end
+      FAIL_state: begin
+        to_adder_a = 1'h0;
+        to_adder_b = 1'h0;
+        to_adder_cin = 1'h0;
+        expectedS = 1'h0;
+        expectedC = 1'h0;
+        io_led = 8'hf0;
+        matching_led = 8'hf0;
         M_testing_d = 1'h0;
       end
       default: begin
+        to_adder_a = 1'h0;
+        to_adder_b = 1'h0;
+        to_adder_cin = 1'h0;
         io_led = 8'h00;
         matching_led = 8'h00;
         expectedS = 1'h0;

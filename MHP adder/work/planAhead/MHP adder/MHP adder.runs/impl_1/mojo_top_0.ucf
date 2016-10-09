@@ -5,6 +5,15 @@
 
 
 ####################################################################################
+# Constraints from file : 'adder_in_out.ucf'
+####################################################################################
+
+NET "from_adder_s" LOC = P6;
+NET "from_adder_s" IOSTANDARD = LVTTL;
+NET "from_adder_cout" LOC = P2;
+NET "from_adder_cout" IOSTANDARD = LVTTL;
+
+####################################################################################
 # Constraints from file : 'io_shield.ucf'
 ####################################################################################
 
@@ -67,9 +76,7 @@ NET "io_seg[2]" LOC = P144;
 NET "io_seg[2]" IOSTANDARD = LVTTL;
 NET "io_seg[3]" LOC = P143;
 NET "io_seg[3]" IOSTANDARD = LVTTL;
-NET "io_seg[4]" LOC = P2;
 NET "io_seg[4]" IOSTANDARD = LVTTL;
-NET "io_seg[5]" LOC = P6;
 NET "io_seg[5]" IOSTANDARD = LVTTL;
 NET "io_seg[6]" LOC = P1;
 NET "io_seg[6]" IOSTANDARD = LVTTL;

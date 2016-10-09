@@ -31,7 +31,9 @@ module mojo_top (
     output io_seg [8],      // 7-segment LEDs on IO Shield
     output io_sel [4],      // Digit select on IO Shield
     input io_button [5],    // 5 buttons on IO Shield
-    input io_dip [3][8]     // DIP switches on IO Shield
+    input io_dip [3][8],     // DIP switches on IO Shield
+    input from_adder_cout,
+    input from_adder_s
   ) {
   
   sig rst;                  // reset signal
@@ -39,6 +41,9 @@ module mojo_top (
     // The reset conditioner is used to synchronize the reset signal to the FPGA
     // clock. This ensures the entire FPGA comes out of reset at the same time.
     reset_conditioner reset_cond;
+    
+    // debounces input
+
     
     .rst(rst) {
       multi_LED_digit multi_led;        // multi led decoder to determine led digits
@@ -74,6 +79,7 @@ module mojo_top (
     avr.new_tx_data = 0;
     avr.tx_data = 8hxx;
     
+    // connects avr
     avr.channel = detector.channel;
     detector.sample = avr.sample;
     detector.sample_channel = avr.sample_channel;
@@ -83,28 +89,34 @@ module mojo_top (
     logic.io_dip = io_dip;    // takes in the switch state and processes in the full adder
     detector.io_dip = io_dip;
     
-    autoTester.outC = detector.outC;
-    autoTester.outS = detector.outS;
-    multi_led.outC = detector.outC;         // pipes the FA output Carry in to the multi_led
-    multi_led.outS = detector.outS;         // pipes the FA output Sum to the multi_led
-      
+    // pipes the cout and s from adder to modules
+    // known bug: multi_led does not display the digit fully.
+    // possible case is when voltage is not truly HIGH
+    autoTester.outC = from_adder_cout;
+    autoTester.outS = from_adder_s;
+    multi_led.outC = from_adder_cout;         // pipes the FA output Carry in to the multi_led
+    multi_led.outS = from_adder_s;         // pipes the FA output Sum to the multi_led
+    
+    // gets the state from the autotester
     testing = autoTester.testingState;
+    
+    // if currently testing, set led display to testing configuration
     if (testing) {
-      multi_led.expectedC = autoTester.expectedC;  // pipes expected C value
-      multi_led.expectedS = autoTester.expectedS;  // pipes expected S value
-      io_led[1] = autoTester.matching_led;
-    } else {
-      multi_led.expectedC = logic.expectedC;  // pipes expected C value
-      multi_led.expectedS = logic.expectedS;  // pipes expected S value
-      io_led[1] = multi_led.matching_led;
-    }
+      multi_led.expectedC = autoTester.expectedC;
+      multi_led.expectedS = autoTester.expectedS;
+      io_led[1] = autoTester.matching_led;  
+    } 
+    // else go with manual configurationn
+      else {
+    multi_led.expectedC = logic.expectedC;
+    multi_led.expectedS = logic.expectedS;
+    io_led[1] = multi_led.matching_led;
+  }
     
-    
+    // connects the rest of the led array
     io_seg = ~multi_led.seg; // connect segments to the driver
     io_sel = ~multi_led.sel; // connect digit select to the driver
-    
     io_led[2] = autoTester.io_led;  
-    
     io_led[0] = io_dip[0];
   }    
 }
