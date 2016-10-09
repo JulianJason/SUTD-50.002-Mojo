@@ -7,21 +7,21 @@ Reading design: mojo_top_0.prj
 =========================================================================
 *                          HDL Parsing                                  *
 =========================================================================
-Analyzing Verilog file "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/led_digit_6.v" into library work
+Analyzing Verilog file "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/led_digit_6.v" into library work
 Parsing module <led_digit_6>.
-Analyzing Verilog file "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/decoder_7.v" into library work
+Analyzing Verilog file "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/decoder_7.v" into library work
 Parsing module <decoder_7>.
-Analyzing Verilog file "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/counter_5.v" into library work
+Analyzing Verilog file "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/counter_5.v" into library work
 Parsing module <counter_5>.
-Analyzing Verilog file "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/reset_conditioner_1.v" into library work
+Analyzing Verilog file "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/reset_conditioner_1.v" into library work
 Parsing module <reset_conditioner_1>.
-Analyzing Verilog file "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/multi_LED_digit_2.v" into library work
+Analyzing Verilog file "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/multi_LED_digit_2.v" into library work
 Parsing module <multi_LED_digit_2>.
-Analyzing Verilog file "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/logic_3.v" into library work
+Analyzing Verilog file "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/logic_3.v" into library work
 Parsing module <logic_3>.
-Analyzing Verilog file "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/counter_4.v" into library work
-Parsing module <counter_4>.
-Analyzing Verilog file "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/mojo_top_0.v" into library work
+Analyzing Verilog file "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/fsm_tester_4.v" into library work
+Parsing module <fsm_tester_4>.
+Analyzing Verilog file "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/mojo_top_0.v" into library work
 Parsing module <mojo_top_0>.
 
 =========================================================================
@@ -37,55 +37,49 @@ Elaborating module <multi_LED_digit_2>.
 Elaborating module <counter_5>.
 
 Elaborating module <led_digit_6>.
+WARNING:HDLCompiler:413 - "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/led_digit_6.v" Line 18: Result of 8-bit expression is truncated to fit in 7-bit target.
 
 Elaborating module <decoder_7>.
 
 Elaborating module <logic_3>.
 
-Elaborating module <counter_4>.
-WARNING:HDLCompiler:1127 - "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 63: Assignment to M_ctr_value ignored, since the identifier is never used
-WARNING:Xst:2972 - "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/mojo_top_0.v" line 60. All outputs of instance <ctr> of block <counter_4> are unconnected in block <mojo_top_0>. Underlying logic will be removed.
+Elaborating module <fsm_tester_4>.
+WARNING:HDLCompiler:1127 - "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 80: Assignment to M_autoTester_to_adder_a ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 81: Assignment to M_autoTester_to_adder_b ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 82: Assignment to M_autoTester_to_adder_cin ignored, since the identifier is never used
 
 =========================================================================
 *                           HDL Synthesis                               *
 =========================================================================
 
 Synthesizing Unit <mojo_top_0>.
-    Related source file is "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/mojo_top_0.v".
-WARNING:Xst:647 - Input <io_button> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <cclk> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <spi_ss> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <spi_mosi> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <spi_sck> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <avr_tx> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <avr_rx_busy> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-INFO:Xst:3210 - "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/mojo_top_0.v" line 60: Output port <value> of the instance <ctr> is unconnected or connected to loadless signal.
-    Found 1-bit tristate buffer for signal <spi_miso> created at line 66
-    Found 1-bit tristate buffer for signal <spi_channel<3>> created at line 66
-    Found 1-bit tristate buffer for signal <spi_channel<2>> created at line 66
-    Found 1-bit tristate buffer for signal <spi_channel<1>> created at line 66
-    Found 1-bit tristate buffer for signal <spi_channel<0>> created at line 66
-    Found 1-bit tristate buffer for signal <avr_rx> created at line 66
+    Related source file is "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/mojo_top_0.v".
+INFO:Xst:3210 - "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/mojo_top_0.v" line 69: Output port <to_adder_a> of the instance <autoTester> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/mojo_top_0.v" line 69: Output port <to_adder_b> of the instance <autoTester> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/mojo_top_0.v" line 69: Output port <to_adder_cin> of the instance <autoTester> is unconnected or connected to loadless signal.
     Summary:
-	inferred   6 Tristate(s).
+	inferred  10 Multiplexer(s).
 Unit <mojo_top_0> synthesized.
 
 Synthesizing Unit <reset_conditioner_1>.
-    Related source file is "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/reset_conditioner_1.v".
+    Related source file is "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/reset_conditioner_1.v".
     Found 4-bit register for signal <M_stage_q>.
     Summary:
 	inferred   4 D-type flip-flop(s).
 Unit <reset_conditioner_1> synthesized.
 
 Synthesizing Unit <multi_LED_digit_2>.
-    Related source file is "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/multi_LED_digit_2.v".
-    Found 4-bit 4-to-1 multiplexer for signal <M_led_dec_char> created at line 50.
+    Related source file is "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/multi_LED_digit_2.v".
+    Found 4-bit 4-to-1 multiplexer for signal <M_led_dec_char> created at line 53.
+    Found 1-bit comparator equal for signal <outC_expectedC_equal_2_o> created at line 73
+    Found 1-bit comparator equal for signal <outS_expectedS_equal_3_o> created at line 73
     Summary:
+	inferred   2 Comparator(s).
 	inferred   1 Multiplexer(s).
 Unit <multi_LED_digit_2> synthesized.
 
 Synthesizing Unit <counter_5>.
-    Related source file is "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/counter_5.v".
+    Related source file is "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/counter_5.v".
     Found 18-bit register for signal <M_ctr_q>.
     Found 18-bit adder for signal <M_ctr_q[17]_GND_4_o_add_0_OUT> created at line 35.
     Summary:
@@ -94,25 +88,24 @@ Synthesizing Unit <counter_5>.
 Unit <counter_5> synthesized.
 
 Synthesizing Unit <led_digit_6>.
-    Related source file is "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/led_digit_6.v".
+    Related source file is "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/led_digit_6.v".
     Summary:
-	inferred   1 Multiplexer(s).
+	no macro.
 Unit <led_digit_6> synthesized.
 
 Synthesizing Unit <decoder_7>.
-    Related source file is "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/decoder_7.v".
+    Related source file is "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/decoder_7.v".
     Summary:
 	no macro.
 Unit <decoder_7> synthesized.
 
 Synthesizing Unit <logic_3>.
-    Related source file is "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/logic_3.v".
-WARNING:Xst:647 - Input <io_dip<7:1>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <io_dip<15:9>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <io_dip<23:17>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+    Related source file is "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/logic_3.v".
+WARNING:Xst:647 - Input <io_dip<4:0>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <io_dip<23:8>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <clk> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <rst> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-    Found 1-bit adder for signal <outC> created at line 29.
+    Found 1-bit adder for signal <expectedC> created at line 29.
     Found 1x1-bit multiplier for signal <n0006> created at line 29.
     Found 1x1-bit multiplier for signal <n0007> created at line 29.
     Summary:
@@ -120,23 +113,49 @@ WARNING:Xst:647 - Input <rst> is never used. This port will be preserved and lef
 	inferred   1 Adder/Subtractor(s).
 Unit <logic_3> synthesized.
 
+Synthesizing Unit <fsm_tester_4>.
+    Related source file is "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead/MHP adder/MHP adder.srcs/sources_1/imports/verilog/fsm_tester_4.v".
+WARNING:Xst:647 - Input <io_button<0:0>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <io_button<4:2>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+    Found 1-bit register for signal <M_testing_q>.
+    Found 4-bit register for signal <M_state_q>.
+    Found 25-bit register for signal <M_count_q>.
+    Found 4-bit adder for signal <M_state_q[3]_GND_9_o_add_1_OUT> created at line 53.
+    Found 25-bit adder for signal <M_count_d> created at line 207.
+    Found 16x13-bit Read Only RAM for signal <_n0095>
+    Found 8-bit 13-to-1 multiplexer for signal <matching_led> created at line 59.
+    Summary:
+	inferred   1 RAM(s).
+	inferred   2 Adder/Subtractor(s).
+	inferred  30 D-type flip-flop(s).
+	inferred  16 Multiplexer(s).
+Unit <fsm_tester_4> synthesized.
+
 =========================================================================
 HDL Synthesis Report
 
 Macro Statistics
+# RAMs                                                 : 1
+ 16x13-bit single-port Read Only RAM                   : 1
 # Multipliers                                          : 2
  1x1-bit multiplier                                    : 2
-# Adders/Subtractors                                   : 2
+# Adders/Subtractors                                   : 4
  1-bit adder                                           : 1
  18-bit adder                                          : 1
-# Registers                                            : 2
+ 25-bit adder                                          : 1
+ 4-bit adder                                           : 1
+# Registers                                            : 5
+ 1-bit register                                        : 1
  18-bit register                                       : 1
- 4-bit register                                        : 1
-# Multiplexers                                         : 2
+ 25-bit register                                       : 1
+ 4-bit register                                        : 2
+# Comparators                                          : 2
+ 1-bit comparator equal                                : 2
+# Multiplexers                                         : 27
+ 1-bit 2-to-1 multiplexer                              : 10
+ 4-bit 2-to-1 multiplexer                              : 15
  4-bit 4-to-1 multiplexer                              : 1
- 7-bit 2-to-1 multiplexer                              : 1
-# Tristates                                            : 6
- 1-bit tristate buffer                                 : 6
+ 8-bit 13-to-1 multiplexer                             : 1
 # Xors                                                 : 2
  1-bit xor2                                            : 2
 
@@ -151,24 +170,49 @@ Synthesizing (advanced) Unit <counter_5>.
 The following registers are absorbed into counter <M_ctr_q>: 1 register on signal <M_ctr_q>.
 Unit <counter_5> synthesized (advanced).
 
+Synthesizing (advanced) Unit <fsm_tester_4>.
+The following registers are absorbed into counter <M_count_q>: 1 register on signal <M_count_q>.
+INFO:Xst:3218 - HDL ADVISOR - The RAM <Mram__n0095> will be implemented on LUTs either because you have described an asynchronous read or because of currently unsupported block RAM features. If you have described an asynchronous read, making it synchronous would allow you to take advantage of available block RAM resources, for optimized device usage and improved timings. Please refer to your documentation for coding guidelines.
+    -----------------------------------------------------------------------
+    | ram_type           | Distributed                         |          |
+    -----------------------------------------------------------------------
+    | Port A                                                              |
+    |     aspect ratio   | 16-word x 13-bit                    |          |
+    |     weA            | connected to signal <GND>           | high     |
+    |     addrA          | connected to signal <M_state_q>     |          |
+    |     diA            | connected to signal <GND>           |          |
+    |     doA            | connected to internal node          |          |
+    -----------------------------------------------------------------------
+Unit <fsm_tester_4> synthesized (advanced).
+
 Synthesizing (advanced) Unit <logic_3>.
-	Multiplier <Mmult_n0006> in block <logic_3> and adder/subtractor <Madd_outC> in block <logic_3> are combined into a MAC<Maddsub_n0006>.
+	Multiplier <Mmult_n0006> in block <logic_3> and adder/subtractor <Madd_expectedC> in block <logic_3> are combined into a MAC<Maddsub_n0006>.
 Unit <logic_3> synthesized (advanced).
 
 =========================================================================
 Advanced HDL Synthesis Report
 
 Macro Statistics
+# RAMs                                                 : 1
+ 16x13-bit single-port distributed Read Only RAM       : 1
 # MACs                                                 : 1
  1x1-to-1-bit MAC                                      : 1
 # Multipliers                                          : 1
  1x1-bit multiplier                                    : 1
-# Counters                                             : 1
+# Adders/Subtractors                                   : 1
+ 4-bit adder                                           : 1
+# Counters                                             : 2
  18-bit up counter                                     : 1
-# Registers                                            : 4
- Flip-Flops                                            : 4
-# Multiplexers                                         : 1
- 7-bit 2-to-1 multiplexer                              : 1
+ 25-bit up counter                                     : 1
+# Registers                                            : 9
+ Flip-Flops                                            : 9
+# Comparators                                          : 2
+ 1-bit comparator equal                                : 2
+# Multiplexers                                         : 27
+ 1-bit 2-to-1 multiplexer                              : 10
+ 4-bit 2-to-1 multiplexer                              : 15
+ 4-bit 4-to-1 multiplexer                              : 1
+ 8-bit 13-to-1 multiplexer                             : 1
 # Xors                                                 : 2
  1-bit xor2                                            : 2
 
@@ -182,7 +226,7 @@ Optimizing unit <mojo_top_0> ...
 
 Mapping all equations...
 Building and optimizing final netlist ...
-Found area constraint ratio of 100 (+ 0) on block mojo_top_0, actual ratio is 0.
+Found area constraint ratio of 100 (+ 0) on block mojo_top_0, actual ratio is 2.
 
 Final Macro Processing ...
 
@@ -194,8 +238,8 @@ Unit <mojo_top_0> processed.
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 22
- Flip-Flops                                            : 22
+# Registers                                            : 52
+ Flip-Flops                                            : 52
 
 =========================================================================
 
@@ -219,7 +263,7 @@ Clock Information:
 -----------------------------------+------------------------+-------+
 Clock Signal                       | Clock buffer(FF name)  | Load  |
 -----------------------------------+------------------------+-------+
-clk                                | BUFGP                  | 22    |
+clk                                | BUFGP                  | 52    |
 -----------------------------------+------------------------+-------+
 
 Asynchronous Control Signals Information:
@@ -230,9 +274,9 @@ Timing Summary:
 ---------------
 Speed Grade: -2
 
-   Minimum period: 3.732ns (Maximum Frequency: 267.953MHz)
-   Minimum input arrival time before clock: 3.526ns
-   Maximum output required time after clock: 5.919ns
-   Maximum combinational path delay: 14.698ns
+   Minimum period: 4.304ns (Maximum Frequency: 232.342MHz)
+   Minimum input arrival time before clock: 4.358ns
+   Maximum output required time after clock: 8.499ns
+   Maximum combinational path delay: 16.711ns
 
 =========================================================================

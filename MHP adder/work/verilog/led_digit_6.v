@@ -15,16 +15,10 @@ module led_digit_6 (
     
     case (char)
       1'h0: begin
-        segs = 7'h3f;
+        segs = 8'hbf;
       end
       1'h1: begin
-        segs = 7'h06;
-      end
-      2'h2: begin
-        segs = 7'h6d;
-      end
-      2'h3: begin
-        segs = 7'h39;
+        segs = 8'h06;
       end
       default: begin
         segs = 7'h00;

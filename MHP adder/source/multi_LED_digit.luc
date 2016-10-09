@@ -1,13 +1,18 @@
+// configures the digit display
+
 module multi_LED_digit #(
     DIGITS = 4 : DIGITS > 0,
     DIV = 16 : DIV >= 0
   )(
     input clk,                // clock
     input rst,                // reset
-    input outC,               // expected output of Carry
-    input outS,               // expected output of sum
+    input expectedC,          // expected output of Carry
+    input expectedS,          // expected output of Sum
+    input outC,               // real output of Carry
+    input outS,               // real output of Sum
     output seg [7],           // LED segments
-    output sel [DIGITS]       // Digit select
+    output sel [DIGITS],      // Digit select
+    output matching_led[8]    // middle LED array
   ) {
   
   // number of bits required to store DIGITS-1
@@ -21,17 +26,25 @@ module multi_LED_digit #(
   decoder digit_dec (#WIDTH(DIGIT_BITS)); // digit decoder
   
   always {
+    // chooses which digit to decode
     case (ctr.value) {
-      0: led_dec.char = outC;     // S symbol 
-      1: led_dec.char = 3;  // expected S output
-      2: led_dec.char = outS;     // C symbol
-      3: led_dec.char = 2;  // expected C output
+      0: led_dec.char = expectedC;     // expected C output
+      1: led_dec.char = outC;          // adder S output
+      2: led_dec.char = expectedS;     // expected S output
+      3: led_dec.char = outS;          // adder S output
       default: led_dec.char = 9;
     }
-        
-    seg = led_dec.segs;                   // output the decoded value
     
+    seg = led_dec.segs;                   // output the decoded value
     digit_dec.in = ctr.value;             // decode active digit to one-hot       
     sel = digit_dec.out;                  // output the active digit
+    
+    
+    // if manual test matches, turn on middle led
+    if (outC == expectedC && outS == expectedS) {
+    matching_led = 8hff;
+  } else {
+    matching_led = 8h00;
+  }
   }
 }

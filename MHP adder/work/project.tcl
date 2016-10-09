@@ -1,13 +1,13 @@
-set projDir "C:/Users/USER/Documents/mojo/MHP adder/work/planAhead"
+set projDir "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/planAhead"
 set projName "MHP adder"
 set topName top
 set device xc6slx9-2tqg144
 if {[file exists "$projDir/$projName"]} { file delete -force "$projDir/$projName" }
 create_project $projName "$projDir/$projName" -part $device
 set_property design_mode RTL [get_filesets sources_1]
-set verilogSources [list "C:/Users/USER/Documents/mojo/MHP adder/work/verilog/mojo_top_0.v" "C:/Users/USER/Documents/mojo/MHP adder/work/verilog/reset_conditioner_1.v" "C:/Users/USER/Documents/mojo/MHP adder/work/verilog/multi_LED_digit_2.v" "C:/Users/USER/Documents/mojo/MHP adder/work/verilog/logic_3.v" "C:/Users/USER/Documents/mojo/MHP adder/work/verilog/counter_4.v" "C:/Users/USER/Documents/mojo/MHP adder/work/verilog/counter_5.v" "C:/Users/USER/Documents/mojo/MHP adder/work/verilog/led_digit_6.v" "C:/Users/USER/Documents/mojo/MHP adder/work/verilog/decoder_7.v"]
+set verilogSources [list "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/verilog/mojo_top_0.v" "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/verilog/reset_conditioner_1.v" "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/verilog/multi_LED_digit_2.v" "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/verilog/logic_3.v" "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/verilog/fsm_tester_4.v" "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/verilog/counter_5.v" "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/verilog/led_digit_6.v" "D:/GitHub/SUTD-50.002-Mojo/MHP adder/work/verilog/decoder_7.v"]
 import_files -fileset [get_filesets sources_1] -force -norecurse $verilogSources
-set ucfSources [list  "C:/Program\ Files/Mojo\ IDE/library/components/io_shield.ucf" "C:/Program\ Files/Mojo\ IDE/library/components/mojo.ucf"]
+set ucfSources [list "D:/GitHub/SUTD-50.002-Mojo/MHP\ adder/constraint/adder_in_out.ucf" "C:/Program\ Files/Mojo\ IDE/library/components/io_shield.ucf" "C:/Program\ Files/Mojo\ IDE/library/components/mojo.ucf"]
 import_files -fileset [get_filesets constrs_1] -force -norecurse $ucfSources
 set_property -name {steps.bitgen.args.More Options} -value {-g Binary:Yes -g Compress} -objects [get_runs impl_1]
 set_property steps.map.args.mt on [get_runs impl_1]

@@ -1,52 +1,84 @@
+/*
+  MOJO v3 full adder tester
+  
+  The tester sends high or low voltages depending on the state of dip switches that correspond to A,B,Cin.
+  It then reads the voltage near the LED and determines whether the voltage matches the expected result based
+  on the boolean expression of a full adder.
+   
+  Results are displayed in the 7 segment LED in the format of 
+   
+  __________    ____________    ______________    ______________
+   Real Sum     Expected Sum    Real CarryOut    Expected CarryOut
+   
+   If the results matches, the middle LED strip on the IO shield will light up. Indicating a match.
+   However, if a single test case fail, the automated test will stop.
+*/
+
+
+
 module mojo_top (
     input clk,              // 50MHz clock
     input rst_n,            // reset button (active low)
-    input cclk,             // configuration clock, AVR ready when high
-    output spi_miso,        // AVR SPI MISO
-    input spi_ss,           // AVR SPI Slave Select
-    input spi_mosi,         // AVR SPI MOSI
-    input spi_sck,          // AVR SPI Clock
-    output spi_channel [4], // AVR general purpose pins (used by default to select ADC channel)
-    input avr_tx,           // AVR TX (FPGA RX)
-    output avr_rx,          // AVR RX (FPGA TX)
-    input avr_rx_busy,      // AVR RX buffer full
     output io_led [3][8],   // LEDs on IO Shield
     output io_seg [8],      // 7-segment LEDs on IO Shield
     output io_sel [4],      // Digit select on IO Shield
     input io_button [5],    // 5 buttons on IO Shield
-    input io_dip [3][8]     // DIP switches on IO Shield
+    input io_dip [3][8],     // DIP switches on IO Shield
+    input from_adder_cout,
+    input from_adder_s
   ) {
   
   sig rst;                  // reset signal
-  
   .clk(clk) {
     // The reset conditioner is used to synchronize the reset signal to the FPGA
     // clock. This ensures the entire FPGA comes out of reset at the same time.
     reset_conditioner reset_cond;
-    
+
     .rst(rst) {
       multi_LED_digit multi_led;        // multi led decoder to determine led digits
       logic logic;                      // full adder logic
-      counter ctr (#SIZE(1), #DIV(24)); // creats a counter of size 1
+      fsm_tester autoTester;            // autotester module
     }
   }
+  
+  sig testing; // temporary variable
   
   always {
     reset_cond.in = ~rst_n;   // input raw inverted reset signal
     rst = reset_cond.out;     // conditioned reset
     
-    spi_miso = bz;            // not using SPI
-    spi_channel = bzzzz;      // not using flags
-    avr_rx = bz;              // not using serial port
-   
+    autoTester.io_button = io_button;
+    
     logic.io_dip = io_dip;    // takes in the switch state and processes in the full adder
-    multi_led.outC = logic.outC;  // pipes the FA output Carry in to the multi_led
-    multi_led.outS = logic.outS;  // pipes the FA output Sum to the multi_led
     
+    /* pipes the cout and s from adder to modules
+       known bug: multi_led does not display the digit fully.
+       possible case is when voltage is not truly HIGH  */
+    autoTester.outC = from_adder_cout;
+    autoTester.outS = from_adder_s;
+    multi_led.outC = from_adder_cout;         // pipes the FA output Carry in to the multi_led
+    multi_led.outS = from_adder_s;         // pipes the FA output Sum to the multi_led
     
+    // gets the state from the autotester
+    testing = autoTester.testingState;
+    
+    // if currently testing, set led display to testing configuration
+    if (testing) {
+      multi_led.expectedC = autoTester.expectedC;
+      multi_led.expectedS = autoTester.expectedS;
+      io_led[1] = autoTester.matching_led;  
+    } 
+    // else go with manual configurationn
+      else {
+    multi_led.expectedC = logic.expectedC;
+    multi_led.expectedS = logic.expectedS;
+    io_led[1] = multi_led.matching_led;
+  }
+    
+    // connects the rest of the led array
     io_seg = ~multi_led.seg; // connect segments to the driver
     io_sel = ~multi_led.sel; // connect digit select to the driver
-    
-    io_led = io_dip;   // connect the DIP switches to the LEDs
+    io_led[2] = autoTester.io_led;  
+    io_led[0] = io_dip[0];
   }    
 }

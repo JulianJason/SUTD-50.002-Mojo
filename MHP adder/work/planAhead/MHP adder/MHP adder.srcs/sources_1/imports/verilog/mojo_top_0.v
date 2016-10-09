@@ -7,20 +7,13 @@
 module mojo_top_0 (
     input clk,
     input rst_n,
-    input cclk,
-    output reg spi_miso,
-    input spi_ss,
-    input spi_mosi,
-    input spi_sck,
-    output reg [3:0] spi_channel,
-    input avr_tx,
-    output reg avr_rx,
-    input avr_rx_busy,
     output reg [23:0] io_led,
     output reg [7:0] io_seg,
     output reg [3:0] io_sel,
     input [4:0] io_button,
-    input [23:0] io_dip
+    input [23:0] io_dip,
+    input from_adder_cout,
+    input from_adder_s
   );
   
   
@@ -36,44 +29,83 @@ module mojo_top_0 (
   );
   wire [7-1:0] M_multi_led_seg;
   wire [4-1:0] M_multi_led_sel;
+  wire [8-1:0] M_multi_led_matching_led;
+  reg [1-1:0] M_multi_led_expectedC;
+  reg [1-1:0] M_multi_led_expectedS;
   reg [1-1:0] M_multi_led_outC;
   reg [1-1:0] M_multi_led_outS;
   multi_LED_digit_2 multi_led (
     .clk(clk),
     .rst(rst),
+    .expectedC(M_multi_led_expectedC),
+    .expectedS(M_multi_led_expectedS),
     .outC(M_multi_led_outC),
     .outS(M_multi_led_outS),
     .seg(M_multi_led_seg),
-    .sel(M_multi_led_sel)
+    .sel(M_multi_led_sel),
+    .matching_led(M_multi_led_matching_led)
   );
-  wire [1-1:0] M_logic_outS;
-  wire [1-1:0] M_logic_outC;
+  wire [1-1:0] M_logic_expectedS;
+  wire [1-1:0] M_logic_expectedC;
   reg [24-1:0] M_logic_io_dip;
   logic_3 logic (
     .clk(clk),
     .rst(rst),
     .io_dip(M_logic_io_dip),
-    .outS(M_logic_outS),
-    .outC(M_logic_outC)
+    .expectedS(M_logic_expectedS),
+    .expectedC(M_logic_expectedC)
   );
-  wire [1-1:0] M_ctr_value;
-  counter_4 ctr (
+  wire [8-1:0] M_autoTester_io_led;
+  wire [8-1:0] M_autoTester_matching_led;
+  wire [1-1:0] M_autoTester_testingState;
+  wire [1-1:0] M_autoTester_expectedS;
+  wire [1-1:0] M_autoTester_expectedC;
+  wire [1-1:0] M_autoTester_to_adder_a;
+  wire [1-1:0] M_autoTester_to_adder_b;
+  wire [1-1:0] M_autoTester_to_adder_cin;
+  reg [1-1:0] M_autoTester_outC;
+  reg [1-1:0] M_autoTester_outS;
+  reg [5-1:0] M_autoTester_io_button;
+  fsm_tester_4 autoTester (
     .clk(clk),
     .rst(rst),
-    .value(M_ctr_value)
+    .outC(M_autoTester_outC),
+    .outS(M_autoTester_outS),
+    .io_button(M_autoTester_io_button),
+    .io_led(M_autoTester_io_led),
+    .matching_led(M_autoTester_matching_led),
+    .testingState(M_autoTester_testingState),
+    .expectedS(M_autoTester_expectedS),
+    .expectedC(M_autoTester_expectedC),
+    .to_adder_a(M_autoTester_to_adder_a),
+    .to_adder_b(M_autoTester_to_adder_b),
+    .to_adder_cin(M_autoTester_to_adder_cin)
   );
+  
+  reg testing;
   
   always @* begin
     M_reset_cond_in = ~rst_n;
     rst = M_reset_cond_out;
-    spi_miso = 1'bz;
-    spi_channel = 4'bzzzz;
-    avr_rx = 1'bz;
+    M_autoTester_io_button = io_button;
     M_logic_io_dip = io_dip;
-    M_multi_led_outC = M_logic_outC;
-    M_multi_led_outS = M_logic_outS;
+    M_autoTester_outC = from_adder_cout;
+    M_autoTester_outS = from_adder_s;
+    M_multi_led_outC = from_adder_cout;
+    M_multi_led_outS = from_adder_s;
+    testing = M_autoTester_testingState;
+    if (testing) begin
+      M_multi_led_expectedC = M_autoTester_expectedC;
+      M_multi_led_expectedS = M_autoTester_expectedS;
+      io_led[8+7-:8] = M_autoTester_matching_led;
+    end else begin
+      M_multi_led_expectedC = M_logic_expectedC;
+      M_multi_led_expectedS = M_logic_expectedS;
+      io_led[8+7-:8] = M_multi_led_matching_led;
+    end
     io_seg = ~M_multi_led_seg;
     io_sel = ~M_multi_led_sel;
-    io_led = io_dip;
+    io_led[16+7-:8] = M_autoTester_io_led;
+    io_led[0+7-:8] = io_dip[0+7-:8];
   end
 endmodule

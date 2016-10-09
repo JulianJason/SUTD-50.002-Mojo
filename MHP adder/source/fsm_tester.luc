@@ -1,0 +1,194 @@
+/*
+  Module for automated testing based on finite state machines
+*/
+
+module fsm_tester (
+    input clk,         // clock
+    input rst,         // reset
+    input outC,
+    input outS,
+    input io_button[5], // io button
+    output io_led[8],
+    output matching_led[8],
+    output testingState,
+    output expectedS,
+    output expectedC,
+    
+    // signals to send to adder
+    output to_adder_a,
+    output to_adder_b,
+    output to_adder_cin
+    
+  ) {
+ 
+ 
+  .clk(clk) {
+    .rst(rst) {
+      fsm state = {NOT_TESTING,ZERO, A, B, C, AB, AC, BC, ABC, SUCCESS, FAIL}; // the multiple testing states
+    }
+    dff count[25];  // delay counter
+    dff testing[1]; // testing state storage
+  }
+
+   
+  always {
+  
+    // if delay counter is exactly 0, step down function, else wait.
+  if (count.q == 0) {
+    case (state.q) {
+      state.NOT_TESTING:
+        state.d = state.q;
+      default: state.d = state.q + 1;
+    }
+  }
+    
+    
+  matching_led = 8h00;  // initialized led to 0
+  
+    
+    // for each case, this function sends signals and gets signal
+    // then compares with expected output and lights the LED accordingly
+  case (state.q) {
+    state.NOT_TESTING:
+      to_adder_a = 0;
+      to_adder_b = 0;
+      to_adder_cin = 0;
+      io_led = 8h00;
+      matching_led = 8h00;
+      expectedS = 0;
+      expectedC = 0;
+    state.ZERO:
+      to_adder_a = 0;
+      to_adder_b = 0;
+      to_adder_cin = 0;
+      io_led = 8h80;
+      expectedS = 0;
+      expectedC = 0;
+      if (!outC && !outS) {
+        matching_led = 8h80;
+      } else {
+        state.d = state.FAIL;  
+      }
+    state.A:
+      to_adder_a = 1;
+      to_adder_b = 0;
+      to_adder_cin = 0;
+      expectedS = 1;
+      expectedC = 0;
+      io_led = 8h40;
+      if (outS) {
+        matching_led = 8h40;
+      } else {
+        state.d = state.FAIL;  
+      }
+     state.B:
+      to_adder_a = 0;
+      to_adder_b = 1;
+      to_adder_cin = 0;
+      expectedS = 1;
+      expectedC = 0;
+      io_led = 8h20;
+      if (outS) {
+        matching_led = 8h20;
+      } else {
+        state.d = state.FAIL;  
+      }
+    state.C:
+      to_adder_a = 0;
+      to_adder_b = 0;
+      to_adder_cin = 1;
+      expectedS = 1;
+      expectedC = 0;
+      io_led = 8h10;
+      if (outS) {
+        matching_led = 8h10;
+      } else {
+        state.d = state.FAIL;  
+      }
+    state.AB:
+      to_adder_a = 1;
+      to_adder_b = 1;
+      to_adder_cin = 0;
+      expectedS = 0;
+      expectedC = 1;
+      io_led = 8h08;
+      if (outC) {
+        matching_led = 8h08;
+      } else {
+        state.d = state.FAIL;  
+      }
+    state.AC:
+      to_adder_b = 0;
+      to_adder_cin = 1;
+      to_adder_a = 1;
+      expectedS = 0;
+      expectedC = 1;
+      io_led = 8h04;
+      if (outC) {
+        matching_led = 8h04;
+      } else {
+        state.d = state.FAIL;  
+      }
+    state.BC:
+      to_adder_a = 0;
+      to_adder_b = 1;
+      to_adder_cin = 1;
+      expectedS = 0;
+      expectedC = 1;
+      io_led = 8h02;
+      if (outC) {
+        matching_led = 8h02;
+      } else {
+        state.d = state.FAIL;  
+      }
+    
+    
+    state.ABC:
+      to_adder_a = 1;
+      to_adder_b = 1;
+      to_adder_cin = 1;
+      expectedS = 1;
+      expectedC = 1;
+      io_led = 8h01;
+      if (outS && outC) {
+        matching_led = 8h01;
+      } else {
+        state.d = state.FAIL;  
+      }
+    state.SUCCESS:
+      to_adder_a = 0;
+      to_adder_b = 0;
+      to_adder_cin = 0;
+      expectedS = 0;
+      expectedC = 0;
+      io_led = 8hff;
+      matching_led = 8hff;
+      testing.d = 0;
+    state.FAIL:
+      to_adder_a = 0;
+      to_adder_b = 0;
+      to_adder_cin = 0;
+      expectedS = 0;
+      expectedC = 0;
+      io_led = 8hf0;
+      matching_led = 8hf0;
+      testing.d = 0;
+    default: 
+      to_adder_a = 0;
+      to_adder_b = 0;
+      to_adder_cin = 0;
+      io_led = 8h00;
+      matching_led = 8h00;
+      expectedS = 0;
+      expectedC = 0;
+    }
+    
+    // if center button is pressed, start testubg
+    if (io_button[1]) {
+      state.d = 1;
+      testing.d = 1;
+    }
+    count.d = count.q + 1; // count up for each clock cycle, automatically cycles to 0 if overflow
+    testingState = testing.q; // outputs testingstate for mojo_top
+  }
+}

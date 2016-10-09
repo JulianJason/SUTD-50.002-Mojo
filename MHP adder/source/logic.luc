@@ -2,8 +2,8 @@ module logic (
     input clk,  // clock
     input rst,  // reset
     input io_dip [3][8],     // DIP switches on IO Shield
-    output outS,  // S out
-    output outC  // C out
+    output expectedS,
+    output expectedC
   ) {
   
   .clk(clk), .rst(rst) {
@@ -18,13 +18,13 @@ module logic (
   always {
     
     // a b and cin are assigned to corresponding switches
-    a = io_dip[2][0];
-    b = io_dip[1][0];
-    cin = io_dip[0][0];
+    a = io_dip[0][7];  // right set first from left
+    b = io_dip[0][6];
+    cin = io_dip[0][5];
     
     // assign output based on derived boolean expression
-    outS = (a ^ b) ^ cin;
-    outC = ((a ^ b) * cin) + a*b;
+    expectedS = (a ^ b) ^ cin;
+    expectedC = ((a ^ b) * cin) + a*b;
     
   }
 }

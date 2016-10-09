@@ -12,10 +12,13 @@
 module multi_LED_digit_2 (
     input clk,
     input rst,
+    input expectedC,
+    input expectedS,
     input outC,
     input outS,
     output reg [6:0] seg,
-    output reg [3:0] sel
+    output reg [3:0] sel,
+    output reg [7:0] matching_led
   );
   
   localparam DIGITS = 3'h4;
@@ -49,16 +52,16 @@ module multi_LED_digit_2 (
     
     case (M_ctr_value)
       1'h0: begin
-        M_led_dec_char = outC;
+        M_led_dec_char = expectedC;
       end
       1'h1: begin
-        M_led_dec_char = 2'h3;
+        M_led_dec_char = outC;
       end
       2'h2: begin
-        M_led_dec_char = outS;
+        M_led_dec_char = expectedS;
       end
       2'h3: begin
-        M_led_dec_char = 2'h2;
+        M_led_dec_char = outS;
       end
       default: begin
         M_led_dec_char = 4'h9;
@@ -67,5 +70,10 @@ module multi_LED_digit_2 (
     seg = M_led_dec_segs;
     M_digit_dec_in = M_ctr_value;
     sel = M_digit_dec_out;
+    if (outC == expectedC && outS == expectedS) begin
+      matching_led = 8'hff;
+    end else begin
+      matching_led = 8'h00;
+    end
   end
 endmodule
