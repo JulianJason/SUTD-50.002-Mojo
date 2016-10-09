@@ -170,7 +170,7 @@ module fsm_tester (
       to_adder_cin = 0;
       expectedS = 0;
       expectedC = 0;
-      io_led = 8hf0;
+      io_led = 8h88;
       matching_led = 8hf0;
       testing.d = 0;
     default: 
