@@ -67,7 +67,7 @@ module fsm_tester_7 (
           matching_led = 8'hff;
         end
       end
-      C_state: begin
+      A_state: begin
         expectedS = 1'h1;
         expectedC = 1'h0;
         io_led = 8'h40;
@@ -83,19 +83,19 @@ module fsm_tester_7 (
           matching_led = 8'hff;
         end
       end
-      BC_state: begin
-        expectedS = 1'h0;
-        expectedC = 1'h1;
+      C_state: begin
+        expectedS = 1'h1;
+        expectedC = 1'h0;
         io_led = 8'h10;
-        if (outC) begin
+        if (outS) begin
           matching_led = 8'hff;
         end
       end
-      A_state: begin
-        expectedS = 1'h1;
-        expectedC = 1'h0;
+      AB_state: begin
+        expectedS = 1'h0;
+        expectedC = 1'h1;
         io_led = 8'h08;
-        if (outS) begin
+        if (outC) begin
           matching_led = 8'hff;
         end
       end
@@ -107,7 +107,7 @@ module fsm_tester_7 (
           matching_led = 8'hff;
         end
       end
-      AB_state: begin
+      BC_state: begin
         expectedS = 1'h0;
         expectedC = 1'h1;
         io_led = 8'h02;

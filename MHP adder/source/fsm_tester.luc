@@ -47,32 +47,32 @@ module fsm_tester (
       if (!outC && !outS) {
         matching_led = 8hff;
       }
-    state.C:
+    state.A:
       expectedS = 1;
       expectedC = 0;
       io_led = 8h40;
       if (outS) {
         matching_led = 8hff;
       }
-    state.B:
+     state.B:
       expectedS = 1;
       expectedC = 0;
       io_led = 8h20;
       if (outS) {
         matching_led = 8hff;
       }
-    state.BC:
-      expectedS = 0;
-      expectedC = 1;
-      io_led = 8h10;
-      if (outC) {
-        matching_led = 8hff;
-      }
-    state.A:
+    state.C:
       expectedS = 1;
       expectedC = 0;
-      io_led = 8h08;
+      io_led = 8h10;
       if (outS) {
+        matching_led = 8hff;
+      }
+    state.AB:
+      expectedS = 0;
+      expectedC = 1;
+      io_led = 8h08;
+      if (outC) {
         matching_led = 8hff;
       }
     state.AC:
@@ -82,13 +82,15 @@ module fsm_tester (
       if (outC) {
         matching_led = 8hff;
       }
-    state.AB:
+    state.BC:
       expectedS = 0;
       expectedC = 1;
       io_led = 8h02;
       if (outC) {
         matching_led = 8hff;
       }
+    
+    
     state.ABC:
       expectedS = 1;
       expectedC = 1;
