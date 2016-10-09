@@ -23,8 +23,9 @@ The tester sends high or low voltages depending on the state of dip switches tha
    
   Results are displayed in the 7 segment LED in the format of 
    
-  __________    ____________    ______________    ______________
-   Real Sum     Expected Sum    Real CarryOut    Expected CarryOut
+ = __________ -  >  ____________- > ______________-> ______________
+ 
+      Real Sum     Expected Sum    Real CarryOut    Expected CarryOut
    
    If the results matches, the middle LED strip on the IO shield will light up. Indicating a match.
    However, if a single test case fail, the automated test will stop.
