@@ -1,0 +1,118 @@
+module fsm_tester (
+    input clk,         // clock
+    input rst,         // reset
+    input outC,
+    input outS,
+    input io_button[5], // io button
+    output io_led[8],
+    output matching_led[8],
+    output testingState,
+    output expectedS,
+    output expectedC
+  ) {
+ 
+ 
+  .clk(clk) {
+    .rst(rst) {
+      fsm state = {NOT_TESTING,ZERO, A, B, C, AB, AC, BC, ABC, END}; // the multiple testing states
+    }
+    dff count[25];  // delay counter
+    dff testing[1]; // testing state storage
+  }
+
+   
+  always {
+  
+  if (count.q == 0) {
+    case (state.q) {
+      state.NOT_TESTING:
+        state.d = state.q;
+      default: state.d = state.q + 1;
+    }
+  }
+    
+    
+  matching_led = 8h00;
+    
+  case (state.q) {
+    state.NOT_TESTING:
+      io_led = 8h00;
+      matching_led = 8h00;
+      expectedS = 0;
+      expectedC = 0;
+    state.ZERO:
+      io_led = 8h80;
+      expectedS = 0;
+      expectedC = 0;
+      if (!outC && !outS) {
+        matching_led = 8hff;
+      }
+    state.C:
+      expectedS = 1;
+      expectedC = 0;
+      io_led = 8h40;
+      if (outS) {
+        matching_led = 8hff;
+      }
+    state.B:
+      expectedS = 1;
+      expectedC = 0;
+      io_led = 8h20;
+      if (outS) {
+        matching_led = 8hff;
+      }
+    state.BC:
+      expectedS = 0;
+      expectedC = 1;
+      io_led = 8h10;
+      if (outC) {
+        matching_led = 8hff;
+      }
+    state.A:
+      expectedS = 1;
+      expectedC = 0;
+      io_led = 8h08;
+      if (outS) {
+        matching_led = 8hff;
+      }
+    state.AC:
+      expectedS = 0;
+      expectedC = 1;
+      io_led = 8h04;
+      if (outC) {
+        matching_led = 8hff;
+      }
+    state.AB:
+      expectedS = 0;
+      expectedC = 1;
+      io_led = 8h02;
+      if (outC) {
+        matching_led = 8hff;
+      }
+    state.ABC:
+      expectedS = 1;
+      expectedC = 1;
+      io_led = 8h01;
+      if (outS && outC) {
+        matching_led = 8hff;
+      }
+    state.END:
+      expectedS = 0;
+      expectedC = 0;
+      io_led = 8h00;
+      testing.d = 0;
+    default: 
+      io_led = 8h00;
+      matching_led = 8h00;
+      expectedS = 0;
+      expectedC = 0;
+    }
+    // if center button is pressed, trigger state to first test
+    if (io_button[1]) {
+      state.d = 1;
+      testing.d = 1;
+    }
+    count.d = count.q + 1;
+    testingState = testing.q;
+  }
+}

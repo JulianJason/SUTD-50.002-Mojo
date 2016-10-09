@@ -8,8 +8,8 @@ module logic_3 (
     input clk,
     input rst,
     input [23:0] io_dip,
-    output reg outS,
-    output reg outC
+    output reg expectedS,
+    output reg expectedC
   );
   
   
@@ -22,10 +22,10 @@ module logic_3 (
   reg cin;
   
   always @* begin
-    a = io_dip[16+0+0-:1];
-    b = io_dip[8+0+0-:1];
-    cin = io_dip[0+0+0-:1];
-    outS = (a ^ b) ^ cin;
-    outC = ((a ^ b) * cin) + a * b;
+    a = io_dip[0+7+0-:1];
+    b = io_dip[0+6+0-:1];
+    cin = io_dip[0+5+0-:1];
+    expectedS = (a ^ b) ^ cin;
+    expectedC = ((a ^ b) * cin) + a * b;
   end
 endmodule

@@ -7,8 +7,8 @@ module led_digit (
     case (char) {
       0: segs = 7b0111111;      // digit 0
       1: segs = 7b0000110;      // digit 1
-      2: segs = 7b1101101;      // S symbol
-      3: segs = 7b0111001;      // C symbol
+      2: segs = 7b1101101;      // S symbol (deprecated)
+      3: segs = 7b0111001;      // C symbol (deprecated)
       default: segs = 7b0000000;
     }
   }

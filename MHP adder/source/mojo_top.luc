@@ -1,3 +1,20 @@
+/*
+  MOJO v3 full adder tester
+  
+  The tester sends high or low voltages depending on the state of dip switches that correspond to A,B,Cin.
+  It then reads the voltage near the LED and determines whether the voltage matches the expected result based
+  on the boolean expression of a full adder.
+   
+  Results are displayed in the 7 segment LED in the format of 
+   
+  __________    ____________    ______________    ______________
+   Real Sum     Expected Sum    Real CarryOut    Expected CarryOut
+   
+   If the results matches, the entire LED strip on the IO shield will light up. Indicating a match.
+*/
+
+
+
 module mojo_top (
     input clk,              // 50MHz clock
     input rst_n,            // reset button (active low)
@@ -18,7 +35,6 @@ module mojo_top (
   ) {
   
   sig rst;                  // reset signal
-  
   .clk(clk) {
     // The reset conditioner is used to synchronize the reset signal to the FPGA
     // clock. This ensures the entire FPGA comes out of reset at the same time.
@@ -28,25 +44,67 @@ module mojo_top (
       multi_LED_digit multi_led;        // multi led decoder to determine led digits
       logic logic;                      // full adder logic
       counter ctr (#SIZE(1), #DIV(24)); // creats a counter of size 1
+      
+      avr_interface avr;                // avr unit
+      avr_detector detector;            // analog input detector
+      
+      fsm_tester autoTester;
     }
   }
   
+  sig testing;
   always {
     reset_cond.in = ~rst_n;   // input raw inverted reset signal
     rst = reset_cond.out;     // conditioned reset
+
+    // connect inputs of avr
+    avr.cclk = cclk;
+    avr.spi_ss = spi_ss;
+    avr.spi_mosi = spi_mosi;
+    avr.spi_sck = spi_sck;
+    avr.rx = avr_tx;
+    avr.tx_block = avr_rx_busy; // block TX when AVR is busy
     
-    spi_miso = bz;            // not using SPI
-    spi_channel = bzzzz;      // not using flags
-    avr_rx = bz;              // not using serial port
-   
+    // connect outputs of avr
+    spi_miso = avr.spi_miso;
+    spi_channel = avr.spi_channel;
+    avr_rx = avr.tx;
+    
+    // unused serial port
+    avr.new_tx_data = 0;
+    avr.tx_data = 8hxx;
+    
+    avr.channel = detector.channel;
+    detector.sample = avr.sample;
+    detector.sample_channel = avr.sample_channel;
+    detector.new_sample = avr.new_sample;
+    autoTester.io_button = io_button;
+    
     logic.io_dip = io_dip;    // takes in the switch state and processes in the full adder
-    multi_led.outC = logic.outC;  // pipes the FA output Carry in to the multi_led
-    multi_led.outS = logic.outS;  // pipes the FA output Sum to the multi_led
+    detector.io_dip = io_dip;
+    
+    autoTester.outC = detector.outC;
+    autoTester.outS = detector.outS;
+    multi_led.outC = detector.outC;         // pipes the FA output Carry in to the multi_led
+    multi_led.outS = detector.outS;         // pipes the FA output Sum to the multi_led
+      
+    testing = autoTester.testingState;
+    if (testing) {
+      multi_led.expectedC = autoTester.expectedC;  // pipes expected C value
+      multi_led.expectedS = autoTester.expectedS;  // pipes expected S value
+      io_led[1] = autoTester.matching_led;
+    } else {
+      multi_led.expectedC = logic.expectedC;  // pipes expected C value
+      multi_led.expectedS = logic.expectedS;  // pipes expected S value
+      io_led[1] = multi_led.matching_led;
+    }
     
     
     io_seg = ~multi_led.seg; // connect segments to the driver
     io_sel = ~multi_led.sel; // connect digit select to the driver
     
-    io_led = io_dip;   // connect the DIP switches to the LEDs
+    io_led[2] = autoTester.io_led;  
+    
+    io_led[0] = io_dip[0];
   }    
 }
