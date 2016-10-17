@@ -1,0 +1,7 @@
+NET "to_adder_a" LOC = P15 | IOSTANDARD = LVTTL;
+NET "to_adder_b" LOC = P16 | IOSTANDARD = LVTTL;
+NET "to_adder_cin" LOC = P17 | IOSTANDARD = LVTTL;
+NET "from_adder_s" LOC = P21;
+NET "from_adder_s" IOSTANDARD = LVTTL;
+NET "from_adder_cout" LOC = P22;
+NET "from_adder_cout" IOSTANDARD = LVTTL;
