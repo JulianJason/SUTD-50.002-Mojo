@@ -4,6 +4,7 @@
     <src>Adder.luc</src>
     <src>led_digit.luc</src>
     <src>multi_LED_digit.luc</src>
+    <src>binaryToBCD.luc</src>
     <src>Shifter.luc</src>
     <src>Boolean.luc</src>
     <src top="true">mojo_top.luc</src>

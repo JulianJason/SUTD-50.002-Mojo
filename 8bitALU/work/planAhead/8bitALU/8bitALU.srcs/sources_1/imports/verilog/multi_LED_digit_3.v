@@ -16,7 +16,7 @@ module multi_LED_digit_3 (
     input [7:0] b,
     input [7:0] value,
     input [4:0] button,
-    output reg [6:0] seg,
+    output reg [7:0] seg,
     output reg [3:0] sel
   );
   
@@ -50,42 +50,45 @@ module multi_LED_digit_3 (
     .out(M_digit_dec_out)
   );
   
-  wire [4-1:0] M_converter_digits;
-  reg [4-1:0] M_converter_value;
-  bin_to_dec_11 converter (
-    .value(M_converter_value),
-    .digits(M_converter_digits)
+  wire [12-1:0] M_converter_bcd;
+  reg [8-1:0] M_converter_binary;
+  binaryToBCD_11 converter (
+    .binary(M_converter_binary),
+    .bcd(M_converter_bcd)
   );
   
   always @* begin
     M_sym_d = M_sym_q;
     
-    M_converter_value = 1'h1;
     
     case (M_sym_q)
       1'h0: begin
+        M_converter_binary = a;
         symbol = 4'ha;
       end
       1'h1: begin
+        M_converter_binary = b;
         symbol = 4'hb;
       end
       2'h2: begin
+        M_converter_binary = value;
         symbol = 4'hc;
       end
       default: begin
+        M_converter_binary = 1'h0;
         symbol = 4'hf;
       end
     endcase
     
     case (M_ctr_value)
       1'h0: begin
-        M_led_dec_char = M_converter_digits[0+0+0-:1];
+        M_led_dec_char = M_converter_bcd[0+3-:4];
       end
       1'h1: begin
-        M_led_dec_char = 4'h7;
+        M_led_dec_char = M_converter_bcd[4+3-:4];
       end
       2'h2: begin
-        M_led_dec_char = 4'h7;
+        M_led_dec_char = M_converter_bcd[8+3-:4];
       end
       2'h3: begin
         M_led_dec_char = symbol;

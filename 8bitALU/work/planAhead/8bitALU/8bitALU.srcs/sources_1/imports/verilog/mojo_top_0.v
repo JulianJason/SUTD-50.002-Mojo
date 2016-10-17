@@ -46,7 +46,7 @@ module mojo_top_0 (
     .in(M_reset_cond_in),
     .out(M_reset_cond_out)
   );
-  wire [7-1:0] M_multi_led_seg;
+  wire [8-1:0] M_multi_led_seg;
   wire [4-1:0] M_multi_led_sel;
   reg [8-1:0] M_multi_led_a;
   reg [8-1:0] M_multi_led_b;

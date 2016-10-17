@@ -10,7 +10,7 @@ module multi_LED_digit #(
     input b[8],                // b input
     input value[8],            // final value
     input button[5],
-    output seg [7],            // LED segments
+    output seg [8],            // LED segments
     output sel [DIGITS]        // Digit select
   ) {
   // number of bits required to store DIGITS-1
@@ -25,24 +25,30 @@ module multi_LED_digit #(
   
   led_digit led_dec;                      // decoder to output the three bit values in decimal
   decoder digit_dec (#WIDTH(DIGIT_BITS)); // digit decoder
+  binaryToBCD converter;
   always {
+    
     case (sym.q) {
       0:
-        symbol = 4b1010;
+        converter.binary = a;
+        symbol = 4b1010; // a
       1:
-        symbol = 4b1011;
+        converter.binary = b;
+        symbol = 4b1011; // b
       2:
-        symbol = 4b1100;
+        converter.binary = value;
+        symbol = 4b1100;  // out
       default:
+        converter.binary = 0;
         symbol = 4b1111;
     }
     case (ctr.value) {
       0: 
-        led_dec.char = 1;
+        led_dec.char = converter.bcd[3:0];
       1: 
-        led_dec.char = 4b0111;
+        led_dec.char = converter.bcd[7:4];
       2: 
-        led_dec.char = 4d7;
+        led_dec.char = converter.bcd[11:8];
       3: 
         led_dec.char = symbol;
       default: 
