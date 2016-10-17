@@ -25,7 +25,7 @@ module comparatorUnit (
       b11:
         out = z + (n ^ v);
       default:
-        out = 2;
+        out = -1;
     }
     compared = out;
   }

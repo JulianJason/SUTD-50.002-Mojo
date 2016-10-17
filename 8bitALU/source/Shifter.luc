@@ -2,7 +2,7 @@ module shifterUnit (
     // ALU inputs
     input alufn[6] ,
     input a[8],
-    input b[3],               // shift count max 8 log2 = 3 bits. min shift 1
+    input b[3],               // shift count max 8 log2 = 3 bits. min shift 1 max shift 7
     // shifter outputs
     output shifted[8]
   ) {

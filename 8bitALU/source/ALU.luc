@@ -1,12 +1,11 @@
 module aluUnit (
     input clk,                // clock
-    input rst,  // reset
-    // mojo top               inputs
+    // mojo top inputs
     input alufn[6] ,
     input a[8],
     input b[8],
     // ALU output
-    output alu[8]
+    output result[8]
   ) {
   .clk(clk) {
     // The reset conditioner is used to synchronize the reset signal to the FPGA
@@ -32,7 +31,7 @@ module aluUnit (
     adder.alufn = alufn;
     
     shifter.a = a;
-    shifter.b = b;
+    shifter.b = b[2:0];
     shifter.alufn = alufn;
     
     boolean.a = a;
@@ -45,16 +44,16 @@ module aluUnit (
     comparator.z = adder.z;
     
     case(alufn[5:4]) {
-    b00:
-      alu = adder.added;
-    b01:
-      alu = boolean.booleaned;
-    b10:
-      alu = shifter.shifted;
-    b11:  
-      alu = comparator.compared;
-    default:
-      alu = 8b0;  
+      b00:
+        result = adder.added;
+      b01:
+        result = boolean.booleaned;
+      b10:
+        result = shifter.shifted;
+      b11:  
+        result = comparator.compared;
+      default:
+        result = 8b0;  
     }
   }
 }
