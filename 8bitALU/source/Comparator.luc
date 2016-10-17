@@ -1,0 +1,36 @@
+module Comparator (
+    input clk,  // clock
+    input rst,  // reset
+    // ALU inputs
+    input alufn[6] ,
+    input a[8],
+    input b[8],
+    // Adder inputs
+    input z,
+    input v,
+    input n,
+    // comparator unit outputs
+    output compared
+  ) {
+  sig out;
+  always {
+  /* test cases based on lab documents
+      ALUFN position   [2]  [1]    operation
+                        0    1     equals (=)
+                        1    1     less than (<)
+                        1    1     less than or equal(<=)
+                        default    no operation, return 2
+       default to add
+    */
+    case(alufn[2:1]) {
+      b01:
+        out = z;
+      b10:
+        out = n ^ v;
+      b11:
+        out = z + (n ^ v);
+      default:
+        out = 2;
+    }
+      compared = out;
+}

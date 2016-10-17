@@ -1,0 +1,38 @@
+module Shifter (
+    input clk,  // clock
+    input rst,  // reset
+    // ALU inputs
+    input alufn[6] ,
+    input a[8],
+    input b[3], // shift count max 8 log2 = 3 bits. min shift 1
+    // shifter outputs
+    output shifted[8],
+  ) {
+sig temp[9];
+  always {
+    /* test cases based on lab documents
+      ALUFN position   [2]  [1]    operation
+                        0    0     SHL
+                        0    1     SHR
+                        1    1     SRA
+                        default              no operation, return 0
+       b shift count 
+         case 000 = shift 1;
+         case 100 = shift 5;
+         case 111 - shift 8;
+       
+       
+    */
+    case(alufn[1:0]) {
+      b00:
+        temp = a << b[2:0];
+      b01:
+        temp = a >> b[2:0];
+      b11: 
+        temp = $signed(a) >>> b[2:0];
+      default:
+        temp = b000000000;
+    }
+    shifted = temp[7:0];
+  }
+}

@@ -1,0 +1,43 @@
+module Adder (
+    input clk,  // clock
+    input rst,  // reset
+    // ALU inputs
+    input alufn[6] ,
+    input a[8],
+    input b[8],
+    // adder outputs
+    output added[8],
+    output z,  // true is all s = 0
+    output v,  // true if overflow
+    output n,  // true if s[7] is negative=
+  ) {
+  sig val[9] // 9 bit space to allow carry out to bit 9
+  always {
+  
+    /* test cases based on lab documents
+      ALUFN position   [1]  [0]    operation
+                        0    0     ADD
+                        0    1     SUB
+                        1    0     MUL  // unused
+                        1    1     -    // no operation
+       default to add
+    */
+    case(alufn[1:0]) {
+      b00:
+        val = a + b;
+        
+      b01:
+        val = a - b;
+      b10:
+        val = a * b;
+      b11:
+        val = a / b;
+      default:
+        val = b000000000;
+    }
+    added = val[7:0];
+    z = |val;
+    v = a[7] * b[7] * ~val[7] + ~a[7] * ~b[7] * val[7];
+    n = a[7] - b[7];
+  }
+}

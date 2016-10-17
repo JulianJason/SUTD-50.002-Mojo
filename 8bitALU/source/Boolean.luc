@@ -1,0 +1,35 @@
+module Boolean (
+    input clk,  // clock
+    input rst,  // reset
+    // ALU inputs
+    input alufn[6] ,
+    input a[8],
+    input b[8],
+    // boolean unit outputs
+    output booleaned[8]
+  ) {
+  sig temp[9];
+  always {
+    /* test cases based on lab documents
+      ALUFN position   [4]  [3]  [2]  [1]    operation
+                        1    1    0    0     AND
+                        1    1    1    1     OR
+                        1    0    1    1     XOR 
+                        1    1    0    1     "A" LDR  // still no idea how this works
+                        default              no operation, return a
+       default to add
+    */
+    case (alufn[4:1]) {
+      b1100: 
+        temp = a & b;
+      b1111:
+        temp = a | b;
+      b1011:
+        temp = a ^ b;
+      b1101:
+        temp = a;
+      default:
+        temp = b000000000;
+  }
+    booleaned = temp[7:0];
+}
