@@ -14,7 +14,7 @@ module Comparator (
   ) {
   sig out;
   always {
-  /* test cases based on lab documents
+    /* test cases based on lab documents
       ALUFN position   [2]  [1]    operation
                         0    1     equals (=)
                         1    1     less than (<)

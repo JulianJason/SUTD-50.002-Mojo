@@ -5,6 +5,7 @@
     <src>Shifter.luc</src>
     <src>Boolean.luc</src>
     <src top="true">mojo_top.luc</src>
+    <src>ALU.luc</src>
     <src>Comparator.luc</src>
     <ucf lib="true">io_shield.ucf</ucf>
     <ucf lib="true">mojo.ucf</ucf>
