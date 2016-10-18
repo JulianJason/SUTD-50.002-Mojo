@@ -1,12 +1,14 @@
 /*
-http://www.eng.utah.edu/~nmcdonal/Tutorials/BCDTutorial/BCDConversion.html
+  Binary number to Binary Coded Decimal converte
+  Conversion of a binary number into separate binary numbers representing digits of the decimal number.
+  Algorithm adapted from http://www.eng.utah.edu/~nmcdonal/Tutorials/BCDTutorial/BCDConversion.html
 */
 
 module binaryToBCD (
     input binary[8],
-    output digit0[4],
-    output digit1[4],
-    output digit2[4]
+    output digit2[4],  // hundreds
+    output digit1[4],  // tens
+    output digit0[4]   // ones
   ) {
   var i;
   sig binaryInput[8];
@@ -14,11 +16,14 @@ module binaryToBCD (
   sig tens[4];
   sig ones[4];
   always {
-    binaryInput = binary;
-    hundreds = 4b0000;
+    binaryInput = binary;     // copy the read-only array to a write-able memory space
+    // create placeholders
+    hundreds = 4b0000; 
     tens = 4b0000;
     ones = 4b0000;
-    for (i=0; i <= 7; i++) {
+    for (i=0; i <= 7; i++) {            // for each digit
+    
+      // if any column is greater than or equal to 5, add three to that column
       if (hundreds >= 4b0101) {
         hundreds = hundreds + 2b11;
       }
@@ -28,6 +33,8 @@ module binaryToBCD (
       if (ones >= 4b0101) {
         ones = ones + 2b11;
       }
+      
+      // for each column, bit shift 1 to the left. the LSB is taken from the MSB of the next column
       hundreds = hundreds << 1;
       hundreds[0] = tens[3];
       tens = tens << 1;

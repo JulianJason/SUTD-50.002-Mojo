@@ -23,7 +23,6 @@ module adderUnit (
     case(alufn[3:0]) {
       b0000:
         val = a + b;
-        
       b0001:
         val = a - b;
       b0010:

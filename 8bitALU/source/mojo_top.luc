@@ -50,12 +50,13 @@ module mojo_top (
     alu.b = b;
     alu.alufn = alufn;
     
+    // pipe a, b and ALU result to led component. Hook up the buttons
     multi_led.a = a;
     multi_led.b = b;    
     multi_led.value = alu.result;
     multi_led.button = io_button;
 
-    io_led = io_dip;
+    io_led = io_dip;         // connect led to dip switches
     io_seg = ~multi_led.seg; // connect segments to the driver
     io_sel = ~multi_led.sel; // connect digit select to the driver
     io_led[0][1:0] = 0;      // turn off unused LED

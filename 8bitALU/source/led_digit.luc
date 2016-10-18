@@ -9,20 +9,20 @@ module led_digit (
 
   always {
     case (char[3:0]) {
-      4b0000: segs = 7b0111111;
-      4b0001: segs = 7b0000110;
-      4b0010: segs = 7b1011011;
-      4b0011: segs = 7b1001111;
+      1: segs = 7b0111111;
+      2: segs = 7b0000110;
+      3: segs = 7b1011011;
+      4: segs = 7b1001111;
       4: segs = 7b1100110;
       5: segs = 7b1101101;
       6: segs = 7b1111101;
       7: segs = 7b0000111;
       8: segs = 7b1111111;
       9: segs = 7b1100111;
-      10: segs = 7b1110111;
-      11: segs = 7b1111100;
-      12: segs = 7b1011100;
-      default: segs = 8b10000000;
+      10: segs = 7b1110111;        // A symbol
+      11: segs = 7b1111100;        // b symbol
+      12: segs = 7b1011100;        // o symbol
+      default: segs = 8b10000000;  // light up the single dot to show error
     }
   }
 }
