@@ -13,17 +13,17 @@ module led_digit_9 (
   
   always @* begin
     
-    case (char)
-      1'h0: begin
+    case (char[0+3-:4])
+      4'h0: begin
         segs = 7'h3f;
       end
-      1'h1: begin
+      4'h1: begin
         segs = 7'h06;
       end
-      2'h2: begin
+      4'h2: begin
         segs = 7'h5b;
       end
-      2'h3: begin
+      4'h3: begin
         segs = 7'h4f;
       end
       3'h4: begin

@@ -20,18 +20,24 @@ module adderUnit_4 (
   
   always @* begin
     
-    case (alufn[0+1-:2])
-      2'h0: begin
+    case (alufn[0+3-:4])
+      4'h0: begin
         val = a + b;
       end
-      2'h1: begin
+      4'h1: begin
         val = a - b;
       end
-      2'h2: begin
+      4'h2: begin
         val = a * b;
       end
-      2'h3: begin
+      4'h3: begin
         val = a / b;
+      end
+      4'h4: begin
+        val = a / b * a;
+      end
+      4'h5: begin
+        val = ~a;
       end
       default: begin
         val = 9'h000;

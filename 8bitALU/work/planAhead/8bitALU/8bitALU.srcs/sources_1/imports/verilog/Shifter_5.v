@@ -17,14 +17,17 @@ module shifterUnit_5 (
   
   always @* begin
     
-    case (alufn[0+1-:2])
-      2'h0: begin
+    case (alufn[0+3-:4])
+      4'h0: begin
         temp = a << b[0+2-:3];
       end
-      2'h1: begin
+      4'h1: begin
         temp = a >> b[0+2-:3];
       end
-      2'h3: begin
+      4'h2: begin
+        temp = $signed(a) <<< b[0+2-:3];
+      end
+      4'h3: begin
         temp = $signed(a) >>> b[0+2-:3];
       end
       default: begin

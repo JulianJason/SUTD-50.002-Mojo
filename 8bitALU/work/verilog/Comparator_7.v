@@ -18,14 +18,14 @@ module comparatorUnit_7 (
   
   always @* begin
     
-    case (alufn[1+1-:2])
-      2'h1: begin
+    case (alufn[0+3-:4])
+      4'h3: begin
         out = z;
       end
-      2'h2: begin
+      4'h5: begin
         out = n ^ v;
       end
-      2'h3: begin
+      4'h7: begin
         out = z + (n ^ v);
       end
       default: begin

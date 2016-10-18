@@ -8,23 +8,27 @@ module shifterUnit (
   ) {
   sig temp[9];
   /* test cases based on lab documents
-      ALUFN position   [2]  [1]    operation
-                        0    0     SHL
-                        0    1     SHR
-                        1    1     SRA
+      ALUFN position   [3]  [2]  [1]  [0]    operation
+                        0    0    0    0     SHL
+                        0    0    0    1     SHR
+                        0    0    1    0     SLA
+                        0    0    1    1     SRA
                         default              no operation, return 0
-       b shift count 
+       
+     b = shift count (max 8 shift count)
          case 000 = shift 1;
          case 100 = shift 5;
          case 111 - shift 8;
     */
   always {
-    case(alufn[1:0]) {
-      b00:
+    case(alufn[3:0]) {
+      b0000:
         temp = a << b[2:0];
-      b01:
+      b0001:
         temp = a >> b[2:0];
-      b11: 
+      b0010:
+        temp = $signed(a) <<< b[2:0];
+      b0011: 
         temp = $signed(a) >>> b[2:0];
       default:
         temp = b000000000;

@@ -8,22 +8,22 @@ module booleanUnit (
   ) {
   sig temp[9];
   /* test cases based on lab documents
-      ALUFN position   [4]  [3]  [2]  [1]    operation
-                        1    1    0    0     AND
-                        1    1    1    1     OR
-                        1    0    1    1     XOR 
-                        1    1    0    1     "A" LDR  // still no idea how this works
+      ALUFN position   [3]  [2]  [1]  [0]    operation
+                        1    0    0    0     AND
+                        1    1    1    0     OR
+                        0    1    1    0     XOR 
+                        1    0    1    0    "A" LDR  // still no idea how this works
                         default              no operation, return a
     */
   always {
-    case (alufn[4:1]) {
-      b1100: 
+    case (alufn[3:0]) {
+      b1000: 
         temp = a & b;
-      b1111:
+      b1110:
         temp = a | b;
-      b1011:
+      b0110:
         temp = a ^ b;
-      b1101:
+      b1010:
         temp = a;
       default:
         temp = b000000000;

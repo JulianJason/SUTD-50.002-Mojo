@@ -4,17 +4,21 @@ http://www.eng.utah.edu/~nmcdonal/Tutorials/BCDTutorial/BCDConversion.html
 
 module binaryToBCD (
     input binary[8],
-    output bcd[12]
+    output digit0[4],
+    output digit1[4],
+    output digit2[4]
   ) {
   var i;
+  sig binaryInput[8];
   sig hundreds[4];
   sig tens[4];
   sig ones[4];
   always {
+    binaryInput = binary;
     hundreds = 4b0000;
     tens = 4b0000;
     ones = 4b0000;
-    for (i=0; i <= 7; i++)
+    for (i=0; i <= 7; i++) {
       if (hundreds >= 4b0101) {
         hundreds = hundreds + 2b11;
       }
@@ -29,9 +33,11 @@ module binaryToBCD (
       tens = tens << 1;
       tens[0] = ones[3];
       ones = ones << 1;
-      ones[0] = binary[8 - i];
-    bcd[3:0] = ones[3:0];
-    bcd[7:4] = tens[3:0];
-    bcd[11:8] = hundreds[3:0];
+      ones[0] = binaryInput[7];
+      binaryInput = binaryInput << 1;
+    }
+    digit2 = hundreds;
+    digit1 = tens;
+    digit0 = ones;
   }  
 }

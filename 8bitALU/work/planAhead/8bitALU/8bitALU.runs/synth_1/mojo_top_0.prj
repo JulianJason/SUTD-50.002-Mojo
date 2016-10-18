@@ -5,6 +5,7 @@ verilog work "D:/GitHub/SUTD-50.002-Mojo/8bitALU/work/planAhead/8bitALU/8bitALU.
 verilog work "D:/GitHub/SUTD-50.002-Mojo/8bitALU/work/planAhead/8bitALU/8bitALU.srcs/sources_1/imports/verilog/Comparator_7.v"
 verilog work "D:/GitHub/SUTD-50.002-Mojo/8bitALU/work/planAhead/8bitALU/8bitALU.srcs/sources_1/imports/verilog/Boolean_6.v"
 verilog work "D:/GitHub/SUTD-50.002-Mojo/8bitALU/work/planAhead/8bitALU/8bitALU.srcs/sources_1/imports/verilog/binaryToBCD_11.v"
+verilog work "D:/GitHub/SUTD-50.002-Mojo/8bitALU/work/planAhead/8bitALU/8bitALU.srcs/sources_1/imports/verilog/binaryComponent_12.v"
 verilog work "D:/GitHub/SUTD-50.002-Mojo/8bitALU/work/planAhead/8bitALU/8bitALU.srcs/sources_1/imports/verilog/Adder_4.v"
 verilog work "D:/GitHub/SUTD-50.002-Mojo/8bitALU/work/planAhead/8bitALU/8bitALU.srcs/sources_1/imports/verilog/reset_conditioner_2.v"
 verilog work "D:/GitHub/SUTD-50.002-Mojo/8bitALU/work/planAhead/8bitALU/8bitALU.srcs/sources_1/imports/verilog/multi_LED_digit_3.v"

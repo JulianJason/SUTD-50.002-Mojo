@@ -26,29 +26,37 @@ module multi_LED_digit #(
   led_digit led_dec;                      // decoder to output the three bit values in decimal
   decoder digit_dec (#WIDTH(DIGIT_BITS)); // digit decoder
   binaryToBCD converter;
+  binaryComponent bin;
   always {
     
     case (sym.q) {
       0:
         converter.binary = a;
+        bin.a = a;
         symbol = 4b1010; // a
       1:
         converter.binary = b;
+        bin.a = b;
         symbol = 4b1011; // b
       2:
         converter.binary = value;
+        bin.a = value;
         symbol = 4b1100;  // out
       default:
         converter.binary = 0;
+        bin.a = 0;
         symbol = 4b1111;
     }
     case (ctr.value) {
-      0: 
-        led_dec.char = converter.bcd[3:0];
+      0:       
+        led_dec.char = converter.digit0;
+        //led_dec.char = bin.out0;
       1: 
-        led_dec.char = converter.bcd[7:4];
+        led_dec.char = converter.digit1;
+        //led_dec.char = bin.out1;
       2: 
-        led_dec.char = converter.bcd[11:8];
+        led_dec.char = converter.digit2;
+        //led_dec.char = bin.out2;
       3: 
         led_dec.char = symbol;
       default: 

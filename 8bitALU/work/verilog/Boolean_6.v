@@ -17,17 +17,17 @@ module booleanUnit_6 (
   
   always @* begin
     
-    case (alufn[1+3-:4])
-      4'hc: begin
+    case (alufn[0+3-:4])
+      4'h8: begin
         temp = a & b;
       end
-      4'hf: begin
+      4'he: begin
         temp = a | b;
       end
-      4'hb: begin
+      4'h6: begin
         temp = a ^ b;
       end
-      4'hd: begin
+      4'ha: begin
         temp = a;
       end
       default: begin

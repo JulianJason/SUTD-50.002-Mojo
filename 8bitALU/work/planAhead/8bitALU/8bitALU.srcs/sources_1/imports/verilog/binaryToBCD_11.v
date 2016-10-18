@@ -6,12 +6,16 @@
 
 module binaryToBCD_11 (
     input [7:0] binary,
-    output reg [11:0] bcd
+    output reg [3:0] digit0,
+    output reg [3:0] digit1,
+    output reg [3:0] digit2
   );
   
   
   
   integer i;
+  
+  reg [7:0] binaryInput;
   
   reg [3:0] hundreds;
   
@@ -20,6 +24,7 @@ module binaryToBCD_11 (
   reg [3:0] ones;
   
   always @* begin
+    binaryInput = binary;
     hundreds = 4'h0;
     tens = 4'h0;
     ones = 4'h0;
@@ -27,21 +32,22 @@ module binaryToBCD_11 (
       if (hundreds >= 4'h5) begin
         hundreds = hundreds + 2'h3;
       end
+      if (tens >= 4'h5) begin
+        tens = tens + 2'h3;
+      end
+      if (ones >= 4'h5) begin
+        ones = ones + 2'h3;
+      end
+      hundreds = hundreds << 1'h1;
+      hundreds[0+0-:1] = tens[3+0-:1];
+      tens = tens << 1'h1;
+      tens[0+0-:1] = ones[3+0-:1];
+      ones = ones << 1'h1;
+      ones[0+0-:1] = binaryInput[7+0-:1];
+      binaryInput = binaryInput << 1'h1;
     end
-    if (tens >= 4'h5) begin
-      tens = tens + 2'h3;
-    end
-    if (ones >= 4'h5) begin
-      ones = ones + 2'h3;
-    end
-    hundreds = hundreds << 1'h1;
-    hundreds[0+0-:1] = tens[3+0-:1];
-    tens = tens << 1'h1;
-    tens[0+0-:1] = ones[3+0-:1];
-    ones = ones << 1'h1;
-    ones[0+0-:1] = binary[(4'h8 - i)*1+0-:1];
-    bcd[0+3-:4] = ones[0+3-:4];
-    bcd[4+3-:4] = tens[0+3-:4];
-    bcd[8+3-:4] = hundreds[0+3-:4];
+    digit2 = hundreds;
+    digit1 = tens;
+    digit0 = ones;
   end
 endmodule

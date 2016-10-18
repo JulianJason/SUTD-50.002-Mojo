@@ -10,19 +10,19 @@ module comparatorUnit (
   ) {
   sig out;
     /* test cases based on lab documents
-      ALUFN position   [2]  [1]    operation
-                        0    1     equals (=)
-                        1    1     less than (<)
-                        1    1     less than or equal(<=)
+      ALUFN position   [3]  [2]  [1]  [0]    operation
+                        0    0    1    1     equals (=)
+                        0    1    0    1     less than (<)
+                        0    1    1    1     less than or equal(<=)
                         default    no operation, return 2
   */
   always {
-    case(alufn[2:1]) {
-      b01:
+    case(alufn[3:0]) {
+      b0011:
         out = z;
-      b10:
+      b0101:
         out = n ^ v;
-      b11:
+      b0111:
         out = z + (n ^ v);
       default:
         out = -1;
