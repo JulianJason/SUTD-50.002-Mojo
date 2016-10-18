@@ -1,8 +1,0 @@
-INTSTYLE=pa
-INFILE=D:\GitHub\SUTD-50.002-Mojo\8bitALU\work\planAhead\8bitALU\8bitALU.runs\impl_1\mojo_top_0_routed.ncd
-OUTFILE=D:\GitHub\SUTD-50.002-Mojo\8bitALU\work\planAhead\8bitALU\8bitALU.runs\impl_1\mojo_top_0.bit
-FAMILY=Spartan6
-PART=xc6slx9-2tqg144
-WORKINGDIR=D:\GitHub\SUTD-50.002-Mojo\8bitALU\work\planAhead\8bitALU\8bitALU.runs\impl_1
-LICENSE=WebPack
-USER_INFO=211251812_0_0_617
