@@ -4,9 +4,9 @@ module shifterUnit (
     input a[8],
     input b[3],               // shift count max 8 log2 = 3 bits. min shift 1 max shift 7
     // shifter outputs
-    output shifted[9]
+    output shifted[11]
   ) {
-  sig temp[9];
+  sig temp[11];
   /* test cases based on lab documents ALUFN[5:4] = 1 0
       ALUFN position   [3]  [2]  [1]  [0]    operation
                         0    0    0    0     SHL
@@ -33,6 +33,6 @@ module shifterUnit (
       default:
         temp = b000000000;
     }
-    shifted = temp[8:0];
+    shifted = temp[10:0];
   }
 }

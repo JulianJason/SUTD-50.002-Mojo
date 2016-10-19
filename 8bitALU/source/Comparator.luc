@@ -1,6 +1,6 @@
 module comparatorUnit (
     // ALU inputs
-    input alufn[6] ,
+    input alufn[6] ,\
     // Adder inputs
     input z,
     input v,
@@ -9,6 +9,7 @@ module comparatorUnit (
     output compared
   ) {
   sig out;
+    /* test cases based on lab documents ALUFN[5:4] = 1 1
       ALUFN position   [3]  [2]  [1]  [0]    operation
                         0    0    1    1     equals (=)
                         0    1    0    1     less than (<)
@@ -18,11 +19,11 @@ module comparatorUnit (
   always {
     case(alufn[3:0]) {
       b0011:
-        out = a == b;
+        out = z;
       b0101:
-        out = a < b;
+        out = v ^ n;
       b0111:
-        out = a <= b;
+        out = z | (v ^ n);
       default:
         out = -1;
     }

@@ -4,41 +4,44 @@ module adderUnit (
     input a[8],
     input b[8],
     // adder outputs
-    output added[8],
+    output added[11],
     output z,                // true is all s = 0
     output v,                // true if overflow
     output n                // true if s[7] is negative=
   ) {
-  sig val[9];                 // 9 bit space to allow carry out to bit 9
-  /* test cases based on lab documents
+  sig val[16];                 // 16 bit space to allow multiplication
+  /* test cases based on lab documents ALUFN[5:4] = 0 0
       ALUFN position   [3]  [2]  [1]  [0]    operation
                         0    0    0    0     ADD
                         0    0    0    1     SUB
                         0    0    1    0     MUL          
                         0    0    1    1     DIVIDE
                         0    1    0    0     MOD
-                        0    1    0    1     1-complement (INV)
+                        0    1    0    1     1-complement of a (INV)
   */
   always {
     case(alufn[3:0]) {
       b0000:
-        val = a + b;
+        val = $signed(a) + $signed(b);
       b0001:
         val = a - b;
       b0010:
-        val = a * b;
+        val = $signed(a) * $signed(b);
       b0011:
-        val = a / b;
+        val = $signed(a) / $signed(b);
       b0100:
-        val = a / b * a;
+        val = $signed(a) / $signed(b) * $signed(a);
       b0101:
         val = ~a;
       default:
         val = b000000000;
     }
-    added = val[7:0];
-    z = |val;
-    v = (a[7] & b[7] & ~val[7]) | (~a[7] & ~b[7] & val[7]);
+    z = ~|(a-b);
+    v = (a[7] & b[7] & ~(a[7] - b[7])) | (~a[7] & ~b[7] & (a[7] - b[7]));
     n = a[7] - b[7];
+    if ((val > 999 && val < 32768) || ($signed(val) < -999 && $signed(val) >= -32768)) {
+      val = 1000;
+    }
+    added = val[10:0];
   }
 }

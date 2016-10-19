@@ -71,7 +71,12 @@ module binaryToBCD #(
         ones[0] = binaryInput[SIZE - 1];
         binaryInput = binaryInput << 1;
     }
-  }  
+  }
+  if (SIZE == 11 && ($signed(binary) == 1000)) {
+    hundreds = 10;
+    tens = 11;
+    ones = 11;  
+  }
   digit2 = hundreds;
   digit1 = tens;
   digit0 = ones;

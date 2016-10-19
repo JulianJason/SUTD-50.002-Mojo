@@ -19,11 +19,10 @@ module led_digit (
       7: segs = 7b0000111;
       8: segs = 7b1111111;
       9: segs = 7b1100111;
-      10: segs = 7b1110111;        // A symbol
-      11: segs = 7b1111100;        // b symbol
-      12: segs = 7b1011100;        // o symbol
-      13: segs = 7b1000000;        // - symbol
-      14: segs = 7b0000000;
+      10: segs = 7b1111001;        // E symbol
+      11: segs = 7b1010000;        // R symbol
+      12: segs = 7b1000000;        // - symbol
+      13: segs = 7b0000000;        // blank symbol
       default: segs = 8b10000000;  // light up the single dot to show error
     }
   }

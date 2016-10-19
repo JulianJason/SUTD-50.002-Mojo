@@ -5,7 +5,7 @@ module aluUnit (
     input a[8],
     input b[8],
     // ALU output
-    output result[8],
+    output result[11],
     output z,
     output v,
     output n
@@ -56,7 +56,7 @@ module aluUnit (
       b11:  
         result = comparator.compared;
       default:
-        result = 8b0;  
+        result = 11b0;  
     }
     z = adder.z;
     v = adder.v;

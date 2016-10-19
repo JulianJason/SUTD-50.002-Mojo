@@ -8,11 +8,8 @@ module multi_LED_digit #(
     input rst,                 // reset
     input a[8],                // a input
     input b[8],                // b input
-    input value[8],            // final value
+    input value[11],            // final value
     input button[5],
-    input z,
-    input v,
-    input n,
     output seg [8],            // LED segments
     output sel [DIGITS]        // Digit select
   ) {
@@ -29,38 +26,53 @@ module multi_LED_digit #(
   led_digit led_dec;                      // decoder to output the three bit values in decimal
   decoder digit_dec (#WIDTH(DIGIT_BITS)); // digit decoder
   binaryToBCD converter;
+  binaryToBCD outputConverter (#SIZE(11));
   always {
-    
+      converter.binary = 0;
+      outputConverter.binary = 0;
     case (sym.q) {
       0:
         converter.binary = a;
+        
         symbol = 4b1010; // a symbol
       1:
         converter.binary = b;
         symbol = 4b1011; // b symbol
       2:
-        converter.binary = value;
+        outputConverter.binary = value;
         symbol = 4b1100;  // o symbol
       default:
         converter.binary = 0;
         symbol = 4b1111;
     }
     case (ctr.value) {
-      0:       
-        led_dec.char = converter.digit0;
+      0:
+        if (sym.q != 2) {
+          led_dec.char = converter.digit0;
+        } else {
+          led_dec.char = outputConverter.digit0;
+        }
       1: 
-        led_dec.char = converter.digit1;
+        if (sym.q != 2) {
+          led_dec.char = converter.digit1;
+        } else {
+          led_dec.char = outputConverter.digit1;
+        }
       2: 
-        led_dec.char = converter.digit2;
+        if (sym.q != 2) {
+          led_dec.char = converter.digit2;
+        } else {
+          led_dec.char = outputConverter.digit2;
+        }
       3:
         if ( sym.q == 0 && a[7] == 1) {
-          led_dec.char = 13;
+          led_dec.char = 12;
         } else if (sym.q == 1 && b[7] == 1) {
-          led_dec.char = 13;
-        }  else if (sym.q == 2 && value[7] == 1) { //TODO  change bitsi
-          led_dec.char = 13;
+          led_dec.char = 12;
+        }  else if (sym.q == 2 && value[10] == 1) { // TODO  change bitsize value to 9 bits long
+          led_dec.char = 12;
         } else {
-          led_dec.char = 14;
+          led_dec.char = 13;
         }
       default: 
         led_dec.char = -1;
