@@ -4,14 +4,16 @@
   Algorithm adapted from http://www.eng.utah.edu/~nmcdonal/Tutorials/BCDTutorial/BCDConversion.html
 */
 
-module binaryToBCD (
-    input binary[8],
+module binaryToBCD #(
+    SIZE = 8 : SIZE > 0
+  )(
+    input binary[SIZE],
     output digit2[4],  // hundreds
     output digit1[4],  // tens
     output digit0[4]   // ones
   ) {
   var i;
-  sig binaryInput[8];
+  sig binaryInput[SIZE];
   sig hundreds[4];
   sig tens[4];
   sig ones[4];
@@ -21,8 +23,8 @@ module binaryToBCD (
     hundreds = 4b0000; 
     tens = 4b0000;
     ones = 4b0000;
-    if (binaryInput[7] == 0) {
-      for (i=0; i <= 7; i++) {            // for each digit
+    if (binaryInput[SIZE - 1] == 0) {
+      for (i=0; i <= SIZE - 1; i++) {            // for each digit
       
         // if any column is greater than or equal to 5, add three to that column
         if (hundreds >= 4b0101) {
@@ -41,14 +43,14 @@ module binaryToBCD (
         tens = tens << 1;
         tens[0] = ones[3];
         ones = ones << 1;
-        ones[0] = binaryInput[7];
+        ones[0] = binaryInput[SIZE - 1];
         binaryInput = binaryInput << 1;
       }
     } else {
       // convert to twos complement
       binaryInput = ~binaryInput;
       binaryInput = binaryInput + 1;
-      for (i=0; i <= 7; i++) {            // for each digit
+      for (i=0; i <= SIZE - 1; i++) {            // for each digit
         // if any column is greater than or equal to 5, add three to that column
         if (hundreds >= 4b0101) {
           hundreds = hundreds + 2b11;
@@ -66,7 +68,7 @@ module binaryToBCD (
         tens = tens << 1;
         tens[0] = ones[3];
         ones = ones << 1;
-        ones[0] = binaryInput[7];
+        ones[0] = binaryInput[SIZE - 1];
         binaryInput = binaryInput << 1;
     }
   }  
