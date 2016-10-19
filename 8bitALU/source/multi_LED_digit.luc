@@ -10,6 +10,9 @@ module multi_LED_digit #(
     input b[8],                // b input
     input value[8],            // final value
     input button[5],
+    input z,
+    input v,
+    input n,
     output seg [8],            // LED segments
     output sel [DIGITS]        // Digit select
   ) {
@@ -49,8 +52,16 @@ module multi_LED_digit #(
         led_dec.char = converter.digit1;
       2: 
         led_dec.char = converter.digit2;
-      3: 
-        led_dec.char = symbol;
+      3:
+        if ( sym.q == 0 && a[7] == 1) {
+          led_dec.char = 13;
+        } else if (sym.q == 1 && b[7] == 1) {
+          led_dec.char = 13;
+        }  else if (sym.q == 2 && value[7] == 1) { //TODO  change bitsi
+          led_dec.char = 13;
+        } else {
+          led_dec.char = 14;
+        }
       default: 
         led_dec.char = -1;
         seg = 8b10000000;

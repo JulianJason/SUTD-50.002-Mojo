@@ -1,3 +1,8 @@
+/*
+  handle overflows = output 9 digit long
+  auto test cases
+*/
+
 module mojo_top (
     input clk,              // 50MHz clock
     input rst_n,            // reset button (active low)
@@ -55,6 +60,9 @@ module mojo_top (
     multi_led.b = b;    
     multi_led.value = alu.result;
     multi_led.button = io_button;
+    multi_led.z = alu.z;
+    multi_led.v = alu.v;
+    multi_led.n = alu.n;
 
     io_led = io_dip;         // connect led to dip switches
     io_seg = ~multi_led.seg; // connect segments to the driver
