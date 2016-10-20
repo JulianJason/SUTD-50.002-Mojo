@@ -12,7 +12,7 @@
 
 module comparatorUnit (
     // ALU inputs
-    input alufn[6] ,\
+    input alufn[6],
     // Adder inputs
     input z,
     input v,
