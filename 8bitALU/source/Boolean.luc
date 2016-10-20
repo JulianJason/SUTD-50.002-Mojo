@@ -19,7 +19,7 @@ module booleanUnit (
     output booleaned[11]
   ) {
   sig temp[11];
-  
+  var i;
   always {
     
     case (alufn[3:0]) {
@@ -28,9 +28,11 @@ module booleanUnit (
       b1110:
         temp = a | b;      // OR
       b0110:
-        temp = a ^ b;      // XOR
+        for (i = 0; i < 8; i++) {
+          temp[i] = a[i] ^ b[i];
+        }
       b0111:
-        temp = ~a;
+        temp[7:0] = ~a[7:0];
       b1010:
         temp = a;          // currently returns A, no idea what this does
       default:

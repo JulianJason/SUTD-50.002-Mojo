@@ -12,7 +12,7 @@ module autoTester (
   sig expectedResult[11];
   .clk(clk) {
     .rst(rst) {
-      fsm state = {NOT_TESTING, ADD, SUB, MUL, DIV, MOD, AND, OR, XOR, INV, SHL, SHR, SRA, SLA, EQ, LT, LTE, GT, GTE, END, ERROR}; // the multiple testing states
+      fsm state = {NOT_TESTING, ADD, SUB, MUL, DIV, MOD, AND, OR, XOR, INV, ALDR, SHL, SHR, SRA, SLA, EQ, LT, LTE, GT, GTE, END, ERROR}; // the multiple testing states
     }
     dff count[29];  // delay counter 50Mhz 2^28 / 50Mhz
     dff testing[1]; // testing state storage
@@ -66,17 +66,12 @@ module autoTester (
         mockA = 20;
         mockB = 4;
         alufn = 6b000011;
-        expectedResult = 24; 
+        expectedResult = 5; 
       state.MOD:
         mockA = 62;
         mockB = 3;
         alufn = 6b000100;
         expectedResult = 2;
-      state.ALDR:
-        mockA = 8b11001010;
-        mockB = 8b00000000;
-        alufn = 6b011010;
-        expectedResult = 8b11001010;
       state.AND:
         mockA = 8b11010010;
         mockB = 8b11010010;
@@ -88,30 +83,40 @@ module autoTester (
         alufn = 6b011110;
         expectedResult = 8b11111111;
       state.XOR:
-        mockA = 8b11010010;
-        mockB = 8b01010011;
+        mockA = 8b00000001;
+        mockB = 8b00000000;
         alufn = 6b010110;
-        expectedResult = 8b10000001;
+        expectedResult = 8b00000001;
+      state.INV:
+        mockA = 8b10110100;
+        mockB = 8b00000000;
+        alufn = 6b010111;
+        expectedResult = 8b01001011;
+      state.ALDR:
+        mockA = 8b11001010;
+        mockB = 8b00000000;
+        alufn = 6b011010;
+        expectedResult = 8b11001010;
       state.SHL:
         mockA = 8b01001001;
-        mockB = 2;
+        mockB = 3b010;
         alufn = 6b100000;
-        expectedResult = 8b00100100;
+        expectedResult = 11b00100100100;
       state.SHR:
-        mockA = 8b1101001;
+        mockA = 42;
         mockB = 1;
         alufn = 6b100001;
-        expectedResult = 8b01101001;
+        expectedResult = 21;
       state.SLA:
-        mockA = 8b01001000;
-        mockB = 3;
+        mockA = 8b00101000;  // 40
+        mockB = 3b011;
         alufn = 6b100010;
-        expectedResult = 8b01001000;
+        expectedResult = 11b00101000000;  // 320
       state.SRA:
-        mockA = 8b11100100;
-        mockB = 4;
+        mockA = 112;  
+        mockB = 3;
         alufn = 6b100011;
-        expectedResult = 8b11111110;
+        expectedResult = 14;
       state.EQ:
         mockA = 24;
         mockB = 24;
@@ -126,7 +131,7 @@ module autoTester (
         mockA = 32;
         mockB = 33;
         alufn = 6b110111;
-        expectedResult = 0;
+        expectedResult = 1;
       state.GT:
         mockA = 11;
         mockB = 5;

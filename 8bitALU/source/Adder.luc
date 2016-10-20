@@ -18,15 +18,17 @@ module adderUnit (
     input b[8],
     // adder outputs
     output added[11],
-    output z,                // true is all s = 0
-    output v,                // true if overflow
-    output n                 // true if s[7] is equals to 1
+    output z[1],                // true is all s = 0
+    output v[1],                // true if overflow
+    output n[1]                 // true if s[7] is equals to 1
   ) {
   
   sig val[16];                 // 16 bit space to allow multiplication
-  
-  
+  sig minus[9];
+  sig xb[1];
   always {
+    minus = a-b;
+    xb = alufn[0] ^ b[7];
     case(alufn[3:0]) {
       b0000:
         val = $signed(a) + $signed(b);                               // addition
@@ -47,9 +49,9 @@ module adderUnit (
     }
     
     // z v n calculator to be sent to comparator, uses formula from handout
-    z = ~|(a-b);
-    v = (a[7] & b[7] & ~(a[7] - b[7])) | (~a[7] & ~b[7] & (a[7] - b[7]));
-    n = a[7] - b[7];
+    z = ~(|(a-b));
+    v = (a[7] & xb & ~minus[7]) | (~a[7] & ~xb & minus[7]);
+    n = minus[7];
     
     // if clause to consider for overflow. 32768 is 2^15, which is the max amount a 16 bit signed binary can present.
     if ((val > 999 && val < 32768) || ($signed(val) < -999 && $signed(val) >= -32768)) {
