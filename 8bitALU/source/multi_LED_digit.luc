@@ -69,7 +69,7 @@ module multi_LED_digit #(
           led_dec.char = 12;
         } else if (sym.q == 1 && b[7] == 1) {
           led_dec.char = 12;
-        }  else if (sym.q == 2 && value[10] == 1) { // TODO  change bitsize value to 9 bits long
+        }  else if (sym.q == 2 && value[10] == 1) {
           led_dec.char = 12;
         } else {
           led_dec.char = 13;

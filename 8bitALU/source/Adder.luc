@@ -1,3 +1,14 @@
+/* 
+    test cases based on lab documents 
+    ALUFN position   [5]  [4]  [3]  [2]  [1]  [0]    operation
+                      0    0    0    0    0    0     ADD
+                      0    0    0    0    0    1     SUB
+                      0    0    0    0    1    0     MUL          
+                      0    0    0    0    1    1     DIVIDE
+                      0    0    0    1    0    0     MOD
+                      0    0    0    1    0    1     1-complement of a (INV)
+*/
+
 module adderUnit (
     // ALU inputs
     input alufn[6] ,
@@ -7,41 +18,40 @@ module adderUnit (
     output added[11],
     output z,                // true is all s = 0
     output v,                // true if overflow
-    output n                // true if s[7] is negative=
+    output n                 // true if s[7] is equals to 1
   ) {
+  
   sig val[16];                 // 16 bit space to allow multiplication
-  /* test cases based on lab documents ALUFN[5:4] = 0 0
-      ALUFN position   [3]  [2]  [1]  [0]    operation
-                        0    0    0    0     ADD
-                        0    0    0    1     SUB
-                        0    0    1    0     MUL          
-                        0    0    1    1     DIVIDE
-                        0    1    0    0     MOD
-                        0    1    0    1     1-complement of a (INV)
-  */
+  
+  
   always {
     case(alufn[3:0]) {
       b0000:
-        val = $signed(a) + $signed(b);
+        val = $signed(a) + $signed(b);                               // addition
       b0001:
-        val = a - b;
+        val = $signed(a) - $signed(b);                               // subtraction
       b0010:
-        val = $signed(a) * $signed(b);
+        val = $signed(a) * $signed(b);                               // multiplication
       b0011:
-        val = $signed(a) / $signed(b);
+        val = $signed(a) / $signed(b);                               // division
       b0100:
-        val = $signed(a) / $signed(b) * $signed(a);
+        val = $signed(a) - $signed(b) * ($signed(a) / $signed(b));   // modulo, a - (n * int(a/n))
       b0101:
-        val = ~a;
+        val = ~a;                                                    // complement of a
       default:
-        val = b000000000;
+        val = b0000000;                                              // Show 0 if no operation got hit
     }
+    
+    // z v n calculator to be sent to comparator, uses formula from handout
     z = ~|(a-b);
     v = (a[7] & b[7] & ~(a[7] - b[7])) | (~a[7] & ~b[7] & (a[7] - b[7]));
     n = a[7] - b[7];
+    
+    // if clause to consider for overflow. 32768 is 2^15, which is the max amount a 16 bit signed binary can present.
     if ((val > 999 && val < 32768) || ($signed(val) < -999 && $signed(val) >= -32768)) {
-      val = 1000;
+      val = 1000;  // change value to 1000, which is a special case value to return error
     }
-    added = val[10:0];
+    
+    added = val[10:0];  // take only 
   }
 }

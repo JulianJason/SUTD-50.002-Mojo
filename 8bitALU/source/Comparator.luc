@@ -1,3 +1,11 @@
+/*
+     test cases based on lab documents
+     ALUFN position   [5]  [4]  [3]  [2]  [1]  [0]    operation
+                       1    1    0    0    1    1     equals (=)
+                       1    1    0    1    0    1     less than (<)
+                       1    1    0    1    1    1     less than or equal(<=)
+*/
+
 module comparatorUnit (
     // ALU inputs
     input alufn[6] ,\
@@ -8,15 +16,11 @@ module comparatorUnit (
     // comparator unit outputs
     output compared
   ) {
-  sig out;
-    /* test cases based on lab documents ALUFN[5:4] = 1 1
-      ALUFN position   [3]  [2]  [1]  [0]    operation
-                        0    0    1    1     equals (=)
-                        0    1    0    1     less than (<)
-                        0    1    1    1     less than or equal(<=)
-                        default    no operation, return 2
-  */
+  
+  sig out; // temporary variable storage
+  
   always {
+  
     case(alufn[3:0]) {
       b0011:
         out = z;
@@ -25,7 +29,7 @@ module comparatorUnit (
       b0111:
         out = z | (v ^ n);
       default:
-        out = -1;
+        out = 00000000;
     }
     compared = out;
   }

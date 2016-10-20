@@ -1,3 +1,12 @@
+/* 
+    test cases based on lab documents 
+    ALUFN position   [5]  [4]  [3]  [2]  [1]  [0]    operation
+                      0    1    1    0    0    0     AND
+                      0    1    1    1    1    0     OR
+                      0    1    0    1    1    0     XOR 
+                      0    1    1    0    1    0    "A" LDR  // still no idea how this works
+*/
+
 module booleanUnit (
     // ALU inputs
     input alufn[6] ,
@@ -7,26 +16,20 @@ module booleanUnit (
     output booleaned[11]
   ) {
   sig temp[11];
-  /* test cases based on lab documents ALUFN[5:4] = 0 1
-      ALUFN position   [3]  [2]  [1]  [0]    operation
-                        1    0    0    0     AND
-                        1    1    1    0     OR
-                        0    1    1    0     XOR 
-                        1    0    1    0    "A" LDR  // still no idea how this works
-                        default              no operation, return a
-    */
+  
   always {
+    
     case (alufn[3:0]) {
       b1000: 
-        temp = a & b;
+        temp = a & b;      // AND
       b1110:
-        temp = a | b;
+        temp = a | b;      // OR
       b0110:
-        temp = a ^ b;
+        temp = a ^ b;      // XOR
       b1010:
-        temp = a;
+        temp = a;          // currently returns A, no idea what this does
       default:
-        temp = b000000000;
+        temp = b000000000; // return 0 otherwise
     }
     booleaned = temp[10:0];
   }

@@ -5,10 +5,7 @@ module aluUnit (
     input a[8],
     input b[8],
     // ALU output
-    output result[11],
-    output z,
-    output v,
-    output n
+    output result[11]
   ) {
   .clk(clk) {
     // The reset conditioner is used to synchronize the reset signal to the FPGA
@@ -29,6 +26,8 @@ module aluUnit (
                         1    1      Comparator
                         default     no operation, return 0
     */
+    
+    // pipe values
     adder.a = a;
     adder.b = b;
     adder.alufn = alufn;
@@ -58,8 +57,5 @@ module aluUnit (
       default:
         result = 11b0;  
     }
-    z = adder.z;
-    v = adder.v;
-    n = adder.n;
   }
 }

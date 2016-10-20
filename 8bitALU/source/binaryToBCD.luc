@@ -7,10 +7,10 @@
 module binaryToBCD #(
     SIZE = 8 : SIZE > 0
   )(
-    input binary[SIZE],
-    output digit2[4],  // hundreds
-    output digit1[4],  // tens
-    output digit0[4]   // ones
+    input binary[SIZE],    // a variable input size binary input. We use SIZE=8 for a,b and SIZE=11 for output
+    output digit2[4],      // hundreds
+    output digit1[4],      // tens
+    output digit0[4]       // ones
   ) {
   var i;
   sig binaryInput[SIZE];
@@ -18,11 +18,14 @@ module binaryToBCD #(
   sig tens[4];
   sig ones[4];
   always {
+  
     binaryInput = binary;     // copy the read-only array to a write-able memory space
+    
     // create placeholders
     hundreds = 4b0000; 
     tens = 4b0000;
     ones = 4b0000;
+    
     if (binaryInput[SIZE - 1] == 0) {
       for (i=0; i <= SIZE - 1; i++) {            // for each digit
       
@@ -47,10 +50,13 @@ module binaryToBCD #(
         binaryInput = binaryInput << 1;
       }
     } else {
+    
       // convert to twos complement
       binaryInput = ~binaryInput;
       binaryInput = binaryInput + 1;
+      
       for (i=0; i <= SIZE - 1; i++) {            // for each digit
+      
         // if any column is greater than or equal to 5, add three to that column
         if (hundreds >= 4b0101) {
           hundreds = hundreds + 2b11;
@@ -72,11 +78,15 @@ module binaryToBCD #(
         binaryInput = binaryInput << 1;
     }
   }
+  // if the size of binary is equal to output size(11 bits, can support -999 < x < 999), and value is a special error value 
   if (SIZE == 11 && ($signed(binary) == 1000)) {
-    hundreds = 10;
-    tens = 11;
-    ones = 11;  
+    // display Err
+    hundreds = 10;    // E symbol
+    tens = 11;        // r symbol
+    ones = 11;        // r symbol
   }
+  
+  // send results to io_LED
   digit2 = hundreds;
   digit1 = tens;
   digit0 = ones;
