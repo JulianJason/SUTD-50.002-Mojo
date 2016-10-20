@@ -6,6 +6,7 @@
                       0    1    1    0    0    0     AND
                       0    1    1    1    1    0     OR
                       0    1    0    1    1    0     XOR 
+                      0    1    0    1    1    1     INV
                       0    1    1    0    1    0    "A" LDR  // still no idea how this works
 */
 
@@ -28,6 +29,8 @@ module booleanUnit (
         temp = a | b;      // OR
       b0110:
         temp = a ^ b;      // XOR
+      b0111:
+        temp = ~a;
       b1010:
         temp = a;          // currently returns A, no idea what this does
       default:

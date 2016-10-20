@@ -21,7 +21,7 @@ module mojo_top (
   sig a[8];
   sig b[8];
   sig alufn[6];
-  
+  sig testing;
   .clk(clk) {
     // The reset conditioner is used to synchronize the reset signal to the FPGA
     // clock. This ensures the entire FPGA comes out of reset at the same time.
@@ -29,6 +29,7 @@ module mojo_top (
     reset_conditioner reset_cond;
     .rst(rst) {
       multi_LED_digit multi_led;        // multi led decoder to determine led digits
+      autoTester autotester;
     }
   }
   
@@ -44,27 +45,50 @@ module mojo_top (
     io_led = 3x{{8h00}};    // turn LEDs off
     io_seg = 8hff;          // turn segments off
     io_sel = 4hf;           // select no digits
+    testing = autotester.testingState;
     
-    // connect a, b, alufn to dip switches.
-    a = io_dip[2];          // left most array dip switch
-    b = io_dip[1];          // middle array dip switch
-    alufn = io_dip[0][7:2]; // right array dip switch
+    autotester.io_button = io_button;
+    autotester.alu_result = 0;
+    // if currently testing, set led display to testing configuration
+    if (testing) {
+      alu.a = autotester.mockA;
+      alu.b = autotester.mockB;
+      alu.alufn = autotester.alufn;
+      autotester.alu_result = alu.result;
+      
+      multi_led.a = autotester.mockA;
+      multi_led.b = autotester.mockB;
+      
+      
+      io_led[2] = autotester.mockA;
+      io_led[1] = autotester.mockB;
+      io_led[0][7:2] = autotester.alufn;
+      io_led[0][1:0] = autotester.testResult;
+    } else {
+      
+      // connect a, b, alufn to dip switches.
+      a = io_dip[2];          // left most array dip switch
+      b = io_dip[1];          // middle array dip switch
+      alufn = io_dip[0][7:2]; // right array dip switch
+      
+      // pipe a, b, alufn values to ALU
+      alu.a = a;
+      alu.b = b;
+      alu.alufn = alufn;
+      
+      // pipe a, b and ALU result to led component. Hook up the buttons
+      multi_led.a = a;
+      multi_led.b = b;    
+      
+      io_led = io_dip;         // connect led to dip switches
+      io_led[0][1:0] = 0;      // turn off unused LED
+    }
+
     
-    // pipe a, b, alufn values to ALU
-    alu.a = a;
-    alu.b = b;
-    alu.alufn = alufn;
-    
-    // pipe a, b and ALU result to led component. Hook up the buttons
-    multi_led.a = a;
-    multi_led.b = b;    
     multi_led.value = alu.result;
     multi_led.button = io_button;
-
-    io_led = io_dip;         // connect led to dip switches
     io_seg = ~multi_led.seg; // connect segments to the driver
     io_sel = ~multi_led.sel; // connect digit select to the driver
-    io_led[0][1:0] = 0;      // turn off unused LED
   }
   
   

@@ -38,8 +38,6 @@ module adderUnit (
         val = $signed(a) / $signed(b);                               // division
       b0100:
         val = $signed(a) - $signed(b) * ($signed(a) / $signed(b));   // modulo, a - (n * int(a/n))
-      b0101:
-        val = ~a;                                                    // complement of a
       default:
         val = b0000000;                                              // Show 0 if no operation got hit
     }
