@@ -1,0 +1,100 @@
+// configures the digit display
+
+module multi_LED_digit #(
+    DIGITS = 4 : DIGITS > 0,
+    DIV = 16 : DIV >= 0
+  )(
+    input clk,                 // clock
+    input rst,                 // reset
+    input a[8],                // a input
+    input b[8],                // b input
+    input value[11],            // final value
+    input button[5],
+    output seg [8],            // LED segments
+    output sel [DIGITS]        // Digit select
+  ) {
+  // number of bits required to store DIGITS-1
+  sig symbol[4];
+  const DIGIT_BITS = $clog2(DIGITS);
+  .clk(clk) {
+    .rst(rst) {
+    counter ctr (#DIV(DIV), #SIZE(DIGIT_BITS), #TOP(DIGITS-1)); 
+    }
+    dff sym[2];
+  }
+  
+  led_digit led_dec;                      // decoder to output the three bit values in decimal
+  decoder digit_dec (#WIDTH(DIGIT_BITS)); // digit decoder
+  binaryToBCD converter;
+  binaryToBCD outputConverter (#SIZE(11));
+  always {
+      converter.binary = 0;
+      outputConverter.binary = 0;
+    case (sym.q) {
+      0:
+        converter.binary = a;
+        
+        symbol = 4b1010; // a symbol
+      1:
+        converter.binary = b;
+        symbol = 4b1011; // b symbol
+      2:
+        outputConverter.binary = value;
+        symbol = 4b1100;  // o symbol
+      default:
+        converter.binary = 0;
+        symbol = 4b1111;
+    }
+    case (ctr.value) {
+      0:
+        if (sym.q != 2) {
+          led_dec.char = converter.digit0;
+        } else {
+          led_dec.char = outputConverter.digit0;
+        }
+      1: 
+        if (sym.q != 2) {
+          led_dec.char = converter.digit1;
+        } else {
+          led_dec.char = outputConverter.digit1;
+        }
+      2: 
+        if (sym.q != 2) {
+          led_dec.char = converter.digit2;
+        } else {
+          led_dec.char = outputConverter.digit2;
+        }
+      3:
+        if ( sym.q == 0 && a[7] == 1) {
+          led_dec.char = 12;
+        } else if (sym.q == 1 && b[7] == 1) {
+          led_dec.char = 12;
+        }  else if (sym.q == 2 && value[10] == 1) {
+          led_dec.char = 12;
+        } else {
+          led_dec.char = 13;
+        }
+      default: 
+        led_dec.char = -1;
+        seg = 8b10000000;
+    }
+    
+    
+    seg = led_dec.segs;                   // output the decoded value
+    digit_dec.in = ctr.value;             // decode active digit to one-hot       
+    sel = digit_dec.out;                  // output the active digit
+    
+    // if left button is pressed, show symbol A
+    if (button[3]) {
+      sym.d = 0;
+    }
+    // if top button is pressed, show symbil b
+    if (button[0]) {
+      sym.d = 1;
+    }
+    // if right button is pressed, show symbol o (output)
+    if (button[4]) {
+      sym.d = 2;
+    }
+  }
+}

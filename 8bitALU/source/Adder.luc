@@ -1,0 +1,67 @@
+/* 
+    Adder unit to do basic arithmetic operation
+   
+    test cases based on lab documents 
+    ALUFN position   [5]  [4]  [3]  [2]  [1]  [0]    operation
+                      0    0    0    0    0    0     ADD
+                      0    0    0    0    0    1     SUB
+                      0    0    0    0    1    0     MUL          
+                      0    0    0    0    1    1     DIVIDE
+                      0    0    0    1    0    0     MOD
+                      0    0    0    1    0    1     1-complement of a (INV)
+*/
+
+module adderUnit (
+    // ALU inputs
+    input alufn[6] ,
+    input a[8],
+    input b[8],
+    // adder outputs
+    output added[11],
+    output z[1],                // true is all s = 0
+    output v[1],                // true if overflow
+    output n[1]                 // true if s[7] is equals to 1
+  ) {
+  
+  sig val[16];                 // 16 bit space to allow multiplication
+  sig minus[9];
+  sig xb[1];
+  always {
+    minus = a-b;
+    xb = alufn[0] ^ b[7];
+    case(alufn[3:0]) {
+      b0000:
+        val = $signed(a) + $signed(b);                               // addition
+      b0001:
+        val = $signed(a) - $signed(b);                               // subtraction
+      b0010:
+        val = $signed(a) * $signed(b);                               // multiplication
+      b0011:
+        if ($signed(b) == 0) {
+          val = 1000;                    // if division by zero, show error
+        } else {
+          val = $signed(a) / $signed(b); // division
+        }                               
+      b0100:
+        if ($signed(b) == 0) {
+          val = 1000; // if division by zero, show error
+        } else {
+          val = $signed(a) - $signed(b) * ($signed(a) / $signed(b));   // modulo, a - (n * int(a/n))
+        }
+      default:
+        val = b0000000;                                              // Show 0 if no operation got hit
+    }
+    
+    // z v n calculator to be sent to comparator, uses formula from handout
+    z = ~(|(a-b));
+    v = (a[7] & xb & ~minus[7]) | (~a[7] & ~xb & minus[7]);
+    n = minus[7];
+    
+    // if clause to consider for overflow. 32768 is 2^15, which is the max amount a 16 bit signed binary can present.
+    if ((val > 999 && val < 32768) || ($signed(val) < -999 && $signed(val) >= -32768)) {
+      val = 1000;       // change value to 1000, which is a special case value to return error
+    }
+    
+    added = val[10:0];  // take only the last 10 digits
+  }
+}

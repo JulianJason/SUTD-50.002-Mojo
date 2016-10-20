@@ -1,0 +1,201 @@
+module autoTester (
+    input clk,  // clock
+    input rst,  // reset
+    input io_button[5],
+    input alu_result[11],    // real alu result to be compared
+    output testingState,     // tells mojo top that testing is going on (val = 0 or 1)
+    output mockA[8],         // mock input to give ALU
+    output mockB[8],         // mock input to give ALU
+    output alufn[6],         // mock input to give ALU
+    output testResult[2]     // 2 bit size output to show test results. last 2 led lights up if all success, last led light up if fails
+  ) {
+  sig expectedResult[11];
+  .clk(clk) {
+    .rst(rst) {
+      fsm state = {NOT_TESTING, ADD, SUB, MUL, DIV, MOD, AND, OR, XOR, INV, ALDR, SHL, SHR, SRA, SLA, EQ, LT, LTE, GT, GTE, END, ERROR}; // the multiple testing states
+    }
+    dff count[29];  // delay counter 50Mhz 2^28 / 50Mhz
+    dff testing[1]; // testing state storage
+    dff delay[29];  // delay until user is able to manually change testing state
+  }
+  always {
+    // default values to show nothing
+    testResult = 2b00;
+    mockA = 8bxx;
+    mockB = 8bxx;
+    alufn = 6bxx;
+    expectedResult = 11bx;
+    
+    // auto change state system. If a certain amount of time has passed, automatically go to the next state as per case.
+    // time required is 2^count[BITSIZE] divided 40Mhz
+    if (count.q == 0) {
+      case (state.q) {
+        state.NOT_TESTING:
+          state.d = state.q;
+          count.d = 0;
+          testing.d = 0;
+        state.END:
+          state.d = state.q;
+          count.d = 0;
+          testing.d = 0;
+        state.ERROR:
+          state.d = state.q;
+          count.d = 0;
+        default: state.d = state.q + 1;
+      }
+    }
+    
+    // test cases TODO fill readable numerical value
+    case (state.q) {
+      state.ADD:
+        mockA = 5;
+        mockB = 11;
+        alufn = 6b000000;
+        expectedResult = 16;  
+      state.SUB:
+        mockA = 26;
+        mockB = 11;
+        alufn = 6b000001;
+        expectedResult = 15;
+      state.MUL:
+        mockA = 1;
+        mockB = 1;
+        alufn = 6b000010;
+        expectedResult = 1;
+      state.DIV:
+        mockA = 20;
+        mockB = 4;
+        alufn = 6b000011;
+        expectedResult = 5; 
+      state.MOD:
+        mockA = 62;
+        mockB = 3;
+        alufn = 6b000100;
+        expectedResult = 2;
+      state.AND:
+        mockA = 8b11010010;          // -46
+        mockB = 8b11010010;          // -46
+        alufn = 6b011000;
+        expectedResult = 8b11010010; // -46
+      state.OR:
+        mockA = 8b11110010;          // -14
+        mockB = 8b00001101;          // 13
+        alufn = 6b011110;
+        expectedResult = 8b11111111; // -1
+      state.XOR:
+        mockA = 8b00000001;          // 1
+        mockB = 8b00000000;          // 0
+        alufn = 6b010110;
+        expectedResult = 8b00000001; // 1
+      state.INV:
+        mockA = 8b10110100;          // -76
+        mockB = 8b00000000;          // 0
+        alufn = 6b010111;
+        expectedResult = 8b01001011; // 75
+      state.ALDR:
+        mockA = 8b11001010;          // -54
+        mockB = 8b00000000;          // 0
+        alufn = 6b011010;
+        expectedResult = 8b11001010; // -54
+      state.SHL:
+        mockA = 8b01001001;          // 73
+        mockB = 3b010;               // 3
+        alufn = 6b100000;
+        expectedResult = 11b00100100100;  // 292
+      state.SHR:
+        mockA = 42;
+        mockB = 1;
+        alufn = 6b100001;
+        expectedResult = 21;
+      state.SLA:
+        mockA = 8b00101000;  // 40
+        mockB = 3b011;
+        alufn = 6b100010;
+        expectedResult = 11b00101000000;  // 320
+      state.SRA:
+        mockA = 112;  
+        mockB = 3;
+        alufn = 6b100011;
+        expectedResult = 14;
+      state.EQ:
+        mockA = 24;
+        mockB = 24;
+        alufn = 6b110011;
+        expectedResult = 1;
+      state.LT:
+        mockA = 50;
+        mockB = 51;
+        alufn = 6b110101;
+        expectedResult = 1;
+      state.LTE:
+        mockA = 32;
+        mockB = 33;
+        alufn = 6b110111;
+        expectedResult = 1;
+      state.GT:
+        mockA = 11;
+        mockB = 5;
+        alufn = 6b111001;
+        expectedResult = 1;
+      state.GTE:
+        mockA = 11;
+        mockB = 12;
+        alufn = 6b111011;
+        expectedResult = 0;
+      state.END:
+        testing.d = 0;
+        testResult = 2b11;
+      state.ERROR:
+        testing.d = 1;
+        testResult = 2b01;
+      default:
+        expectedResult = 11bx; // redundant, but need to put something here
+    }
+    
+    // increment dff count
+    delay.d = delay.q + 1; // count delay timer up for each clock cycle, nothing happens if overflow
+    count.d = count.q + 1; // count up for each clock cycle, automatically cycles to 0 if overflow
+    // tester to detect whether value matches expected value
+    if (alu_result != expectedResult && testing.q == 1) { /// TODO should not do this
+      state.d = state.ERROR;
+      count.d = 1;
+      delay.d = 1;
+    }
+    // if delay has passed a certain time. (value / 40Mhz) so roughly 1 sec
+    if (delay.q > 33554432) {
+      if (io_button[1]) {
+        if (state.q == state.NOT_TESTING) {
+          state.d = 1;
+          testing.d = 1;
+          delay.d = 0;
+          count.d = 1;
+        } else {
+          state.d = state.NOT_TESTING;
+          delay.d = 0;
+        }
+      }
+      if (io_button[2]) {
+        case (state.q) {
+          state.NOT_TESTING:
+            state.d = state.q;
+            count.d = 1;        // count value set to 1 due to count==0 used as another conditional clause
+            testing.d = 0;
+          state.END:
+            state.d = state.q;
+            count.d = 1;
+            testing.d = 0;
+          state.ERROR:
+            state.d = state.q;
+            count.d = 1;
+          default: 
+            state.d = state.q + 1;
+            delay.d = 0;
+            count.d = 1;
+        }
+      }
+    }
+    
+    testingState = testing.q; // outputs testingstate for mojo_top 
+    
+  }
+}
