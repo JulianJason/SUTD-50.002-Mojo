@@ -20,7 +20,7 @@ module autoTester (
   }
   always {
     // default values to show nothing
-    testResult = 2b10;
+    testResult = 2b00;
     mockA = 8bxx;
     mockB = 8bxx;
     alufn = 6bxx;
@@ -61,17 +61,22 @@ module autoTester (
         mockA = 1;
         mockB = 1;
         alufn = 6b000010;
-        expectedResult = 120;
+        expectedResult = 1;
       state.DIV:
-        mockA = 120;
-        mockB = 5;
+        mockA = 20;
+        mockB = 4;
         alufn = 6b000011;
         expectedResult = 24; 
       state.MOD:
-        mockA = 131;
+        mockA = 62;
         mockB = 3;
         alufn = 6b000100;
         expectedResult = 2;
+      state.ALDR:
+        mockA = 8b11001010;
+        mockB = 8b00000000;
+        alufn = 6b011010;
+        expectedResult = 8b11001010;
       state.AND:
         mockA = 8b11010010;
         mockB = 8b11010010;
@@ -87,11 +92,6 @@ module autoTester (
         mockB = 8b01010011;
         alufn = 6b010110;
         expectedResult = 8b10000001;
-      state.INV:
-        mockA = 8b01001001;
-        mockB = 8b00000000;
-        alufn = 6b010111;
-        expectedResult = 8b10110110;
       state.SHL:
         mockA = 8b01001001;
         mockB = 2;
@@ -147,15 +147,15 @@ module autoTester (
         expectedResult = 11bx; // redundant, but need to put something here
     }
     
-    // tester to detect whether value matches expected value
-    //if (alu_result[7:0] != expectedResult[7:0] && testing.q == 1) { /// TODO should not do this
-    //  state.d = state.ERROR;
-    //}
-    
     // increment dff count
     delay.d = delay.q + 1; // count delay timer up for each clock cycle, nothing happens if overflow
     count.d = count.q + 1; // count up for each clock cycle, automatically cycles to 0 if overflow
-    
+    // tester to detect whether value matches expected value
+    if (alu_result != expectedResult && testing.q == 1) { /// TODO should not do this
+      state.d = state.ERROR;
+      count.d = 1;
+      delay.d = 1;
+    }
     // if delay has passed a certain time. (value / 40Mhz) so roughly 1 sec
     if (delay.q > 33554432) {
       if (io_button[1]) {
