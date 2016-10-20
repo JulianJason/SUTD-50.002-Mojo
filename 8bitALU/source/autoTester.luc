@@ -51,7 +51,7 @@ module autoTester (
         mockA = 5;
         mockB = 11;
         alufn = 6b000000;
-        expectedResult = 16;  // 16
+        expectedResult = 16;  
       state.SUB:
         mockA = 26;
         mockB = 11;
@@ -73,35 +73,35 @@ module autoTester (
         alufn = 6b000100;
         expectedResult = 2;
       state.AND:
-        mockA = 8b11010010;
-        mockB = 8b11010010;
+        mockA = 8b11010010;          // -46
+        mockB = 8b11010010;          // -46
         alufn = 6b011000;
-        expectedResult = 8b11010010;
+        expectedResult = 8b11010010; // -46
       state.OR:
-        mockA = 8b11110010;
-        mockB = 8b00001101;
+        mockA = 8b11110010;          // -14
+        mockB = 8b00001101;          // 13
         alufn = 6b011110;
-        expectedResult = 8b11111111;
+        expectedResult = 8b11111111; // -1
       state.XOR:
-        mockA = 8b00000001;
-        mockB = 8b00000000;
+        mockA = 8b00000001;          // 1
+        mockB = 8b00000000;          // 0
         alufn = 6b010110;
-        expectedResult = 8b00000001;
+        expectedResult = 8b00000001; // 1
       state.INV:
-        mockA = 8b10110100;
-        mockB = 8b00000000;
+        mockA = 8b10110100;          // -76
+        mockB = 8b00000000;          // 0
         alufn = 6b010111;
-        expectedResult = 8b01001011;
+        expectedResult = 8b01001011; // 75
       state.ALDR:
-        mockA = 8b11001010;
-        mockB = 8b00000000;
+        mockA = 8b11001010;          // -54
+        mockB = 8b00000000;          // 0
         alufn = 6b011010;
-        expectedResult = 8b11001010;
+        expectedResult = 8b11001010; // -54
       state.SHL:
-        mockA = 8b01001001;
-        mockB = 3b010;
+        mockA = 8b01001001;          // 73
+        mockB = 3b010;               // 3
         alufn = 6b100000;
-        expectedResult = 11b00100100100;
+        expectedResult = 11b00100100100;  // 292
       state.SHR:
         mockA = 42;
         mockB = 1;

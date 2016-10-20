@@ -28,7 +28,7 @@ module aluUnit (
                         default     no operation, return 0
     */
     
-    // pipe values
+    // pipe values to all subunits
     adder.a = a;
     adder.b = b;
     adder.alufn = alufn;

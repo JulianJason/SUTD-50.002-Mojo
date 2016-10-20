@@ -22,6 +22,7 @@ module mojo_top (
   sig b[8];
   sig alufn[6];
   sig testing;
+  
   .clk(clk) {
     // The reset conditioner is used to synchronize the reset signal to the FPGA
     // clock. This ensures the entire FPGA comes out of reset at the same time.

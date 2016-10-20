@@ -38,12 +38,16 @@ module adderUnit (
         val = $signed(a) * $signed(b);                               // multiplication
       b0011:
         if ($signed(b) == 0) {
-          val = 1000;
+          val = 1000;                    // if division by zero, show error
         } else {
           val = $signed(a) / $signed(b); // division
         }                               
       b0100:
-        val = $signed(a) - $signed(b) * ($signed(a) / $signed(b));   // modulo, a - (n * int(a/n))
+        if ($signed(b) == 0) {
+          val = 1000; // if division by zero, show error
+        } else {
+          val = $signed(a) - $signed(b) * ($signed(a) / $signed(b));   // modulo, a - (n * int(a/n))
+        }
       default:
         val = b0000000;                                              // Show 0 if no operation got hit
     }
@@ -58,6 +62,6 @@ module adderUnit (
       val = 1000;       // change value to 1000, which is a special case value to return error
     }
     
-    added = val[10:0];  // take only 
+    added = val[10:0];  // take only the last 10 digits
   }
 }
