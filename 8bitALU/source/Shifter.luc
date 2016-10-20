@@ -1,10 +1,12 @@
 /* 
-    test cases based on lab documents 
-    ALUFN position   [5]  [4]  [3]  [2]  [1]  [0]    operation
-                      1    0    0    0    0    0     SHL
-                      1    0    0    0    0    1     SHR
-                      1    0    0    0    1    0     SLA
-                      1    0    0    0    1    1     SRA
+   Shifter unit to shift input [a], [b] digits to the direction specified 
+   
+   test cases based on lab documents 
+   ALUFN position   [5]  [4]  [3]  [2]  [1]  [0]    operation
+                     1    0    0    0    0    0     SHL
+                     1    0    0    0    0    1     SHR
+                     1    0    0    0    1    0     SLA
+                     1    0    0    0    1    1     SRA
        
    b = shift count (max 8 shift count)
        case 000 = shift 1;

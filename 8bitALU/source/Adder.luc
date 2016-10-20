@@ -1,4 +1,6 @@
 /* 
+    Adder unit to do basic arithmetic operation
+   
     test cases based on lab documents 
     ALUFN position   [5]  [4]  [3]  [2]  [1]  [0]    operation
                       0    0    0    0    0    0     ADD

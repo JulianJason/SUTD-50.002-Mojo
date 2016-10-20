@@ -1,9 +1,13 @@
 /*
-     test cases based on lab documents
-     ALUFN position   [5]  [4]  [3]  [2]  [1]  [0]    operation
-                       1    1    0    0    1    1     equals (=)
-                       1    1    0    1    0    1     less than (<)
-                       1    1    0    1    1    1     less than or equal(<=)
+   Comparator unit to handle equals, less than and less than equals  
+   
+   test cases based on lab documents
+   ALUFN position   [5]  [4]  [3]  [2]  [1]  [0]    operation
+                     1    1    0    0    1    1     equals (=)
+                     1    1    0    1    0    1     less than (<)
+                     1    1    0    1    1    1     less than or equals (<=)
+                     1    1    1    0    0    1     greater than (>)
+                     1    1    1    0    1    1     greater than or equals (>=)
 */
 
 module comparatorUnit (
@@ -28,6 +32,10 @@ module comparatorUnit (
         out = v ^ n;
       b0111:
         out = z | (v ^ n);
+      b1001:
+        out = !(z | (v ^ n));
+      b1011:
+        out = !(v ^ n);
       default:
         out = 00000000;
     }
