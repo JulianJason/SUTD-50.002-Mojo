@@ -2,21 +2,21 @@ module autoTester (
     input clk,  // clock
     input rst,  // reset
     input io_button[5],
-    input alu_result[11],
-    output testingState,
-    output mockA[8],
-    output mockB[8],
-    output alufn[6],
-    output testResult[2]
+    input alu_result[11],    // real alu result to be compared
+    output testingState,     // tells mojo top that testing is going on (val = 0 or 1)
+    output mockA[8],         // mock input to give ALU
+    output mockB[8],         // mock input to give ALU
+    output alufn[6],         // mock input to give ALU
+    output testResult[2]     // 2 bit size output to show test results. last 2 led lights up if all success, last led light up if fails
   ) {
   sig expectedResult[11];
   .clk(clk) {
     .rst(rst) {
-      fsm state = {NOT_TESTING, ADD, SUB, MUL, DIV, MOD,  AND, OR, XOR, INV, SHL, SHR, SRA, SLA, EQ, LT, LTE, GT, GTE, END,ERROR}; // the multiple testing states
+      fsm state = {NOT_TESTING, ADD, SUB, MUL, DIV, MOD, AND, OR, XOR, INV, SHL, SHR, SRA, SLA, EQ, LT, LTE, GT, GTE, END, ERROR}; // the multiple testing states
     }
     dff count[29];  // delay counter 50Mhz 2^28 / 50Mhz
     dff testing[1]; // testing state storage
-    dff delay[29];
+    dff delay[29];  // delay until user is able to manually change testing state
   }
   always {
     // default values to show nothing
@@ -26,6 +26,8 @@ module autoTester (
     alufn = 6bxx;
     expectedResult = 11bx;
     
+    // auto change state system. If a certain amount of time has passed, automatically go to the next state as per case.
+    // time required is 2^count[BITSIZE] divided 40Mhz
     if (count.q == 0) {
       case (state.q) {
         state.NOT_TESTING:
@@ -43,6 +45,7 @@ module autoTester (
       }
     }
     
+    // test cases TODO fill readable numerical value
     case (state.q) {
       state.ADD:
         mockA = 5;
@@ -144,13 +147,16 @@ module autoTester (
         expectedResult = 11bx; // redundant, but need to put something here
     }
     
+    // tester to detect whether value matches expected value
     //if (alu_result[7:0] != expectedResult[7:0] && testing.q == 1) { /// TODO should not do this
     //  state.d = state.ERROR;
     //}
     
-    delay.d = delay.q + 1;
+    // increment dff count
+    delay.d = delay.q + 1; // count delay timer up for each clock cycle, nothing happens if overflow
     count.d = count.q + 1; // count up for each clock cycle, automatically cycles to 0 if overflow
     
+    // if delay has passed a certain time. (value / 40Mhz) so roughly 1 sec
     if (delay.q > 33554432) {
       if (io_button[1]) {
         if (state.q == state.NOT_TESTING) {
@@ -167,7 +173,7 @@ module autoTester (
         case (state.q) {
           state.NOT_TESTING:
             state.d = state.q;
-            count.d = 1;
+            count.d = 1;        // count value set to 1 due to count==0 used as another conditional clause
             testing.d = 0;
           state.END:
             state.d = state.q;
@@ -183,6 +189,7 @@ module autoTester (
         }
       }
     }
+    
     testingState = testing.q; // outputs testingstate for mojo_top 
     
   }
