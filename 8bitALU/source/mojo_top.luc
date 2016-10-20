@@ -89,7 +89,10 @@ module mojo_top (
     multi_led.button = io_button;
     io_seg = ~multi_led.seg; // connect segments to the driver
     io_sel = ~multi_led.sel; // connect digit select to the driver
+    
+    // debug tools
+    // io_led[0] = [7:0]
+    // io_led[1] = [10:8]    
+     
   }
-  
-  
 }

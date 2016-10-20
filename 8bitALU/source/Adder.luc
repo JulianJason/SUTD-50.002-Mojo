@@ -35,7 +35,11 @@ module adderUnit (
       b0010:
         val = $signed(a) * $signed(b);                               // multiplication
       b0011:
-        val = $signed(a) / $signed(b);                               // division
+        if ($signed(b) == 0) {
+          val = 1000;
+        } else {
+          val = $signed(a) / $signed(b); // division
+        }                               
       b0100:
         val = $signed(a) - $signed(b) * ($signed(a) / $signed(b));   // modulo, a - (n * int(a/n))
       default:
@@ -49,7 +53,7 @@ module adderUnit (
     
     // if clause to consider for overflow. 32768 is 2^15, which is the max amount a 16 bit signed binary can present.
     if ((val > 999 && val < 32768) || ($signed(val) < -999 && $signed(val) >= -32768)) {
-      val = 1000;  // change value to 1000, which is a special case value to return error
+      val = 1000;       // change value to 1000, which is a special case value to return error
     }
     
     added = val[10:0];  // take only 

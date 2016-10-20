@@ -7,20 +7,20 @@ module autoTester (
     output mockA[8],
     output mockB[8],
     output alufn[6],
-    output expectedOut[11],
     output testResult[2]
   ) {
   sig expectedResult[11];
   .clk(clk) {
     .rst(rst) {
-      fsm state = {NOT_TESTING, ADD, SUB, MUL, DIV, MOD,  AND, OR, XOR, INV, SHL, SHR, SRA, SLA, EQ, LT, LTE, GT, GTE, END, ERROR}; // the multiple testing states
+      fsm state = {NOT_TESTING, ADD, SUB, MUL, DIV, MOD,  AND, OR, XOR, INV, SHL, SHR, SRA, SLA, EQ, LT, LTE, GT, GTE, END,ERROR}; // the multiple testing states
     }
-    dff count[25];  // delay counter
+    dff count[29];  // delay counter 50Mhz 2^28 / 50Mhz
     dff testing[1]; // testing state storage
+    dff delay[29];
   }
   always {
     // default values to show nothing
-    testResult = 2b00;
+    testResult = 2b10;
     mockA = 8bxx;
     mockB = 8bxx;
     alufn = 6bxx;
@@ -48,15 +48,15 @@ module autoTester (
         mockA = 5;
         mockB = 11;
         alufn = 6b000000;
-        expectedResult = 16;
+        expectedResult = 16;  // 16
       state.SUB:
         mockA = 26;
         mockB = 11;
         alufn = 6b000001;
         expectedResult = 15;
       state.MUL:
-        mockA = 12;
-        mockB = 10;
+        mockA = 1;
+        mockB = 1;
         alufn = 6b000010;
         expectedResult = 120;
       state.DIV:
@@ -143,18 +143,47 @@ module autoTester (
       default:
         expectedResult = 11bx; // redundant, but need to put something here
     }
-    /*
-    if (alu_result[7:0] != expectedResult[7:0] && testing.q == 1) { /// TODO should not do this
-      state.d = state.ERROR;
-    }
-    */
-    expectedOut = expectedResult;
-    if (io_button[1]) {
-      state.d = 1;
-      testing.d = 1;
-    }
     
+    //if (alu_result[7:0] != expectedResult[7:0] && testing.q == 1) { /// TODO should not do this
+    //  state.d = state.ERROR;
+    //}
+    
+    delay.d = delay.q + 1;
     count.d = count.q + 1; // count up for each clock cycle, automatically cycles to 0 if overflow
+    
+    if (delay.q > 33554432) {
+      if (io_button[1]) {
+        if (state.q == state.NOT_TESTING) {
+          state.d = 1;
+          testing.d = 1;
+          delay.d = 0;
+          count.d = 1;
+        } else {
+          state.d = state.NOT_TESTING;
+          delay.d = 0;
+        }
+      }
+      if (io_button[2]) {
+        case (state.q) {
+          state.NOT_TESTING:
+            state.d = state.q;
+            count.d = 1;
+            testing.d = 0;
+          state.END:
+            state.d = state.q;
+            count.d = 1;
+            testing.d = 0;
+          state.ERROR:
+            state.d = state.q;
+            count.d = 1;
+          default: 
+            state.d = state.q + 1;
+            delay.d = 0;
+            count.d = 1;
+        }
+      }
+    }
     testingState = testing.q; // outputs testingstate for mojo_top 
+    
   }
 }
