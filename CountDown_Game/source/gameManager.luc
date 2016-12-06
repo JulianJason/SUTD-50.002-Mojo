@@ -1,0 +1,37 @@
+module gameManager (
+    input clk,  // clock
+    input rst,  // reset
+    // input buttons for easy medium hard, new game buttons
+    input easyButton,
+    input mediumButton,
+    input hardButton,
+    output reset,
+    output difficulty,
+    output newGameFlag
+  ) {
+  .clk(clk) {
+    .rst(rst) {
+      fsm state = {NOT_PLAYING, PLAY_EASY, PLAY_MEDIUM, PLAY_HARD}; // the multiple playing states
+    }
+    dff count[25];  // delay counter
+    dff game_state[2]; // testing state storage
+  }
+  always {
+    reset = 0;
+    difficulty = 0;
+    newGameFlag = 0;
+    if (game_state.q != state.NOT_PLAYING) {
+      newGameFlag = 1;
+      if (easyButton) {
+        difficulty = 2b01;
+        game_state.d = state.PLAY_EASY;
+      } else if (mediumButton) {
+        difficulty = 2b10;
+        game_state.d = state.PLAY_MEDIUM;
+      } else if (hardButton) {
+        difficulty = 2b11;
+        game_state.d = state.PLAY_HARD;
+      }
+    }
+  }
+}

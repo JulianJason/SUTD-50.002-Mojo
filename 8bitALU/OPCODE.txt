@@ -1,0 +1,26 @@
+
+    ALUFN position   [5]  [4]  [3]  [2]  [1]  [0]    operation
+                      0    0    0    0    0    0     ADD
+                      0    0    0    0    0    1     SUB
+                      0    0    0    0    1    0     MUL          
+                      0    0    0    0    1    1     DIVIDE
+                      0    0    0    1    0    0     MOD
+
+                      0    1    1    0    0    0     AND
+                      0    1    1    1    1    0     OR
+                      0    1    0    1    1    0     XOR 
+                      0    1    0    1    1    1     INV
+                      0    1    1    0    1    0    "A" LDR  
+
+
+                     1    0    0    0    0    0     SHL
+                     1    0    0    0    0    1     SHR
+                     1    0    0    0    1    0     SLA
+                     1    0    0    0    1    1     SRA
+
+
+                     1    1    0    0    1    1     equals (=)
+                     1    1    0    1    0    1     less than (<)
+                     1    1    0    1    1    1     less than or equals
+                     1    1    1    0    0    1     greater than (>)
+                     1    1    1    0    1    1     greater than or eq

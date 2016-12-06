@@ -1,0 +1,21 @@
+module playerManager (
+    input clk,  // clock
+    input rst,  // reset
+    output io_led[8],
+    input keypad_row[4],
+    output keypad_col[4],
+    output digit_out[8],
+    output testOut[4]
+  ) {
+  .clk(clk), .rst(rst) {
+      keypad playerKeypad;   
+  }
+  always {
+    playerKeypad.keypad_row = keypad_row;
+    keypad_col = ~playerKeypad.keypad_col;
+    
+    io_led = playerKeypad.io_led2;
+    digit_out = playerKeypad.digit_out;
+    testOut = playerKeypad.testOut;
+  }
+}

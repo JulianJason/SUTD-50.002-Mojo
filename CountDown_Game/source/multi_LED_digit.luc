@@ -1,0 +1,39 @@
+// configures the digit display
+
+module multi_LED_digit #(
+    DIGITS = 4 : DIGITS > 0,
+    DIV = 16 : DIV >= 0
+  )(
+    input clk,                // clock
+    input rst,                // reset
+    input digit[8],
+    input digit2[4],
+    output seg [7],           // LED segments
+    output sel [DIGITS]      // Digit select
+  ) {
+  
+  // number of bits required to store DIGITS-1
+  const DIGIT_BITS = $clog2(DIGITS);
+  
+  .clk(clk), .rst(rst) {
+    counter ctr (#DIV(DIV), #SIZE(DIGIT_BITS), #TOP(DIGITS-1)); 
+  }
+  
+  led_digit led_dec;                      // led decoder
+  decoder digit_dec (#WIDTH(DIGIT_BITS)); // digit decoder
+  
+  always {
+    // chooses which digit to decode
+    case (ctr.value) {
+      0: led_dec.char = 5;     // expected C output
+      1: led_dec.char = digit;          // adder S output
+      2: led_dec.char = 7;     // expected S output
+      3: led_dec.char = digit2;          // adder S output
+      default: led_dec.char = 9;
+    }
+    
+    seg = led_dec.segs;                   // output the decoded value
+    digit_dec.in = ctr.value;             // decode active digit to one-hot       
+    sel = digit_dec.out;                  // output the active digit
+  }
+}
