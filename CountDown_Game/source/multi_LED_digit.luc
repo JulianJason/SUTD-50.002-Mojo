@@ -6,8 +6,10 @@ module multi_LED_digit #(
   )(
     input clk,                // clock
     input rst,                // reset
-    input digit[8],
-    input digit2[4],
+    input digit1[8],
+    input digit2[8],
+    input digit3[8],
+    input digit4[8],
     output seg [7],           // LED segments
     output sel [DIGITS]      // Digit select
   ) {
@@ -26,7 +28,7 @@ module multi_LED_digit #(
     // chooses which digit to decode
     case (ctr.value) {
       0: led_dec.char = 5;     // expected C output
-      1: led_dec.char = digit;          // adder S output
+      1: led_dec.char = digit1;          // adder S output
       2: led_dec.char = 7;     // expected S output
       3: led_dec.char = digit2;          // adder S output
       default: led_dec.char = 9;

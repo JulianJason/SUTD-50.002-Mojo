@@ -1,0 +1,46 @@
+module notes (
+    input clk,  // clock
+    input rst,  // reset
+    output out
+  ) {
+
+  always {
+    out = 0;
+  }
+}
+
+/*
+  4-digit seven segment pins
+   a 1 6 b c 2 
+   o o o o o o o
+   
+   o o o o o o o
+   5 4 8 3 7 d
+   
+   red 4-digit seven segment pins
+   a 1 6 b c 2
+   o o o o o o
+   
+   o o o o o o
+   5 4 8 3 7 d
+   
+   2-digit 7 seven segment pins
+   1 2 a b 6
+   o o o o o
+
+   o o o o o
+   3 8 5 4 7
+
+*/
+
+/*
+  The keypad
+   o    o    o    o    o    o    o    o
+  row4 row3 row2 row1 col4 col3 col2 col1
+  
+   1    2    3    +  row4
+   4    5    6    -  row3
+   7    8    9    *  row2
+   <-   0    go   /  row1
+  col4 col3 col2 col1                
+*/

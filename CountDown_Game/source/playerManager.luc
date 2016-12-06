@@ -8,7 +8,9 @@ module playerManager (
     output testOut[4]
   ) {
   .clk(clk), .rst(rst) {
-      keypad playerKeypad;   
+      keypad playerKeypad;
+      // multi_LED_digit player_input;
+      multi_LED_digit player_choices;
   }
   always {
     playerKeypad.keypad_row = keypad_row;
@@ -17,5 +19,10 @@ module playerManager (
     io_led = playerKeypad.io_led2;
     digit_out = playerKeypad.digit_out;
     testOut = playerKeypad.testOut;
+    
+    player_choices.digit1 = 1;
+    player_choices.digit2 = 2;
+    player_choices.digit3 = 3;
+    player_choices.digit4 = 4;
   }
 }
