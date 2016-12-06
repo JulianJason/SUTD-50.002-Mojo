@@ -55,9 +55,11 @@ module mojo_top (
     
     //io_led[1] = ~player1.io_led;
     player1.keypad_row = keypadA_row;
-    
-    multi_led.digit = player1.digit_out;
+    player1.new_game = 0;
+    multi_led.digit1 = player1.digit_out;
     multi_led.digit2 = player1.testOut;
+    multi_led.digit3 = 0;
+    multi_led.digit4 = 0;
     keypadA_col = ~player1.keypad_col;
     
     io_seg = ~multi_led.seg;           // connect segments to the driver

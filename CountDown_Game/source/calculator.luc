@@ -1,10 +1,10 @@
-module checker (
+module calculator (
     input clk,  // clock
     input rst,  // reset
-    input currentValue,
-    input incomingValue,
-    input operator,
-    output updatedValue
+    input currentValue[8],
+    input incomingValue[8],
+    input operator[4],
+    output updatedValue[8]
   ) {
 
   always {

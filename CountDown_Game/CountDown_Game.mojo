@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="CountDown_Game" board="Mojo V3" language="Lucid">
   <files>
+    <src>calculator.luc</src>
     <src>keypad_decoder.luc</src>
-    <src>checker.luc</src>
     <src>playerManager.luc</src>
     <src>multi_LED_digit.luc</src>
     <src>led_digit.luc</src>

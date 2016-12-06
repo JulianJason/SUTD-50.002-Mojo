@@ -5,13 +5,18 @@ module playerManager (
     input keypad_row[4],
     output keypad_col[4],
     output digit_out[8],
-    output testOut[4]
+    output testOut[4],
+    input new_game
   ) {
-  .clk(clk), .rst(rst) {
+  .clk(clk) { .rst(rst) {
       keypad playerKeypad;
       // multi_LED_digit player_input;
       multi_LED_digit player_choices;
+      calculator calculator;
+    }
+    dff current_value[8]; // max 128
   }
+  
   always {
     playerKeypad.keypad_row = keypad_row;
     keypad_col = ~playerKeypad.keypad_col;
@@ -20,9 +25,20 @@ module playerManager (
     digit_out = playerKeypad.digit_out;
     testOut = playerKeypad.testOut;
     
+    calculator.currentValue = current_value.q;
+    calculator.incomingValue = playerKeypad.digit_out;
+    calculator.operator = playerKeypad.operator_out;
+    
     player_choices.digit1 = 1;
     player_choices.digit2 = 2;
     player_choices.digit3 = 3;
     player_choices.digit4 = 4;
+    
+    
+  if (new_game) {
+    current_value.d = 0;
+  } else {
+    current_value.d = calculator.updatedValue;  
+  }
   }
 }
