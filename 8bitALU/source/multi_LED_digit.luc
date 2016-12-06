@@ -27,12 +27,15 @@ module multi_LED_digit #(
   decoder digit_dec (#WIDTH(DIGIT_BITS)); // digit decoder
   binaryToBCD converter;
   binaryToBCD outputConverter (#SIZE(11));
+  
+   bin_to_dec binaryConverter(#DIGITS(3));
   always {
       converter.binary = 0;
       outputConverter.binary = 0;
+    binaryConverter.value = a;
     case (sym.q) {
       0:
-        converter.binary = a;
+        converter.binary = binaryConverter.digits[0];
         
         symbol = 4b1010; // a symbol
       1:

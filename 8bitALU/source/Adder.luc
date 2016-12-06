@@ -8,7 +8,6 @@
                       0    0    0    0    1    0     MUL          
                       0    0    0    0    1    1     DIVIDE
                       0    0    0    1    0    0     MOD
-                      0    0    0    1    0    1     1-complement of a (INV)
 */
 
 module adderUnit (
@@ -27,8 +26,10 @@ module adderUnit (
   sig minus[9];
   sig xb[1];
   always {
+  
     minus = a-b;
-    xb = alufn[0] ^ b[7];
+    xb = alufn[0] ^ b[7]; 
+  
     case(alufn[3:0]) {
       b0000:
         val = $signed(a) + $signed(b);                               // addition
