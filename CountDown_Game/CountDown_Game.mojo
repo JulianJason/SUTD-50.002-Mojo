@@ -11,7 +11,6 @@
     <src>game_logic.luc</src>
     <src top="true">mojo_top.luc</src>
     <src>keypad.luc</src>
-    <ucf>modified_io_shield.ucf</ucf>
     <ucf>7segments.ucf</ucf>
     <ucf>keypad.ucf</ucf>
     <ucf>modified_mojo.ucf</ucf>
