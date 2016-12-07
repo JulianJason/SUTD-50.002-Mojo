@@ -27,7 +27,9 @@ module roundManager (
     dff bluePrev[8]; 
   }
   always {
-    
+    if (seed.q == bz) {
+      seed.d = 5422125542;
+    }
     alu.a = 0;
     alu.b = 0;
     alu.alufn = 6b000000;
@@ -39,12 +41,12 @@ module roundManager (
     rng.next = 0;
     rng.seed = 145431553152;
     //rng.seed = count.q;
-    choice1 = 1;
-    choice2 = 2;
-    choice3 = 3;
+    choice1 = rng.num1;
+    choice2 = rng.num2;
+    choice3 = rng.num3;
     choice4 = rng.num4;
     
-    if (0) {
+    if (newGameFlag) {
       redValue.d = 0;
       redPrev.d = 0;
       blueValue.d = 0;

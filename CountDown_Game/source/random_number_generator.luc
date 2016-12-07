@@ -59,10 +59,10 @@ module random_number_generator #(
   
   sig t [32];        
   always {
-    num1 = 2 + w.q[31:23] - 8 * (w.q/8);
-    num2 = 2 + w.q[23:15] - 8 * (w.q/8);
-    num3 = 2 + w.q[15:7] - 8 * (w.q/8);
-    num4 = 2 + w.q[8:0] - 8 * (w.q/8);            // output is from w
+    num1 = 2 + (w.q[31:23] - 8 * (w.q[31:23]/8));
+    num2 = 2 + (w.q[23:15] - 8 * (w.q[23:15]/8));
+    num3 = 2 + (w.q[15:7] - 8 * (w.q[15:7]/8));
+    num4 = 2 + (w.q[8:0] - 8 * (w.q[8:0]/8));           // output is from w
     
     t = x.q ^ (x.q << 11);          // calculate intermediate value
     

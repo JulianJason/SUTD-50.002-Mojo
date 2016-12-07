@@ -1,3 +1,7 @@
+/* COMPLETE DO NOT TOUCH
+  
+*/
+
 module keypad #(
     ROWS = 4 : ROWS > 0,
     DIV = 16: DIV >= 0 // change to 16
