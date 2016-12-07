@@ -17,10 +17,10 @@ module mojo_top (
   //  input io_button [5],    // 5 buttons on IO Shield
   //  input io_dip [3][8],     // DIP switches on IO Shield,
     // player A IO
-    input keypad_Red_row[4],
-    output keypadA_col[4],
-    output sev_seg_Red[8],
-    output sev_seg_sel_Red[4]
+    input keypad_Red_Row[4],
+    output keypad_Red_Col[4],
+    output four_seg_Red[8],
+    output four_seg_sel_Red[4]
   ) {
   
   sig rst;                  // reset signal
@@ -55,11 +55,11 @@ module mojo_top (
  //   manager.easyButton = io_dip[0][2];
     
     //io_led[1] = ~player1.io_led;
-    player1.keypad_row = keypad_Red_row;
+    player1.keypad_row = keypad_Red_Row;
     player1.new_game = 0;
-    sev_seg_Red = player1.sev_seg;
-    sev_seg_sel_Red = player1.sev_seg_sel;
-    keypadA_col = player1.keypad_col;
+    four_seg_Red = player1.sev_seg;
+    four_seg_sel_Red = player1.sev_seg_sel;
+    keypad_Red_Col = player1.keypad_col;
 
   }
 }

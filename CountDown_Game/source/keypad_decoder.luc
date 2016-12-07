@@ -3,7 +3,7 @@ module keypad_decoder (
     input rst,  // reset
     input row[4],
     input col[4],
-    output digit_out[8],
+    output digit_out[4],
     output operator_out[4]
   ) {
 
