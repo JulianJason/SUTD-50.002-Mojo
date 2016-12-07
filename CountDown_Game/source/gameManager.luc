@@ -1,3 +1,8 @@
+/*
+  Game manager is the judge for the game
+  This module handles everything and is the so-called "smart" component
+*/
+
 module gameManager (
     input clk,  // clock
     input rst,  // reset
@@ -5,22 +10,23 @@ module gameManager (
     input easyButton,
     input mediumButton,
     input hardButton,
-    output reset,
+    input newGameButton,
+    input singlePlayerButton,
+    input multiplayerButton,
     output difficulty,
     output newGameFlag
   ) {
   .clk(clk) {
     .rst(rst) {
-      fsm state = {NOT_PLAYING, PLAY_EASY, PLAY_MEDIUM, PLAY_HARD}; // the multiple playing states
+      fsm state = {NOT_PLAYING, PLAY_EASY, PLAY_MEDIUM, PLAY_HARD}; // the multiple playing states 
     }
-    dff count[25];  // delay counter
     dff game_state[2]; // testing state storage
   }
   always {
-    reset = 0;
+  // implement button conditioner
     difficulty = 0;
     newGameFlag = 0;
-    if (game_state.q != state.NOT_PLAYING) {
+    if (game_state.q == state.NOT_PLAYING) {
       newGameFlag = 1;
       if (easyButton) {
         difficulty = 2b01;
@@ -32,6 +38,11 @@ module gameManager (
         difficulty = 2b11;
         game_state.d = state.PLAY_HARD;
       }
+    }
+    
+    if (newGameButton) {
+      newGameFlag = 1;
+      game_state.d = state.NOT_PLAYING;
     }
   }
 }

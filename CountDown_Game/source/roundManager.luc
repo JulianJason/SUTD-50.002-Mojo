@@ -1,0 +1,62 @@
+module roundManager (
+    input clk,  // clock
+    input rst,  // reset
+    input redDigit[8],
+    input redOperator[6],
+  //  input blueDigit,
+  //  input blueOperator,
+    input difficulty,
+    input newGameFlag,
+    output redOut[8],
+//    output blueOut[8],
+    output choice1[4],
+    output choice2[4],
+    output choice3[4],
+    output choice4[4]
+  ) {
+.  clk(clk) {
+    .rst(rst) {
+      random_number_generator rng;
+    }
+    dff count[25];  // delay counter
+    dff seed[25];
+    aluUnit alu;
+    dff redValue[8];
+    dff redPrev[8];
+    dff blueValue[8];
+    dff bluePrev[8]; 
+  }
+  always {
+    
+    alu.a = 0;
+    alu.b = 0;
+    alu.alufn = 6b000000;
+    if (1) {
+      alu.a = redDigit;
+      alu.b = redValue.q;
+      alu.alufn = redOperator;
+    }
+    rng.next = 0;
+    rng.seed = 145431553152;
+    //rng.seed = count.q;
+    choice1 = 1;
+    choice2 = 2;
+    choice3 = 3;
+    choice4 = rng.num4;
+    
+    if (0) {
+      redValue.d = 0;
+      redPrev.d = 0;
+      blueValue.d = 0;
+      redPrev.d = 0;
+      rng.next = 1;
+      seed.d = count.q;
+    }
+    
+    redOut = redValue.q;
+    redValue.d = 94;
+    // blueOut = blueValue.q;
+    
+    count.d = count.q + 1;
+  }
+}

@@ -12,7 +12,7 @@ module calculator (
       3b000: updatedValue = currentValue + incomingValue;
       3b001: updatedValue = currentValue - incomingValue;
       3b010: updatedValue = currentValue * incomingValue;
-      3b011: updatedValue = currentValue;
+      3b011: updatedValue = currentValue / incomingValue;
       3b100: updatedValue = 0;
       default: updatedValue = currentValue;
     }

@@ -8,8 +8,7 @@ module keypad #(
     output keypad_col[4],
     output io_led2[4],
     output digit_out[4],
-    output operator_out[4],
-    output testOut[4]
+    output operator_out[4]
   ) {
   const DIGIT_BITS = $clog2(ROWS);
   
@@ -46,7 +45,5 @@ module keypad #(
     decoder.row = row;
     digit_out = decoder.digit_out;
     operator_out = decoder.operator_out;
-    
-    testOut = col;
   }
 }

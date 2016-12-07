@@ -8,3 +8,6 @@ NET "keypad_Red_Col<3>"  LOC = P27 | IOSTANDARD = LVTTL;
 NET "keypad_Red_Col<2>"  LOC = P30 | IOSTANDARD = LVTTL;
 NET "keypad_Red_Col<1>"  LOC = P33 | IOSTANDARD = LVTTL;
 NET "keypad_Red_Col<0>"  LOC = P35 | IOSTANDARD = LVTTL;
+
+NET "new_Game_Button"  LOC = P74 | IOSTANDARD = LVTTL;
+NET "easy_Button" LOC = P75 | IOSTANDARD = LVTTL;

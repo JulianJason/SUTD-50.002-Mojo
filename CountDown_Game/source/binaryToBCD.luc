@@ -1,0 +1,94 @@
+/*
+  Binary number to Binary Coded Decimal converte
+  Conversion of a binary number into separate binary numbers representing digits of the decimal number.
+  Algorithm adapted from http://www.eng.utah.edu/~nmcdonal/Tutorials/BCDTutorial/BCDConversion.html
+*/
+
+module binaryToBCD #(
+    SIZE = 8 : SIZE > 0
+  )(
+    input binary[SIZE],    // a variable input size binary input. We use SIZE=8 for a,b and SIZE=11 for output
+    output digit2[4],      // hundreds
+    output digit1[4],      // tens
+    output digit0[4]       // ones
+  ) {
+  var i;
+  sig binaryInput[SIZE];
+  sig hundreds[4];
+  sig tens[4];
+  sig ones[4];
+  always {
+  
+    binaryInput = binary;     // copy the read-only array to a write-able memory space
+    
+    // create placeholders
+    hundreds = 4b0000; 
+    tens = 4b0000;
+    ones = 4b0000;
+    
+    if (binaryInput[SIZE - 1] == 0) {
+      for (i=0; i <= SIZE - 1; i++) {            // for each digit
+      
+        // if any column is greater than or equal to 5, add three to that column
+        if (hundreds >= 4b0101) {
+          hundreds = hundreds + 2b11;
+        }
+        if (tens >= 4b0101) {
+          tens = tens + 2b11;
+        }
+        if (ones >= 4b0101) {
+          ones = ones + 2b11;
+        }
+        
+        // for each column, bit shift 1 to the left. the LSB is taken from the MSB of the next column
+        hundreds = hundreds << 1;
+        hundreds[0] = tens[3];
+        tens = tens << 1;
+        tens[0] = ones[3];
+        ones = ones << 1;
+        ones[0] = binaryInput[SIZE - 1];
+        binaryInput = binaryInput << 1;
+      }
+    } else {
+    
+      // convert to twos complement
+      binaryInput = ~binaryInput;
+      binaryInput = binaryInput + 1;
+      
+      for (i=0; i <= SIZE - 1; i++) {            // for each digit
+      
+        // if any column is greater than or equal to 5, add three to that column
+        if (hundreds >= 4b0101) {
+          hundreds = hundreds + 2b11;
+        }
+        if (tens >= 4b0101) {
+          tens = tens + 2b11;
+        }
+        if (ones >= 4b0101) {
+          ones = ones + 2b11;
+        }
+        
+        // for each column, bit shift 1 to the left. the LSB is taken from the MSB of the next column
+        hundreds = hundreds << 1;
+        hundreds[0] = tens[3];
+        tens = tens << 1;
+        tens[0] = ones[3];
+        ones = ones << 1;
+        ones[0] = binaryInput[SIZE - 1];
+        binaryInput = binaryInput << 1;
+    }
+  }
+  // if the size of binary is equal to output size(11 bits, can support -999 < x < 999), and value is a special error value 
+  if (SIZE == 11 && ($signed(binary) == 1000)) {
+    // display Err
+    hundreds = 10;    // E symbol
+    tens = 11;        // r symbol
+    ones = 11;        // r symbol
+  }
+  
+  // send results to io_LED
+  digit2 = hundreds;
+  digit1 = tens;
+  digit0 = ones;
+}
+}

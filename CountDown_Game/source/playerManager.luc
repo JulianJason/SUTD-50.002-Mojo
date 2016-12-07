@@ -1,47 +1,60 @@
+/*
+  playerManager are dumb components
+  Its job is to relay data between the components and the game gameManager (both input and output)
+  
+*/
+
 module playerManager (
     input clk,  // clock
     input rst,  // reset
-    output io_led[8],
     input keypad_row[4],
     output keypad_col[4],
     output digit_out[8],
-    output testOut[4],
+    output operator_out[3],
     input new_game,
-    output sev_seg[8],
-    output sev_seg_sel[4]
+    input choice1[4],
+    input choice2[4],
+    input choice3[4],
+    input choice4[4],
+    input currentValue,
+    output four_sev_seg[8],
+    output four_sev_seg_sel[4],
+    output two_sev_seg[8],
+    output two_sev_seg_sel[2]
   ) {
   .clk(clk) { .rst(rst) {
       keypad playerKeypad;
       // multi_LED_digit player_input;
       multi_LED_digit choices_mled;
-      calculator calculator;
+      multi_LED_digit value_mled; // set digits to 2
     }
-    dff current_value[8]; // max 128
   }
-  
+  binaryToBCD bin_to_dec;
   always {
     playerKeypad.keypad_row = keypad_row;    
     keypad_col = playerKeypad.keypad_col;
     
-    io_led = playerKeypad.io_led2;
     digit_out = playerKeypad.digit_out;
-    testOut = playerKeypad.testOut;
+    operator_out = playerKeypad.operator_out;
+    bin_to_dec.binary = currentValue;
     
-    calculator.currentValue = current_value.q;
-    calculator.incomingValue = playerKeypad.digit_out;
-    calculator.operator = playerKeypad.operator_out;
+    choices_mled.digit1 = choice1;
+    choices_mled.digit2 = choice2;
+    choices_mled.digit3 = choice3;
+    choices_mled.digit4 = choice4;
     
-    choices_mled.digit1 = playerKeypad.digit_out;
-    choices_mled.digit2 = playerKeypad.digit_out;
-    choices_mled.digit3 = playerKeypad.digit_out;
-    choices_mled.digit4 = playerKeypad.digit_out;
+    //TODO check digits if in choices
+    // consider using BCD converter
+    value_mled.digit1 = 8;
+    value_mled.digit2 = 8;
+    value_mled.digit3 = -1;
+    value_mled.digit4 = -1;
     
-    sev_seg = choices_mled.seg;
-    sev_seg_sel = ~choices_mled.sel;
-  if (new_game) {
-    current_value.d = 0;
-  } else {
-    current_value.d = calculator.updatedValue;  
-  }
+    
+    four_sev_seg = choices_mled.seg;
+    four_sev_seg_sel = ~choices_mled.sel;
+    
+    two_sev_seg = value_mled.seg;
+    two_sev_seg_sel = value_mled.sel;
   }
 }
