@@ -1,10 +1,10 @@
-NET "keypad_Red_Row<3>"  LOC = P32 | IOSTANDARD = LVTTL | PULLDOWN;
-NET "keypad_Red_Row<2>"  LOC = P34 | IOSTANDARD = LVTTL | PULLDOWN;
-NET "keypad_Red_Row<1>"  LOC = P48 | IOSTANDARD = LVTTL | PULLDOWN;
-NET "keypad_Red_Row<0>"  LOC = P50 | IOSTANDARD = LVTTL | PULLDOWN;
+NET "keypad_Red_Row<3>"  LOC = P123 | IOSTANDARD = LVTTL | PULLUP;
+NET "keypad_Red_Row<2>"  LOC = P126 | IOSTANDARD = LVTTL | PULLUP;
+NET "keypad_Red_Row<1>"  LOC = P131 | IOSTANDARD = LVTTL | PULLUP;
+NET "keypad_Red_Row<0>"  LOC = P133 | IOSTANDARD = LVTTL | PULLUP;
 
 
-NET "keypad_Red_Col<3>"  LOC = P33 | IOSTANDARD = LVTTL;
-NET "keypad_Red_Col<2>"  LOC = P35 | IOSTANDARD = LVTTL;
-NET "keypad_Red_Col<1>"  LOC = P41 | IOSTANDARD = LVTTL;
-NET "keypad_Red_Col<0>"  LOC = P51 | IOSTANDARD = LVTTL;
+NET "keypad_Red_Col<3>"  LOC = P124 | IOSTANDARD = LVTTL;
+NET "keypad_Red_Col<2>"  LOC = P127 | IOSTANDARD = LVTTL;
+NET "keypad_Red_Col<1>"  LOC = P132 | IOSTANDARD = LVTTL;
+NET "keypad_Red_Col<0>"  LOC = P134 | IOSTANDARD = LVTTL;

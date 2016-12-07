@@ -1,13 +1,13 @@
 module keypad #(
     ROWS = 4 : ROWS > 0,
-    DIV = 24 : DIV >= 0 // change to 16
+    DIV = 16 : DIV >= 0 // change to 16
   )(
     input clk,  // clock
     input rst,  // reset
     input keypad_row[4],
     output keypad_col[4],
     output io_led2[4],
-    output digit_out[8],
+    output digit_out[4],
     output operator_out[4],
     output testOut[4]
   ) {
@@ -23,24 +23,23 @@ module keypad #(
     keypad_col = 0;
     io_led2 = 0;
     case (ctr.value) {
-      0: keypad_col[3:0] = 4b1110;
+      0: keypad_col[3:0] = ~4b1000;
          col = 0;
-      1: keypad_col[3:0] = 4b1101;
+      1: keypad_col[3:0] = ~4b0100;
          col = 1;
-      2: keypad_col[3:0] = 4b1011;
+      2: keypad_col[3:0] = ~4b0010;
          col = 2;
-      3: keypad_col[3:0] = 4b0111;
+      3: keypad_col[3:0] = ~4b0001;
          col = 3;
       default: 
          keypad_col = 4b0;
          col = -1;
     }
-    io_led2 = keypad_row[3:0];
     case(keypad_row[3:0]) {
-      4b0111: row = 0;
-      4b1011: row = 1;
-      4b1101: row = 2;
-      4b1110: row = 3;
+      4b1110: row = 0;
+      4b1101: row = 1;
+      4b1011: row = 2;
+      4b0111: row = 3;
       default: row = -1;
     }
     decoder.col = col;
