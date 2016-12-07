@@ -1,7 +1,7 @@
 module mojo_top (
     input clk,              // 50MHz clock
     input rst_n,            // reset button (active low)
-    output led [8],         // 8 user controllable LEDs
+    //output led [8],         // 8 user controllable LEDs
     input cclk,             // configuration clock, AVR ready when high
     output spi_miso,        // AVR SPI MISO
     input spi_ss,           // AVR SPI Slave Select
@@ -11,15 +11,16 @@ module mojo_top (
     input avr_tx,           // AVR TX (FPGA RX)
     output avr_rx,          // AVR RX (FPGA TX)
     input avr_rx_busy,      // AVR RX buffer full
-    output io_led [8],   // LEDs on IO Shield
-    output io_seg [8],      // 7-segment LEDs on IO Shield
-    output io_sel [4],      // Digit select on IO Shield
-    input io_button [5],    // 5 buttons on IO Shield
-    input io_dip [3][8],     // DIP switches on IO Shield,
+   // output io_led [8],   // LEDs on IO Shield
+   // output io_seg [8],      // 7-segment LEDs on IO Shield
+   // output io_sel [4],      // Digit select on IO Shield
+  //  input io_button [5],    // 5 buttons on IO Shield
+  //  input io_dip [3][8],     // DIP switches on IO Shield,
     // player A IO
-    input keypadA_row[4],
+    input keypad_Red_row[4],
     output keypadA_col[4],
-    output sev_segB[14]
+    output sev_seg_Red[8],
+    output sev_seg_sel_Red[4]
   ) {
   
   sig rst;                  // reset signal
@@ -29,10 +30,10 @@ module mojo_top (
     // clock. This ensures the entire FPGA comes out of reset at the same time.
     reset_conditioner reset_cond;
     .rst(rst) {
-      gameManager manager;
+  //    gameManager manager;
       playerManager player1;
       // playerManager player2;
-      multi_LED_digit multi_led;
+   //   multi_LED_digit multi_led;
     }
   }
   
@@ -40,31 +41,25 @@ module mojo_top (
     reset_cond.in = ~rst_n; // input raw inverted reset signal
     rst = reset_cond.out;   // conditioned reset
     
-    led = 8h00;             // turn LEDs off
+    //led = 8h00;             // turn LEDs off
     spi_miso = bz;          // not using SPI
     spi_channel = bzzzz;    // not using flags
     avr_rx = bz;            // not using serial port
     
-    io_led = 8h00;    // turn LEDs off
-    io_seg = 8hff;          // turn segments off
-    io_sel = 4hf;           // select no digits
+   // io_led = 8h00;    // turn LEDs off
+ //   io_seg = 8hff;          // turn segments off
+  //  io_sel = 4hf;           // select no digits
     
-    manager.hardButton = io_dip[0][0];
-    manager.mediumButton = io_dip[0][1];
-    manager.easyButton = io_dip[0][2];
+ //   manager.hardButton = io_dip[0][0];
+ //   manager.mediumButton = io_dip[0][1];
+ //   manager.easyButton = io_dip[0][2];
     
     //io_led[1] = ~player1.io_led;
-    player1.keypad_row = keypadA_row;
+    player1.keypad_row = keypad_Red_row;
     player1.new_game = 0;
-    multi_led.digit1 = player1.digit_out;
-    multi_led.digit2 = player1.testOut;
-    multi_led.digit3 = 0;
-    multi_led.digit4 = 0;
-    keypadA_col = ~player1.keypad_col;
-    
-    io_seg = ~multi_led.seg;           // connect segments to the driver
-    io_sel = ~multi_led.sel;           // connect digit select to the driver
-    
-    sev_segB = 14b11111111111111;
+    sev_seg_Red = player1.sev_seg;
+    sev_seg_sel_Red = player1.sev_seg_sel;
+    keypadA_col = player1.keypad_col;
+
   }
 }

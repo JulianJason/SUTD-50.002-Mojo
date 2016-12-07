@@ -14,17 +14,16 @@ NET "sev_segA<12>"  LOC = P67 | IOSTANDARD = LVTTL;
 NET "sev_segA<13>"  LOC = P56 | IOSTANDARD = LVTTL;
 
 
-NET "sev_segB<0>"  LOC = P16 | IOSTANDARD = LVTTL;
-NET "sev_segB<1>"  LOC = P14| IOSTANDARD = LVTTL;
-NET "sev_segB<2>"  LOC = P11 | IOSTANDARD = LVTTL;
-NET "sev_segB<3>"  LOC = P9 | IOSTANDARD = LVTTL;
-NET "sev_segB<4>"  LOC = P7 | IOSTANDARD = LVTTL;
-NET "sev_segB<5>"  LOC = P5 | IOSTANDARD = LVTTL;
-NET "sev_segB<6>"  LOC = P1 | IOSTANDARD = LVTTL;
-NET "sev_segB<7>"  LOC = P2 | IOSTANDARD = LVTTL;
-NET "sev_segB<8>"  LOC = P6 | IOSTANDARD = LVTTL;
-NET "sev_segB<9>"  LOC = P8 | IOSTANDARD = LVTTL;
-NET "sev_segB<10>"  LOC = P10 | IOSTANDARD = LVTTL;
-NET "sev_segB<11>"  LOC = P12 | IOSTANDARD = LVTTL;
-NET "sev_segB<12>"  LOC = P15 | IOSTANDARD = LVTTL;
-NET "sev_segB<13>"  LOC = P17 | IOSTANDARD = LVTTL;
+NET "sev_seg_Red<0>"  LOC = P12 | IOSTANDARD = LVTTL;
+NET "sev_seg_Red<1>"  LOC = P2 | IOSTANDARD = LVTTL;
+NET "sev_seg_Red<2>"  LOC = P7 | IOSTANDARD = LVTTL;
+NET "sev_seg_Red<3>"  LOC = P11 | IOSTANDARD = LVTTL;
+NET "sev_seg_Red<4>"  LOC = P14 | IOSTANDARD = LVTTL;
+NET "sev_seg_Red<5>"  LOC = P10 | IOSTANDARD = LVTTL;
+NET "sev_seg_Red<6>"  LOC = P5 | IOSTANDARD = LVTTL;
+NET "sev_seg_Red<7>"  LOC = P11 | IOSTANDARD = LVTTL;
+
+NET "sev_seg_sel_Red<0>" LOC=P15 | IOSTANDARD = LVTTL;
+NET "sev_seg_sel_Red<1>" LOC=P8 | IOSTANDARD = LVTTL;
+NET "sev_seg_sel_Red<2>" LOC=P6 | IOSTANDARD = LVTTL;
+NET "sev_seg_sel_Red<3>" LOC=P1 | IOSTANDARD = LVTTL;
