@@ -1,5 +1,5 @@
 /*
-  TODO shift red pins to the left once
+  TODO check pins
 */
 
 module mojo_top (
@@ -16,11 +16,6 @@ module mojo_top (
     input avr_rx_busy,      // AVR RX buffer full
     input new_Game_Button,
     input easy_Button,
-   // output io_led [8],   // LEDs on IO Shield
-   // output io_seg [8],      // 7-segment LEDs on IO Shield
-   // output io_sel [4],      // Digit select on IO Shield
-  //  input io_button [5],    // 5 buttons on IO Shield
-  //  input io_dip [3][8],     // DIP switches on IO Shield,
     
 /// Red Player IO units/////////////////////////////////////////////////////////
     // keypad
@@ -31,7 +26,19 @@ module mojo_top (
     output four_seg_sel_Red[4],
     // 2 digit 7-seg    
     output two_seg_Red[8],
-    output two_seg_sel_Red[2]
+    output two_seg_sel_Red[2],
+ /// Green IO units 
+    output four_seg_Green[8],
+    output four_seg_sel_Green[4],
+    output two_seg_Green[8],
+    output two_seg_sel_Green[2],
+  // BLUE player IO units
+    input keypad_Blue_Row[4],
+    output keypad_Blue_Col[4],
+    //output four_seg_Blue[8],
+    //output four_seg_sel_Blue[4],
+    output two_seg_Blue[8],
+    output two_seg_sel_Blue[2]
   ) {
   
   sig rst;                  // reset signal
@@ -44,9 +51,7 @@ module mojo_top (
       gameManager gameManager;
       roundManager roundManager;
       playerManager redPlayer;
-      
-      
-     // playerManager bluePlayer;
+      playerManager bluePlayer;
      //   multi_LED_digit multi_led;
     }
     
@@ -73,7 +78,7 @@ module mojo_top (
     roundManager.difficulty = gameManager.difficulty;
     
     
-    // player Red IO
+    // Red player IO
     redPlayer.new_game = 0;
     redPlayer.keypad_row = keypad_Red_Row;
     keypad_Red_Col = redPlayer.keypad_col;
@@ -87,9 +92,35 @@ module mojo_top (
     redPlayer.choice2 = roundManager.choice2;
     redPlayer.choice3 = roundManager.choice3;
     redPlayer.choice4 = roundManager.choice4;
-    redPlayer.currentValue = roundManager.redOut;
+    redPlayer.currentValue = roundManager.redOut[4];
+    redPlayer.destinationValue = roundManager.destinationValue;
     roundManager.redDigit = redPlayer.digit_out;
     roundManager.redOperator = redPlayer.operator_out;
+    
+    // Blue player IO
+    bluePlayer.new_game = 0;
+    bluePlayer.keypad_row = keypad_Blue_Row;
+    keypad_Blue_Col = bluePlayer.keypad_col;
+    two_seg_Blue = bluePlayer.two_sev_seg;
+    two_seg_sel_Blue = bluePlayer.two_sev_seg_sel;
+    bluePlayer.choice1 = roundManager.choice1;
+    bluePlayer.choice2 = roundManager.choice2;
+    bluePlayer.choice3 = roundManager.choice3;
+    bluePlayer.choice4 = roundManager.choice4;
+    bluePlayer.currentValue = roundManager.redOut[4];
+    bluePlayer.destinationValue = roundManager.destinationValue;
+    
+   // four_seg_Blue = 8b11111111;
+  //  four_seg_sel_Blue = 2b11;
+    //two_seg_sel_Blue = 2b11;
+    //two_seg_Blue = 8b11111111;
+    
+    // JUDGE
+    
+    four_seg_Green = 8b11111111;
+    four_seg_sel_Green = 2b11;
+    two_seg_sel_Green = 2b11;
+    two_seg_Green = 8b11111111;
     
   }
 }

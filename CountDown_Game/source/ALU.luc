@@ -5,7 +5,7 @@ module aluUnit (
     input a[8],
     input b[8],
     // ALU output
-    output result[11]
+    output result[8]
   ) {
   .clk(clk) {
   

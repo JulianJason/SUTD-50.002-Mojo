@@ -26,24 +26,6 @@ NET "two_seg_sel_Red<0>" LOC=P17 | IOSTANDARD = LVTTL;
 NET "two_seg_sel_Red<1>" LOC=P15 | IOSTANDARD = LVTTL;
 
 
-
-NET "sev_segA<0>"  LOC = P57 | IOSTANDARD = LVTTL;
-NET "sev_segA<1>"  LOC = P66 | IOSTANDARD = LVTTL;
-NET "sev_segA<2>"  LOC = P74 | IOSTANDARD = LVTTL;
-NET "sev_segA<3>"  LOC = P70 | IOSTANDARD = LVTTL;
-NET "sev_segA<4>"  LOC = P80 | IOSTANDARD = LVTTL;
-NET "sev_segA<5>"  LOC = P82 | IOSTANDARD = LVTTL;
-NET "sev_segA<6>"  LOC = P84 | IOSTANDARD = LVTTL;
-NET "sev_segA<7>"  LOC = P85 | IOSTANDARD = LVTTL;
-NET "sev_segA<8>"  LOC = P83 | IOSTANDARD = LVTTL;
-NET "sev_segA<9>"  LOC = P81 | IOSTANDARD = LVTTL;
-NET "sev_segA<10>"  LOC = P79 | IOSTANDARD = LVTTL;
-NET "sev_segA<11>"  LOC = P75 | IOSTANDARD = LVTTL;
-NET "sev_segA<12>"  LOC = P67 | IOSTANDARD = LVTTL;
-NET "sev_segA<13>"  LOC = P56 | IOSTANDARD = LVTTL;
-
-
-
 NET "four_seg_Green<0>"  LOC = P138 | IOSTANDARD = LVTTL;
 NET "four_seg_Green<1>"  LOC = P124 | IOSTANDARD = LVTTL;
 NET "four_seg_Green<2>"  LOC = P131 | IOSTANDARD = LVTTL;

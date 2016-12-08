@@ -17,6 +17,7 @@ module playerManager (
     input choice3[4],
     input choice4[4],
     input currentValue[4],
+    input destinationValue[8],
     output four_sev_seg[8],
     output four_sev_seg_sel[4],
     output two_sev_seg[8],
@@ -43,10 +44,9 @@ module playerManager (
     choices_mled.digit3 = choice3;
     choices_mled.digit4 = choice4;
     
-    //TODO check digits if in choices
-    // consider using BCD converter
-    value_mled.digit1 = 8;
-    value_mled.digit2 = 8;
+    bin_to_dec.binary = destinationValue;
+    value_mled.digit1 = bin_to_dec.digit0;
+    value_mled.digit2 = bin_to_dec.digit1;
     value_mled.digit3 = -1;
     value_mled.digit4 = -1;
     
@@ -55,6 +55,6 @@ module playerManager (
     four_sev_seg_sel = ~choices_mled.sel;
     
     two_sev_seg = value_mled.seg;
-    two_sev_seg_sel = value_mled.sel;
+    two_sev_seg_sel = value_mled.sel[2];
   }
 }

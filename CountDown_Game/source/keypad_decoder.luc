@@ -58,8 +58,11 @@ module keypad_decoder (
           3: digit_out = -1;
              operator_out = 5;
           default: digit_out = -1;
-                   operator_out = -1;
-        }
+                     operator_out = -1;
+          }
+        default: digit_out = -1;
+                operator_out = -1;
+      }
     }
   }
-}
+  
