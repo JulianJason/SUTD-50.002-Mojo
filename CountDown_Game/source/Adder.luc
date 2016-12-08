@@ -13,8 +13,8 @@
 module adderUnit (
     // ALU inputs
     input alufn[6] ,
-    input a[8],
-    input b[8],
+    input a[16],
+    input b[16],
     // adder outputs
     output added[11],
     output z[1],                // true is all s = 0
@@ -32,16 +32,16 @@ module adderUnit (
   
     case(alufn[3:0]) {
       b0000:
-        val = $signed(a) + $signed(b);                               // addition
+        val = a + b;                               // addition
       b0001:
-        val = $signed(a) - $signed(b);                               // subtraction
+        val = a - b;                               // subtraction
       b0010:
-        val = $signed(a) * $signed(b);                               // multiplication
+        val = a * b;                               // multiplication
       b0011:
-        if ($signed(b) == 0) {
+        if (b == 0) {
           val = 1000;                    // if division by zero, show error
         } else {
-          val = $signed(a) / $signed(b); // division
+          val = a / b; // division
         }                               
       b0100:
         if ($signed(b) == 0) {
@@ -59,9 +59,6 @@ module adderUnit (
     n = minus[7];
     
     // if clause to consider for overflow. 32768 is 2^15, which is the max amount a 16 bit signed binary can present.
-    if ((val > 999 && val < 32768) || ($signed(val) < -999 && $signed(val) >= -32768)) {
-      val = 1000;       // change value to 1000, which is a special case value to return error
-    }
     
     added = val[10:0];  // take only the last 10 digits
   }

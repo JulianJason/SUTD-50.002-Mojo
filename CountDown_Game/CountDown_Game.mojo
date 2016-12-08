@@ -23,6 +23,8 @@
     <ucf>modified_mojo.ucf</ucf>
     <component>decoder.luc</component>
     <component>reset_conditioner.luc</component>
+    <component>pipeline.luc</component>
+    <component>button_conditioner.luc</component>
     <component>counter.luc</component>
   </files>
 </project>

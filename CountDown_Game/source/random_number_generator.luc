@@ -62,13 +62,14 @@ module random_number_generator #(
   
   sig t [32];        
   always {
+    // modulo using a - (b * floor(a/b))
     num1 = 2 + (w.q[31:23] - 8 * (w.q[31:23]/8));
     num2 = 2 + (w.q[23:15] - 8 * (w.q[23:15]/8));
     num3 = 2 + (w.q[15:7] - 8 * (w.q[15:7]/8));
-    num4 = 2 + (w.q[8:0] - 8 * (w.q[8:0]/8));           // output is from w
-    operator1 = (w.q[20:5] - 3 * (w.q[15:7]/3));
-    operator2 = (w.q[17:4] - 3 * (w.q[15:7]/3));
-    operator3 = (w.q[9:4] - 3 * (w.q[15:7]/3));
+    num4 = 2 + (w.q[8:0] - 8 * (w.q[8:0]/8));       
+    operator1 = (w.q[8:0] - 3 * (w.q[8:0]/3));
+    operator2 = (w.q[15:7] - 3 * (w.q[15:7]/3));
+    operator3 = (w.q[23:15] - 3 * (w.q[23:5]/3));
     t = x.q ^ (x.q << 11);          // calculate intermediate value
     
     if (next) {                     // if we need a new number

@@ -2,8 +2,8 @@ module aluUnit (
     input clk,                // clock
     // mojo top inputs
     input alufn[6] ,
-    input a[8],
-    input b[8],
+    input a[10],
+    input b[10],
     // ALU output
     output result[8]
   ) {

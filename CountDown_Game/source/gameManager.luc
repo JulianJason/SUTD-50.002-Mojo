@@ -13,43 +13,57 @@ module gameManager (
     input newGameButton,
     input singlePlayerButton,
     input multiplayerButton,
-    output difficulty,
+    output difficulty[2],
     output newGameFlag
   ) {
   .clk(clk) {
     .rst(rst) {
-      fsm state = {NOT_PLAYING, PLAY_EASY, PLAY_MEDIUM, PLAY_HARD}; // the multiple playing states 
+      fsm state = {NOT_PLAYING, SINGLE_PLAYER, MULTIPLAYER}; // the multiple playing states 
+      fsm difficultyState = {EASY, MEDIUM, HARD}
     }
-    dff game_state[2];
+    dff confirm[1];
+    button_conditioner spButtonCond;
+    button_conditioner mpbuttonCond;
   }
   always {
     
     difficulty = 0;
     newGameFlag = 0;
-    
-    // if not playing
-    if (game_state.q == state.NOT_PLAYING) {
-      // and difficulty button is pressed, start new round
-      if (easyButton) {
-        difficulty = 2b01;
-        game_state.d = state.PLAY_EASY;
-        newGameFlag = 1;
-      } else if (mediumButton) {
-        difficulty = 2b10;
-        game_state.d = state.PLAY_MEDIUM;
-        newGameFlag = 1;
-      } else if (hardButton) {
-        difficulty = 2b11;
-        game_state.d = state.PLAY_HARD;
-        newGameFlag = 1;
+    if (easyButton) {
+        difficultyState.d = difficultyState.EASY;
+    } else if (mediumButton) {
+        difficultyState.d = difficultyState.MEDIUM;
+    } else if (hardButton) {
+        difficultyState.d = difficultyState.HARD;
+    }
+    spButtonCond.in = singlePlayerButton;
+    mpbuttonCond.in = multiplayerButton;
+    if (spButtonCond.out) {
+      if (state.q != state.NOT_PLAYING && confirm.q == 1) {
+          confirm.d = 0;
+          state.d = state.NOT_PLAYING;
+          newGameFlag = 1;
+      } else {
+       confirm.d = 1; 
+      }
+    } else if (mpbuttonCond.out) {
+      if (state.q != state.NOT_PLAYING && confirm.q == 1) {
+          confirm.d = 0;
+          state.d = state.NOT_PLAYING;
+          newGameFlag = 1;
+      } else {
+       confirm.d = 1; 
       }
     }
+    // if not playing
+    
     
     // else if new game button is pressed, reset game
     if (newGameButton) {
       newGameFlag = 0;
       game_state.d = state.NOT_PLAYING;
     }
-    // single player or not
+    
+    difficulty = difficultyState.q;
   }
 }

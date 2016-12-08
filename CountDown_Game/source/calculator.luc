@@ -1,3 +1,4 @@
+// TODO delete this module
 module calculator (
     input clk,  // clock
     input rst,  // reset

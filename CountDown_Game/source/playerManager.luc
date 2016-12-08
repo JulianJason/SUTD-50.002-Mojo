@@ -9,24 +9,23 @@ module playerManager (
     input rst,  // reset
     input keypad_row[4],
     output keypad_col[4],
-    output digit_out[8],
-    output operator_out[6],
-    input new_game,
     input choice1[4],
     input choice2[4],
     input choice3[4],
     input choice4[4],
-    input currentValue[4],
-    input destinationValue[8],
+    input currentValue[8],
+    input destinationValue[16],
+    input newGameFlag,
     output four_sev_seg[8],
     output four_sev_seg_sel[4],
     output two_sev_seg[8],
     output two_sev_seg_sel[2],
-    output inputFlag
+    output inputFlag,
+    output digit_out[8],
+    output operator_out[6]
   ) {
   .clk(clk) { .rst(rst) {
       keypad playerKeypad;
-      // multi_LED_digit player_input;
       multi_LED_digit choices_mled;
       multi_LED_digit value_mled(#DIGITS(2)); // set digits to 2
     }
@@ -39,14 +38,13 @@ module playerManager (
     
     digit_out = playerKeypad.digit_out;
     operator_out = playerKeypad.operator_out;
-    bin_to_dec.binary = currentValue;
     
-    choices_mled.digit1 = playerKeypad.digit_out; //TODO change back
-    choices_mled.digit2 = playerKeypad.digit_out;
-    choices_mled.digit3 = playerKeypad.digit_out;
-    choices_mled.digit4 = 4;
+    choices_mled.digit1 = choice1;
+    choices_mled.digit2 = choice2;
+    choices_mled.digit3 = choice3;
+    choices_mled.digit4 = choice4;
     
-    bin_to_dec.binary = destinationValue;
+    bin_to_dec.binary = destinationValue; // change to current value
     value_mled.digit1 = bin_to_dec.digit0;
     value_mled.digit2 = bin_to_dec.digit1;
     value_mled.digit3 = -1;

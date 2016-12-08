@@ -54,11 +54,10 @@ module mojo_top (
       roundManager roundManager;
       playerManager redPlayer;
       playerManager bluePlayer;
-     //   multi_LED_digit multi_led;
+      multi_LED_digit multi_led; // delete later
     }
-    
   }
-  
+  binaryToBCD bindec;
   always {
   // declare manager at top
     // if new game, reset everything for 1 cycle
@@ -79,9 +78,10 @@ module mojo_top (
     roundManager.newGameFlag = gameManager.newGameFlag;
     roundManager.difficulty = gameManager.difficulty;
     
-    
-    // Red player IO
-    redPlayer.new_game = 0;
+/*-------------------------------------------------------------------    
+                       Red player IO
+-------------------------------------------------------------------*/
+    redPlayer.newGameFlag = 0;
     // keypad
     redPlayer.keypad_row = keypad_Red_Row;
     keypad_Red_Col = redPlayer.keypad_col;
@@ -97,15 +97,20 @@ module mojo_top (
     two_seg_Red = redPlayer.two_sev_seg;
     two_seg_sel_Red = redPlayer.two_sev_seg_sel;
     // 2 seg current value
-    redPlayer.currentValue = roundManager.redOut[4];
+    redPlayer.currentValue = roundManager.redOut;
     
     
     redPlayer.destinationValue = roundManager.destinationValue; // think unnecessary
     roundManager.redDigit = redPlayer.digit_out;
     roundManager.redOperator = redPlayer.operator_out;
-    roundManager.redInput = redPlayer.inputFlag;
-    // Blue player IO
-    bluePlayer.new_game = 0;
+    roundManager.redInputFlag = redPlayer.inputFlag;
+    
+
+/*-------------------------------------------------------------------    
+                       Blue player IO
+-------------------------------------------------------------------*/
+    
+    bluePlayer.newGameFlag = 0;
     // keypad
     bluePlayer.keypad_row = keypad_Blue_Row;
     keypad_Blue_Col = bluePlayer.keypad_col;
@@ -121,24 +126,25 @@ module mojo_top (
     bluePlayer.choice3 = roundManager.choice3;
     bluePlayer.choice4 = roundManager.choice4;
     // bluePlayer.currentValue = roundManager.blueOut[4];
-    bluePlayer.currentValue = 0;
+    bluePlayer.currentValue = roundManager.blueOut;
     bluePlayer.destinationValue = roundManager.destinationValue;
     // bluedigit
     // blue operator
-    roundManager.blueInput = bluePlayer.inputFlag;
+    roundManager.blueInputFlag = bluePlayer.inputFlag;
+    roundManager.blueDigit = bluePlayer.digit_out;
+    roundManager.blueOperator = bluePlayer.operator_out;
     
-   // four_seg_Blue = 8b11111111;
-  //  four_seg_sel_Blue = 2b11;
-    //two_seg_sel_Blue = 2b11;
-    //two_seg_Blue = 8b11111111;
     
-    // JUDGE
-    
-    four_seg_Green = 8b11111111;
-    four_seg_sel_Green = 4b1111;
-    //  two_seg_sel_Green = 2b11;
-    //   two_seg_Green = 8b11111111;
-    //   four_seg_Blue = 8b11111111;
-    // four_seg_sel_Blue = 4b1111;
+
+/*-------------------------------------------------------------------    
+                       debug
+-------------------------------------------------------------------*/
+    bindec.binary = roundManager.destinationValue;
+    multi_led.digit1 = bindec.digit2;
+    multi_led.digit2 = bindec.digit1;
+    multi_led.digit3 = bindec.digit0;
+    multi_led.digit4 = -1;
+    four_seg_Green = multi_led.seg;
+    four_seg_sel_Green = ~multi_led.sel;
   }
 }

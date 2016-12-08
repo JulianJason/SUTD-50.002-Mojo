@@ -3,19 +3,20 @@ module roundManager (
     input rst,  // reset
     input redDigit[8],
     input redOperator[6],
-  //  input blueDigit,
-  //  input blueOperator,
+    input redInputFlag,
+    input blueDigit[8],
+    input blueOperator[6],
+    input blueInputFlag,
     input difficulty[3],
     input newGameFlag,
-    input redInput,
-    input blueInput,
     output redOut[8],
+    output blueOut[8],
 //    output blueOut[8],
     output choice1[4],
     output choice2[4],
     output choice3[4],
     output choice4[4],
-    output destinationValue[8]
+    output destinationValue[16]
   ) {
 .  clk(clk) {
     .rst(rst) {
@@ -24,28 +25,71 @@ module roundManager (
     dff count[25];  // delay counter
     dff seed[25];
     aluUnit alu;
-    dff redValue[8];
-    dff redPrev[8];
-    dff blueValue[8];
-    dff bluePrev[8]; 
+    dff redValue[10];
+    dff redPrev[10];
+    dff blueValue[10];
+    dff bluePrev[10]; 
     dff getNewNum;
   }
-  sig result[8];
-  sig initialize;
+  sig result[16];
+  sig temp[10];
   always {
+  
     if (seed.q == bz) {
       seed.d = 5422125542;
     }
-    alu.a = 0;
-    alu.b = 0;
+    alu.a = 120;
+    alu.b = 3;
     alu.alufn = 6b000000;
-    if (redInput == 1) {
-      alu.a = redDigit;
-      alu.b = redValue.q;
-      alu.alufn = redOperator;
-    }
-    if (blueInput == 1) {
     
+    if (redInputFlag) {
+      temp = redValue.q;
+      case (redOperator) {
+        0: 
+              alu.a = temp;
+              alu.b = redDigit;
+              alu.alufn = 6b000000;
+              temp = alu.result;
+        1: alu.a = temp;
+              alu.b = redDigit;
+              alu.alufn = 6b000001;
+              temp = alu.result;
+        2: alu.a = temp;
+              alu.b = redDigit;
+              alu.alufn = 6b000010;
+              temp = alu.result;
+        3: alu.a = temp;
+              alu.b = redDigit;
+              alu.alufn = 6b000011;
+              temp = alu.result;
+        default: temp = temp;
+      }
+      redValue.d = temp;
+    }
+    
+    if (blueInputFlag) {
+      temp = blueValue.q;
+      case (blueOperator) {
+        0: 
+              alu.a = temp;
+              alu.b = blueDigit;
+              alu.alufn = 6b000000;
+              temp = alu.result;
+        1: alu.a = temp;
+              alu.b = blueDigit;
+              alu.alufn = 6b000001;
+              temp = alu.result;
+        2: alu.a = temp;
+              alu.b = blueDigit;
+              alu.alufn = 6b000010;
+              temp = alu.result;
+        3: alu.a = temp;
+              alu.b = blueDigit;
+              alu.alufn = 6b000011;
+              temp = alu.result;
+        default: temp = temp;
+      }
+      blueValue.d = temp;
     }
     
     rng.next = 0;
@@ -55,67 +99,68 @@ module roundManager (
     choice2 = rng.num2;
     choice3 = rng.num3;
     choice4 = rng.num4;
-    result = rng.num1;
-    if (1 | getNewNum.q == 1) { // difficulty == 2
+    
+    if (1 || getNewNum.q == 1) { // difficulty == 2
+      result = 0;
       case (rng.operator1) {
-        2b00: 
+        0: 
               alu.a = result;
               alu.b = rng.num2;
               alu.alufn = 6b00000;
               result = alu.result;
-        2b01: alu.a = result;
+        1: alu.a = result;
               alu.b = rng.num2;
               alu.alufn = 6b00001;
               result = alu.result;
-        2b10: alu.a = result;
+        2: alu.a = result;
               alu.b = rng.num2;
               alu.alufn = 6b00010;
               result = alu.result;
-        2b11: alu.a = result;
+        3: alu.a = result;
               alu.b = rng.num2;
               alu.alufn = 6b00011;
               result = alu.result;
         default: result = result;
       }
       case (rng.operator2) {
-        2b00: 
+        0: 
               alu.a = result;
               alu.b = rng.num3;
               alu.alufn = 6b00000;
               result = alu.result;
-        2b01: alu.a = result;
+        1: alu.a = result;
               alu.b = rng.num3;
               alu.alufn = 6b00001;
               result = alu.result;
-        2b10: alu.a = result;
+        2: alu.a = result;
               alu.b = rng.num3;
               alu.alufn = 6b00010;
               result = alu.result;
-        2b11: alu.a = result;
+        3: alu.a = result;
               alu.b = rng.num3;
               alu.alufn = 6b00011;
               result = alu.result;
         default: result = result;
       }
       case (rng.operator3) {
-        2b00: 
+        0: 
               alu.a = result;
               alu.b = rng.num4;
-              alu.alufn = 6b00000;
+              alu.alufn = 6b000000;
               result = alu.result;
-        2b01: alu.a = result;
+        1: alu.a = result;
               alu.b = rng.num4;
-              alu.alufn = 6b00001;
+              alu.alufn = 6b000001;
               result = alu.result;
-        2b10: alu.a = result;
+        2: alu.a = result;
               alu.b = rng.num4;
-              alu.alufn = 6b00010;
+              alu.alufn = 6b000010;
               result = alu.result;
-        2b11: alu.a = result;
+        3: alu.a = result;
               alu.b = rng.num4;
-              alu.alufn = 6b00011;
+              alu.alufn = 6b000011;
               result = alu.result;
-        default: result = result;
+        default: result = 99;
       }
       
       if (result > 100) {
@@ -125,7 +170,8 @@ module roundManager (
         rng.next = 0;
         getNewNum.d = 0;
       }
-    }
+   }
+    
     if (newGameFlag) {
       redValue.d = 0;
       redPrev.d = 0;
@@ -136,9 +182,10 @@ module roundManager (
     }
     
     redOut = redValue.q;
-    redValue.d = 94;
+    blueOut = blueValue.q;
     
     count.d = count.q + 1;
-    destinationValue = 62; 
+    destinationValue = result; 
+    
   }
 }
