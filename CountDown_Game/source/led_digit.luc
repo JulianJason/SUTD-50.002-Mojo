@@ -15,6 +15,7 @@ module led_digit (
       7: segs = 7b0000111;
       8: segs = 7b1111111;
       9: segs = 7b1100111;
+      -1: segs = 7b0000000;
       default: segs = 7b0000000;
     }
   }

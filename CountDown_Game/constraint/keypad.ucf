@@ -9,4 +9,15 @@ NET "keypad_Red_Col<2>"  LOC = P30 | IOSTANDARD = LVTTL;
 NET "keypad_Red_Col<1>"  LOC = P33 | IOSTANDARD = LVTTL;
 NET "keypad_Red_Col<0>"  LOC = P35 | IOSTANDARD = LVTTL;
 
+
+NET "keypad_Blue_Row<3>"  LOC = P87 | IOSTANDARD = LVTTL | PULLUP;
+NET "keypad_Blue_Row<2>"  LOC = P84 | IOSTANDARD = LVTTL | PULLUP;
+NET "keypad_Blue_Row<1>"  LOC = P82 | IOSTANDARD = LVTTL | PULLUP;
+NET "keypad_Blue_Row<0>"  LOC = P80 | IOSTANDARD = LVTTL | PULLUP;
+
+NET "keypad_Blue_Col<3>"  LOC = P88 | IOSTANDARD = LVTTL;
+NET "keypad_Blue_Col<2>"  LOC = P85 | IOSTANDARD = LVTTL;
+NET "keypad_Blue_Col<1>"  LOC = P83 | IOSTANDARD = LVTTL;
+NET "keypad_Blue_Col<0>"  LOC = P81 | IOSTANDARD = LVTTL;
+
 NET "new_Game_Button"  LOC = P57 | IOSTANDARD = LVTTL;

@@ -24,6 +24,17 @@ module notes (
    o o o o o o
    5 4 8 3 7 d
    
+      red 4-digit seven segment pins
+   a 1 6 b c 2
+   o o o o o o
+   
+   o o o o o o
+   5 4 8 3 7 d
+   
+   8 - >3 
+   3 _> 7
+   7 ->d
+   
    2-digit 7 seven segment pins
    1 2 a b 6
    o o o o o
@@ -32,7 +43,7 @@ module notes (
    3 8 5 4 7
    
    145
-
+   
 */
 
 /*

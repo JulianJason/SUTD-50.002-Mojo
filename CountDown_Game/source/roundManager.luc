@@ -7,6 +7,8 @@ module roundManager (
   //  input blueOperator,
     input difficulty[3],
     input newGameFlag,
+    input redInput,
+    input blueInput,
     output redOut[8],
 //    output blueOut[8],
     output choice1[4],
@@ -37,10 +39,13 @@ module roundManager (
     alu.a = 0;
     alu.b = 0;
     alu.alufn = 6b000000;
-    if (0) {
+    if (redInput == 1) {
       alu.a = redDigit;
       alu.b = redValue.q;
       alu.alufn = redOperator;
+    }
+    if (blueInput == 1) {
+    
     }
     
     rng.next = 0;
@@ -134,6 +139,6 @@ module roundManager (
     redValue.d = 94;
     
     count.d = count.q + 1;
-    destinationValue = result; 
+    destinationValue = 62; 
   }
 }

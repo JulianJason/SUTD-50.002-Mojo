@@ -30,15 +30,17 @@ module mojo_top (
  /// Green IO units 
     output four_seg_Green[8],
     output four_seg_sel_Green[4],
-    output two_seg_Green[8],
-    output two_seg_sel_Green[2],
+//    output two_seg_Green[8],
+//    output two_seg_sel_Green[2],
   // BLUE player IO units
     input keypad_Blue_Row[4],
     output keypad_Blue_Col[4],
     //output four_seg_Blue[8],
     //output four_seg_sel_Blue[4],
     output two_seg_Blue[8],
-    output two_seg_sel_Blue[2]
+    output two_seg_sel_Blue[2],
+    output four_seg_Blue[8],
+    output four_seg_sel_Blue[8]
   ) {
   
   sig rst;                  // reset signal
@@ -80,35 +82,50 @@ module mojo_top (
     
     // Red player IO
     redPlayer.new_game = 0;
+    // keypad
     redPlayer.keypad_row = keypad_Red_Row;
     keypad_Red_Col = redPlayer.keypad_col;
-    
+    // 4 seg    
     four_seg_Red = redPlayer.four_sev_seg;
     four_seg_sel_Red = redPlayer.four_sev_seg_sel;
-    
-    two_seg_Red = redPlayer.two_sev_seg;
-    two_seg_sel_Red = redPlayer.two_sev_seg_sel;
+    // 4 seg choices
     redPlayer.choice1 = roundManager.choice1;
     redPlayer.choice2 = roundManager.choice2;
     redPlayer.choice3 = roundManager.choice3;
     redPlayer.choice4 = roundManager.choice4;
+    // 2 seg
+    two_seg_Red = redPlayer.two_sev_seg;
+    two_seg_sel_Red = redPlayer.two_sev_seg_sel;
+    // 2 seg current value
     redPlayer.currentValue = roundManager.redOut[4];
-    redPlayer.destinationValue = roundManager.destinationValue;
+    
+    
+    redPlayer.destinationValue = roundManager.destinationValue; // think unnecessary
     roundManager.redDigit = redPlayer.digit_out;
     roundManager.redOperator = redPlayer.operator_out;
-    
+    roundManager.redInput = redPlayer.inputFlag;
     // Blue player IO
     bluePlayer.new_game = 0;
+    // keypad
     bluePlayer.keypad_row = keypad_Blue_Row;
     keypad_Blue_Col = bluePlayer.keypad_col;
-    two_seg_Blue = bluePlayer.two_sev_seg;
+    // 4 seg
+    four_seg_Blue = bluePlayer.four_sev_seg;
+    four_seg_sel_Blue = bluePlayer.four_sev_seg_sel;
+    // 2 seg
+    two_seg_Blue = bluePlayer.two_sev_seg;   
     two_seg_sel_Blue = bluePlayer.two_sev_seg_sel;
+    // 4 seg choices
     bluePlayer.choice1 = roundManager.choice1;
     bluePlayer.choice2 = roundManager.choice2;
     bluePlayer.choice3 = roundManager.choice3;
     bluePlayer.choice4 = roundManager.choice4;
-    bluePlayer.currentValue = roundManager.redOut[4];
+    // bluePlayer.currentValue = roundManager.blueOut[4];
+    bluePlayer.currentValue = 0;
     bluePlayer.destinationValue = roundManager.destinationValue;
+    // bluedigit
+    // blue operator
+    roundManager.blueInput = bluePlayer.inputFlag;
     
    // four_seg_Blue = 8b11111111;
   //  four_seg_sel_Blue = 2b11;
@@ -118,9 +135,10 @@ module mojo_top (
     // JUDGE
     
     four_seg_Green = 8b11111111;
-    four_seg_sel_Green = 2b11;
-    two_seg_sel_Green = 2b11;
-    two_seg_Green = 8b11111111;
-    
+    four_seg_sel_Green = 4b1111;
+    //  two_seg_sel_Green = 2b11;
+    //   two_seg_Green = 8b11111111;
+    //   four_seg_Blue = 8b11111111;
+    // four_seg_sel_Blue = 4b1111;
   }
 }
