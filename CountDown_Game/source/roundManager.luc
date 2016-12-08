@@ -25,9 +25,10 @@ module roundManager (
     }
     dff count[25];  // delay counter
     dff seed[25];
-    aluUnit alu;
     dff redValue[8];
+    dff secondRedValue[8];
     dff blueValue[8];
+    dff secondBluevalue[8];
     dff getNewNum;
   }
   sig result[10];
@@ -35,44 +36,43 @@ module roundManager (
   always {
     redValue.d = redValue.q;
     blueValue.d = blueValue.q;
+    secondRedValue.d = redValue.q;
+    secondBluevalue.d = blueValue.q;
     getNewNum.d = getNewNum.q;
     seed.d = seed.q;
-    alu.a = 0;
-    alu.b = 0;
-    alu.alufn = 6b000000;
     redResetFlag = 0;
     blueResetFlag = 0;
     
     if (redInputFlag) {
-      temp = redValue.q;
+      temp = secondRedValue.q;
       case (redOperator && redDigit != 0 && redOperator != 0) {
         1: temp = temp + redDigit;
         2: temp = temp- redDigit;
         3: temp = temp * redDigit;
         4: temp = temp / redDigit;
         6: temp = 0;
-            redResetFlag = 1;
+           redResetFlag = 1;
         default: temp = temp;
       }
       redValue.d = temp;
     }
     
     if (blueInputFlag && blueDigit != 0 && blueOperator != 0) {
-      temp = blueValue.q;
+      temp = secondBluevalue.q;
       case (blueOperator) {
         1: temp = temp + blueDigit;
         2: temp = temp- blueDigit;
         3: temp = temp * blueDigit;
         4: temp = temp / blueDigit;
         6: temp = 0;
-          blueResetFlag = 1;
+           blueResetFlag = 1;
         default: temp = temp;
       }
       blueValue.d = temp;
     }
     
     rng.next = 0;
-    rng.seed = 212153456213;
+    rng.seed = 2121534513;
     rng.difficulty = difficulty;
     choice1 = rng.num1;
     choice2 = rng.num2;
@@ -111,13 +111,13 @@ module roundManager (
    
     
     
-    redOut = redValue.q;
-    blueOut = blueValue.q;
+    redOut = secondRedValue.q;
+    blueOut = secondBluevalue.q;
     
     count.d = count.q + 1;
     destinationValue = result; 
     
-    if (newGameFlag) {
+    if (newGameFlag == 1) {
       redValue.d = 0;
       blueValue.d = 0;
       rng.next = 1;

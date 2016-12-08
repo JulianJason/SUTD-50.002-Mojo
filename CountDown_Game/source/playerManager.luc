@@ -14,7 +14,6 @@ module playerManager (
     input choice3[4],
     input choice4[4],
     input currentValue[16],
-    input destinationValue[8],
     input resetFlag,
     output four_sev_seg[8],
     output four_sev_seg_sel[4],
@@ -31,6 +30,7 @@ module playerManager (
     }
     dff notFirstDigit[1];
     dff opOut[4];
+    dff secondopOut[4];
     dff firstChoice[4];
     dff secondChoice[4];
     dff thirdChoice[4];
@@ -44,14 +44,15 @@ module playerManager (
   binaryToBCD bin_to_dec;
   always {
     notFirstDigit.d = notFirstDigit.q;
-    opOut.d = opOut.q;
+    // opOut.d = opOut.q;
+    secondopOut.d = opOut.q;
     playerKeypad.keypad_row = keypad_row;    
     keypad_col = playerKeypad.keypad_col;
     
     inputFlag = 0;
     digit_out = 0;
     operator_out = 0;
-    operator = opOut.q;
+    operator = secondopOut.q;
     if (firstChoice.q == 0) {
       choices_mled.digit1 = choice1;
     } else {

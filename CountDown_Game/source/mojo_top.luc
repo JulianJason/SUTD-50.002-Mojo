@@ -88,7 +88,6 @@ module mojo_top (
     // 2 seg current value
     redPlayer.currentValue = roundManager.redOut;
     
-    redPlayer.destinationValue = roundManager.destinationValue;
     roundManager.redDigit = redPlayer.digit_out;
     roundManager.redOperator = redPlayer.operator_out;
     roundManager.redInputFlag = redPlayer.inputFlag;
@@ -115,7 +114,6 @@ module mojo_top (
     bluePlayer.choice4 = roundManager.choice4;
     // bluePlayer.currentValue = roundManager.blueOut[4];
     bluePlayer.currentValue = roundManager.blueOut;
-    bluePlayer.destinationValue = roundManager.destinationValue;
     // blue operator
     roundManager.blueInputFlag = bluePlayer.inputFlag;
     roundManager.blueDigit = bluePlayer.digit_out;

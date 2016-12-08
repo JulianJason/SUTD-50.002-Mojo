@@ -69,6 +69,7 @@ module random_number_generator #(
     num2 = 2 + (w.q[23:15] - 8 * (w.q[23:15]/8));
     num3 = 2 + (w.q[15:7] - 8 * (w.q[15:7]/8));
     num4 = 2 + (w.q[8:0] - 8 * (w.q[8:0]/8));
+    divisor = 2;
     if (difficulty == 0) {
       divisor = 2;
     } else if (difficulty == 1) {
@@ -76,9 +77,9 @@ module random_number_generator #(
     } else if (difficulty == 2) {
       divisor = 4;
     }
-    operator1 =  (w.q[8:0] - 4 * (w.q[8:0]/4));
-    operator2 = (w.q[15:7] - 4 * (w.q[15:7]/4));
-    operator3 = (w.q[23:15] - 4 * (w.q[23:5]/4));
+    operator1 =  (w.q[8:0] - divisor * (w.q[8:0]/divisor));
+    operator2 = (w.q[15:7] - divisor * (w.q[15:7]/divisor));
+    operator3 = (w.q[23:15] - divisor * (w.q[23:5]/divisor));
     t = x.q ^ (x.q << 11);          // calculate intermediate value
     
     if (next) {                     // if we need a new number
