@@ -21,21 +21,25 @@ module playerManager (
     output two_sev_seg[8],
     output two_sev_seg_sel[2],
     output inputFlag,
-    output digit_out[8],
-    output operator_out[6]
+    output digit_out[4],
+    output operator_out[4]
   ) {
   .clk(clk) { .rst(rst) {
       keypad playerKeypad;
       multi_LED_digit choices_mled;
       multi_LED_digit value_mled(#DIGITS(2)); // set digits to 2
     }
-    dff digitOut[4];
+    dff notFirstDigit[1];
     dff opOut[4];
+    dff firstChoice[4];
+    dff secondChoice[4];
+    dff thirdChoice[4];
+    dff fourthChoice[4];
   }
   
   binaryToBCD bin_to_dec;
   always {
-    digitOut.d = digitOut.q;
+    notFirstDigit.d = notFirstDigit.q;
     opOut.d = opOut.q;
     playerKeypad.keypad_row = keypad_row;    
     keypad_col = playerKeypad.keypad_col;
@@ -44,10 +48,26 @@ module playerManager (
     digit_out = 0;
     operator_out = 0;
     
-    choices_mled.digit1 = digitOut.q;
-    choices_mled.digit2 = opOut.q;
-    choices_mled.digit3 = playerKeypad.digit_out;
-    choices_mled.digit4 = playerKeypad.operator_out;
+    if (firstChoice.q == 0) {
+      choices_mled.digit1 = choice1;
+    } else {
+      choices_mled.digit1 = -1;
+    }
+    if (secondChoice.q == 0) {
+      choices_mled.digit2 = choice2;
+    } else {
+      choices_mled.digit2 = -1;
+    }
+    if (thirdChoice.q == 0) {
+      choices_mled.digit3 = choice3;
+    } else {
+      choices_mled.digit3 = -1;
+    }
+    if (fourthChoice.q == 0) {
+      choices_mled.digit4 = choice4;
+    } else {
+      choices_mled.digit4 = -1;
+    }
     
     bin_to_dec.binary = currentValue;
     value_mled.digit1 = bin_to_dec.digit0;
@@ -66,23 +86,79 @@ module playerManager (
     
     
     
-    if (digitOut.q != 0 && opOut.q != 0) {
-      digit_out = digitOut.q;
-      operator_out = opOut.q;
-      inputFlag = 1;
-      digitOut.d = 0;
-      opOut.d = 0;
+    if (playerKeypad.digit_out != 0 && opOut.q != 0 && notFirstDigit.q == 1) {
+      case (playerKeypad.digit_out[3:0]) {
+        choice1[3:0]:
+          digit_out = playerKeypad.digit_out;
+          operator_out = opOut.q;
+          inputFlag = 1;
+          opOut.d = 0;
+          firstChoice.d = 15;
+        choice2[3:0]: 
+          digit_out = playerKeypad.digit_out;
+          operator_out = opOut.q;
+          inputFlag = 1;
+          opOut.d = 0;
+          secondChoice.d = 15;
+        choice3[3:0]: 
+          digit_out = playerKeypad.digit_out;
+          operator_out = opOut.q;
+          inputFlag = 1;
+         opOut.d = 0;
+          thirdChoice.d = 15;
+        choice4[3:0]: 
+          digit_out = playerKeypad.digit_out;
+          operator_out = opOut.q;
+          inputFlag = 1;
+          opOut.d = 0;
+          fourthChoice.d = 15;
+        default: 
+          digit_out = 0;
+          opOut.d = 0;
+      }
     }
-    if (playerKeypad.digit_out != 0) {
-      digitOut.d = playerKeypad.digit_out;
+    if (playerKeypad.digit_out != 0 && notFirstDigit.q == 0) {
+      case (playerKeypad.digit_out[3:0]) {
+        choice1[3:0]: 
+          digit_out = playerKeypad.digit_out;
+          operator_out = 1; // ADD
+          inputFlag = 1;
+          notFirstDigit.d = 1;
+          opOut.d = 0;
+          firstChoice.d = 15;
+        choice2[3:0]: 
+          digit_out = playerKeypad.digit_out;
+          operator_out = 1; // ADD
+          inputFlag = 1;
+          notFirstDigit.d = 1;
+          opOut.d = 0;
+          secondChoice.d = 15;
+        choice3[3:0]: 
+          digit_out = playerKeypad.digit_out;
+          operator_out = 1; // add
+          notFirstDigit.d = 1;
+          inputFlag = 1;
+          opOut.d = 0;
+          thirdChoice.d = 15;
+        choice4[3:0]: 
+          digit_out = playerKeypad.digit_out;
+          operator_out = 1; // ADD
+          notFirstDigit.d = 1;
+          inputFlag = 1;
+          opOut.d = 0;
+          fourthChoice.d = 15;
+        default: 
+          digit_out = 0;
+          opOut.d = 0;
+      }
     }
     if (playerKeypad.operator_out != 0) {
       opOut.d = playerKeypad.operator_out;
     }
    // if (resetFlag == 1) {
-  //   digitOut.d = -1;
-  //    opOut.d = 0;
-  //    inputFlag = -1;
-    //}
+ //     notFirstDigit.d = 0;
+ //     opOut.d = 0;
+ //     inputFlag = -1;
+ //   }
   }
 }

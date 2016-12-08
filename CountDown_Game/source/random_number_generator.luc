@@ -50,9 +50,9 @@ module random_number_generator #(
     output num2[4],
     output num3[4],
     output num4[4],
-    output operator1[2],
-    output operator2[2],
-    output operator3[2]
+    output operator1[4],
+    output operator2[4],
+    output operator3[4]
    // output target[8]
   ) {
   
@@ -60,7 +60,7 @@ module random_number_generator #(
     dff x[32], y[32], z[32], w[32]; // state storage
   }
   
-  sig t [32];        
+  sig t [32];
   always {
     // modulo using a - (b * floor(a/b))
     num1 = 2 + (w.q[31:23] - 8 * (w.q[31:23]/8));

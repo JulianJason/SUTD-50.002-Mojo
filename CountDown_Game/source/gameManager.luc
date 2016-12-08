@@ -12,7 +12,7 @@ module gameManager (
     input hardButton,
     input singlePlayerButton,
     input multiplayerButton,
-    output difficulty[2],
+    output difficulty[3],
     output newGameFlag
   ) {
   .clk(clk) {
