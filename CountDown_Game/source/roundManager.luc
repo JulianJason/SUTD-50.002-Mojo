@@ -72,7 +72,7 @@ module roundManager (
     }
     
     rng.next = 0;
-    rng.seed = 23456213;
+    rng.seed = 212153456213;
     rng.difficulty = difficulty;
     choice1 = rng.num1;
     choice2 = rng.num2;
@@ -109,7 +109,7 @@ module roundManager (
         getNewNum.d = 0;
       }
    
-   
+    
     
     redOut = redValue.q;
     blueOut = blueValue.q;

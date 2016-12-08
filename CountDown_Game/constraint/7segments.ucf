@@ -33,6 +33,7 @@ NET "four_seg_Blue<3>"  LOC = P111 | IOSTANDARD = LVTTL;
 NET "four_seg_Blue<4>"  LOC = P104 | IOSTANDARD = LVTTL;
 NET "four_seg_Blue<5>"  LOC = P115 | IOSTANDARD = LVTTL;
 NET "four_seg_Blue<6>"  LOC = P110 | IOSTANDARD = LVTTL;
+NET "four_seg_Blue<7>"  LOC = P116 | IOSTANDARD = LVTTL;
 
 NET "four_seg_sel_Blue<0>" LOC= P105 | IOSTANDARD = LVTTL;
 NET "four_seg_sel_Blue<1>" LOC= P117 | IOSTANDARD = LVTTL;
@@ -70,19 +71,3 @@ NET "four_seg_sel_Green<0>" LOC= P140 | IOSTANDARD = LVTTL;
 NET "four_seg_sel_Green<1>" LOC= P132 | IOSTANDARD = LVTTL;
 NET "four_seg_sel_Green<2>" LOC= P127 | IOSTANDARD = LVTTL;
 NET "four_seg_sel_Green<3>" LOC= P123 | IOSTANDARD = LVTTL;
-
-
-
-NET "two_seg_Blue<0>"  LOC = A1 | IOSTANDARD = LVTTL;
-NET "two_seg_Blue<1>"  LOC = A5 | IOSTANDARD = LVTTL;
-NET "two_seg_Blue<2>"  LOC = A0 | IOSTANDARD = LVTTL;
-NET "two_seg_Blue<3>"  LOC = A8 | IOSTANDARD = LVTTL;
-NET "two_seg_Blue<4>"  LOC = A6 | IOSTANDARD = LVTTL;
-NET "two_seg_Blue<5>"  LOC = AREF | IOSTANDARD = LVTTL;
-NET "two_seg_Blue<6>"  LOC = A5 | IOSTANDARD = LVTTL;
-NET "two_seg_Blue<7>"  LOC = A4 | IOSTANDARD = LVTTL;
-
-NET "two_seg_sel_Blue<0>" LOC=A7 | IOSTANDARD = LVTTL;
-NET "two_seg_sel_Blue<1>" LOC=A9 | IOSTANDARD = LVTTL;
-
-
