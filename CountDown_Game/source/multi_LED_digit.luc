@@ -2,7 +2,7 @@
 
 module multi_LED_digit #(
     DIGITS = 4 : DIGITS > 0,
-    DIV = 16 : DIV >= 0
+    DIV = 18: DIV >= 0
   )(
     input clk,                // clock
     input rst,                // reset

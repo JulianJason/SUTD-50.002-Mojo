@@ -12,7 +12,6 @@ NET "four_seg_sel_Red<1>" LOC= P2 | IOSTANDARD = LVTTL;
 NET "four_seg_sel_Red<2>" LOC= P144 | IOSTANDARD = LVTTL;
 NET "four_seg_sel_Red<3>" LOC= P141 | IOSTANDARD = LVTTL;
 
-
 NET "two_seg_Red<0>"  LOC = P24 | IOSTANDARD = LVTTL;
 NET "two_seg_Red<1>"  LOC = P22 | IOSTANDARD = LVTTL;
 NET "two_seg_Red<2>"  LOC = P23 | IOSTANDARD = LVTTL;
@@ -24,6 +23,38 @@ NET "two_seg_Red<7>"  LOC = P21 | IOSTANDARD = LVTTL;
 
 NET "two_seg_sel_Red<0>" LOC=P17 | IOSTANDARD = LVTTL;
 NET "two_seg_sel_Red<1>" LOC=P15 | IOSTANDARD = LVTTL;
+
+
+
+NET "four_seg_Blue<0>"  LOC = P112 | IOSTANDARD = LVTTL;
+NET "four_seg_Blue<1>"  LOC = P121 | IOSTANDARD = LVTTL;
+NET "four_seg_Blue<2>"  LOC = P114 | IOSTANDARD = LVTTL;
+NET "four_seg_Blue<3>"  LOC = P111 | IOSTANDARD = LVTTL;
+NET "four_seg_Blue<4>"  LOC = P104 | IOSTANDARD = LVTTL;
+NET "four_seg_Blue<5>"  LOC = P115 | IOSTANDARD = LVTTL;
+NET "four_seg_Blue<6>"  LOC = P110 | IOSTANDARD = LVTTL;
+
+NET "four_seg_sel_Blue<0>" LOC= P105 | IOSTANDARD = LVTTL;
+NET "four_seg_sel_Blue<1>" LOC= P117 | IOSTANDARD = LVTTL;
+NET "four_seg_sel_Blue<2>" LOC= P119 | IOSTANDARD = LVTTL;
+NET "four_seg_sel_Blue<3>" LOC= P120 | IOSTANDARD = LVTTL;
+
+
+
+
+NET "two_seg_Blue<0>"  LOC = P93 | IOSTANDARD = LVTTL;
+NET "two_seg_Blue<1>"  LOC = P95 | IOSTANDARD = LVTTL;
+NET "two_seg_Blue<2>"  LOC = P92 | IOSTANDARD = LVTTL;
+NET "two_seg_Blue<3>"  LOC = P99 | IOSTANDARD = LVTTL;
+NET "two_seg_Blue<4>"  LOC = P97 | IOSTANDARD = LVTTL;
+NET "two_seg_Blue<5>"  LOC = P102 | IOSTANDARD = LVTTL;
+NET "two_seg_Blue<6>"  LOC = P101 | IOSTANDARD = LVTTL;
+NET "two_seg_Blue<7>"  LOC = P94 | IOSTANDARD = LVTTL;
+
+NET "two_seg_sel_Blue<0>" LOC=P98 | IOSTANDARD = LVTTL;
+NET "two_seg_sel_Blue<1>" LOC=P100 | IOSTANDARD = LVTTL;
+
+
 
 
 NET "four_seg_Green<0>"  LOC = P138 | IOSTANDARD = LVTTL;
@@ -40,28 +71,18 @@ NET "four_seg_sel_Green<1>" LOC= P132 | IOSTANDARD = LVTTL;
 NET "four_seg_sel_Green<2>" LOC= P127 | IOSTANDARD = LVTTL;
 NET "four_seg_sel_Green<3>" LOC= P123 | IOSTANDARD = LVTTL;
 
-NET "four_seg_Blue<0>"  LOC = P112 | IOSTANDARD = LVTTL;
-NET "four_seg_Blue<1>"  LOC = P121 | IOSTANDARD = LVTTL;
-NET "four_seg_Blue<2>"  LOC = P114 | IOSTANDARD = LVTTL;
-NET "four_seg_Blue<3>"  LOC = P111 | IOSTANDARD = LVTTL;
-NET "four_seg_Blue<4>"  LOC = P104 | IOSTANDARD = LVTTL;
-NET "four_seg_Blue<5>"  LOC = P115 | IOSTANDARD = LVTTL;
-NET "four_seg_Blue<6>"  LOC = P131 | IOSTANDARD = LVTTL;
-
-NET "four_seg_sel_Blue<0>" LOC= P105 | IOSTANDARD = LVTTL;
-NET "four_seg_sel_Blue<1>" LOC= P117 | IOSTANDARD = LVTTL;
-NET "four_seg_sel_Blue<2>" LOC= P119 | IOSTANDARD = LVTTL;
-NET "four_seg_sel_Blue<3>" LOC= P126 | IOSTANDARD = LVTTL;
 
 
-NET "two_seg_Blue<0>"  LOC = P93 | IOSTANDARD = LVTTL;
-NET "two_seg_Blue<1>"  LOC = P95 | IOSTANDARD = LVTTL;
-NET "two_seg_Blue<2>"  LOC = P92 | IOSTANDARD = LVTTL;
-NET "two_seg_Blue<3>"  LOC = P99 | IOSTANDARD = LVTTL;
-NET "two_seg_Blue<4>"  LOC = P97 | IOSTANDARD = LVTTL;
-NET "two_seg_Blue<5>"  LOC = P102 | IOSTANDARD = LVTTL;
-NET "two_seg_Blue<6>"  LOC = P101 | IOSTANDARD = LVTTL;
-NET "two_seg_Blue<7>"  LOC = P94 | IOSTANDARD = LVTTL;
+NET "two_seg_Blue<0>"  LOC = A1 | IOSTANDARD = LVTTL;
+NET "two_seg_Blue<1>"  LOC = A5 | IOSTANDARD = LVTTL;
+NET "two_seg_Blue<2>"  LOC = A0 | IOSTANDARD = LVTTL;
+NET "two_seg_Blue<3>"  LOC = A8 | IOSTANDARD = LVTTL;
+NET "two_seg_Blue<4>"  LOC = A6 | IOSTANDARD = LVTTL;
+NET "two_seg_Blue<5>"  LOC = AREF | IOSTANDARD = LVTTL;
+NET "two_seg_Blue<6>"  LOC = A5 | IOSTANDARD = LVTTL;
+NET "two_seg_Blue<7>"  LOC = A4 | IOSTANDARD = LVTTL;
 
-NET "two_seg_sel_Blue<0>" LOC=P98 | IOSTANDARD = LVTTL;
-NET "two_seg_sel_Blue<1>" LOC=P100 | IOSTANDARD = LVTTL;
+NET "two_seg_sel_Blue<0>" LOC=A7 | IOSTANDARD = LVTTL;
+NET "two_seg_sel_Blue<1>" LOC=A9 | IOSTANDARD = LVTTL;
+
+

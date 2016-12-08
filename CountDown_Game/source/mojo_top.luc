@@ -14,8 +14,8 @@ module mojo_top (
     input avr_tx,           // AVR TX (FPGA RX)
     output avr_rx,          // AVR RX (FPGA TX)
     input avr_rx_busy,      // AVR RX buffer full
-    input new_Game_Button,
-    input easy_Button,
+    input singlePlayerButton,
+    input multiPlayerButton,
     
 /// Red Player IO units/////////////////////////////////////////////////////////
     // keypad
@@ -27,12 +27,12 @@ module mojo_top (
     // 2 digit 7-seg    
     output two_seg_Red[8],
     output two_seg_sel_Red[2],
- /// Green IO units 
+    /// Green IO units 
     output four_seg_Green[8],
     output four_seg_sel_Green[4],
-//    output two_seg_Green[8],
-//    output two_seg_sel_Green[2],
-  // BLUE player IO units
+    output two_seg_Green[8],
+    output two_seg_sel_Green[2],
+    // BLUE player IO units
     input keypad_Blue_Row[4],
     output keypad_Blue_Col[4],
     //output four_seg_Blue[8],
@@ -68,11 +68,11 @@ module mojo_top (
     spi_miso = bz;          // not using SPI
     spi_channel = bzzzz;    // not using flags
     avr_rx = bz;            // not using serial port
-    
+    gameManager.easyButton = 0;
     gameManager.hardButton = 0;
     gameManager.mediumButton = 0;
-    gameManager.easyButton = easy_Button;
-    gameManager.newGameButton = new_Game_Button;
+    gameManager.multiplayerButton = multiPlayerButton;
+    gameManager.singlePlayerButton = singlePlayerButton;
     gameManager.singlePlayerButton = 0;
     gameManager.multiplayerButton = 0;
     roundManager.newGameFlag = gameManager.newGameFlag;
@@ -81,7 +81,7 @@ module mojo_top (
 /*-------------------------------------------------------------------    
                        Red player IO
 -------------------------------------------------------------------*/
-    redPlayer.newGameFlag = 0;
+    redPlayer.resetFlag = roundManager.redResetFlag;
     // keypad
     redPlayer.keypad_row = keypad_Red_Row;
     keypad_Red_Col = redPlayer.keypad_col;
@@ -99,8 +99,7 @@ module mojo_top (
     // 2 seg current value
     redPlayer.currentValue = roundManager.redOut;
     
-    
-    redPlayer.destinationValue = roundManager.destinationValue; // think unnecessary
+    redPlayer.destinationValue = roundManager.destinationValue;
     roundManager.redDigit = redPlayer.digit_out;
     roundManager.redOperator = redPlayer.operator_out;
     roundManager.redInputFlag = redPlayer.inputFlag;
@@ -110,7 +109,7 @@ module mojo_top (
                        Blue player IO
 -------------------------------------------------------------------*/
     
-    bluePlayer.newGameFlag = 0;
+    bluePlayer.resetFlag = roundManager.blueResetFlag;
     // keypad
     bluePlayer.keypad_row = keypad_Blue_Row;
     keypad_Blue_Col = bluePlayer.keypad_col;
@@ -128,7 +127,6 @@ module mojo_top (
     // bluePlayer.currentValue = roundManager.blueOut[4];
     bluePlayer.currentValue = roundManager.blueOut;
     bluePlayer.destinationValue = roundManager.destinationValue;
-    // bluedigit
     // blue operator
     roundManager.blueInputFlag = bluePlayer.inputFlag;
     roundManager.blueDigit = bluePlayer.digit_out;
@@ -146,5 +144,8 @@ module mojo_top (
     multi_led.digit4 = -1;
     four_seg_Green = multi_led.seg;
     four_seg_sel_Green = ~multi_led.sel;
+    two_seg_Green = bluePlayer.two_sev_seg;   
+    two_seg_sel_Green = ~bluePlayer.two_sev_seg_sel;
+    
   }
 }

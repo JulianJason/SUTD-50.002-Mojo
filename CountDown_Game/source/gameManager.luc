@@ -10,7 +10,6 @@ module gameManager (
     input easyButton,
     input mediumButton,
     input hardButton,
-    input newGameButton,
     input singlePlayerButton,
     input multiplayerButton,
     output difficulty[2],
@@ -19,7 +18,7 @@ module gameManager (
   .clk(clk) {
     .rst(rst) {
       fsm state = {NOT_PLAYING, SINGLE_PLAYER, MULTIPLAYER}; // the multiple playing states 
-      fsm difficultyState = {EASY, MEDIUM, HARD}
+      fsm difficultyState = {EASY, MEDIUM, HARD};
     }
     dff confirm[1];
     button_conditioner spButtonCond;
@@ -27,7 +26,6 @@ module gameManager (
   }
   always {
     
-    difficulty = 0;
     newGameFlag = 0;
     if (easyButton) {
         difficultyState.d = difficultyState.EASY;
@@ -38,30 +36,24 @@ module gameManager (
     }
     spButtonCond.in = singlePlayerButton;
     mpbuttonCond.in = multiplayerButton;
-    if (spButtonCond.out) {
-      if (state.q != state.NOT_PLAYING && confirm.q == 1) {
+    if (singlePlayerButton) {
+      newGameFlag = 1;
+      if (confirm.q == 1) {
           confirm.d = 0;
           state.d = state.NOT_PLAYING;
           newGameFlag = 1;
       } else {
        confirm.d = 1; 
       }
-    } else if (mpbuttonCond.out) {
-      if (state.q != state.NOT_PLAYING && confirm.q == 1) {
+    } else if (multiplayerButton) {
+      newGameFlag = 1;
+      if (confirm.q == 1) {
           confirm.d = 0;
           state.d = state.NOT_PLAYING;
           newGameFlag = 1;
       } else {
        confirm.d = 1; 
       }
-    }
-    // if not playing
-    
-    
-    // else if new game button is pressed, reset game
-    if (newGameButton) {
-      newGameFlag = 0;
-      game_state.d = state.NOT_PLAYING;
     }
     
     difficulty = difficultyState.q;

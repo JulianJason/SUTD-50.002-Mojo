@@ -21,6 +21,7 @@
     <ucf>7segments.ucf</ucf>
     <ucf>keypad.ucf</ucf>
     <ucf>modified_mojo.ucf</ucf>
+    <component>pn_gen.luc</component>
     <component>decoder.luc</component>
     <component>reset_conditioner.luc</component>
     <component>pipeline.luc</component>

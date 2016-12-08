@@ -14,8 +14,8 @@ module playerManager (
     input choice3[4],
     input choice4[4],
     input currentValue[8],
-    input destinationValue[16],
-    input newGameFlag,
+    input destinationValue[8],
+    input resetFlag,
     output four_sev_seg[8],
     output four_sev_seg_sel[4],
     output two_sev_seg[8],
@@ -29,22 +29,27 @@ module playerManager (
       multi_LED_digit choices_mled;
       multi_LED_digit value_mled(#DIGITS(2)); // set digits to 2
     }
+    dff digitOut[4];
+    dff opOut[4];
   }
+  
   binaryToBCD bin_to_dec;
   always {
-    inputFlag = 0;
+    digitOut.d = digitOut.q;
+    opOut.d = opOut.q;
     playerKeypad.keypad_row = keypad_row;    
     keypad_col = playerKeypad.keypad_col;
     
-    digit_out = playerKeypad.digit_out;
-    operator_out = playerKeypad.operator_out;
+    inputFlag = 0;
+    digit_out = 0;
+    operator_out = 0;
     
-    choices_mled.digit1 = choice1;
-    choices_mled.digit2 = choice2;
-    choices_mled.digit3 = choice3;
-    choices_mled.digit4 = choice4;
+    choices_mled.digit1 = digitOut.q;
+    choices_mled.digit2 = opOut.q;
+    choices_mled.digit3 = playerKeypad.digit_out;
+    choices_mled.digit4 = playerKeypad.operator_out;
     
-    bin_to_dec.binary = destinationValue; // change to current value
+    bin_to_dec.binary = currentValue;
     value_mled.digit1 = bin_to_dec.digit0;
     value_mled.digit2 = bin_to_dec.digit1;
     value_mled.digit3 = -1;
@@ -56,5 +61,28 @@ module playerManager (
     
     two_sev_seg = value_mled.seg;
     two_sev_seg_sel = value_mled.sel;
+    
+   
+    
+    
+    
+    if (digitOut.q != 0 && opOut.q != 0) {
+      digit_out = digitOut.q;
+      operator_out = opOut.q;
+      inputFlag = 1;
+      digitOut.d = 0;
+      opOut.d = 0;
+    }
+    if (playerKeypad.digit_out != 0) {
+      digitOut.d = playerKeypad.digit_out;
+    }
+    if (playerKeypad.operator_out != 0) {
+      opOut.d = playerKeypad.operator_out;
+    }
+   // if (resetFlag == 1) {
+  //   digitOut.d = -1;
+  //    opOut.d = 0;
+  //    inputFlag = -1;
+    //}
   }
 }

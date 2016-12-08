@@ -4,13 +4,12 @@
 
 module keypad #(
     ROWS = 4 : ROWS > 0,
-    DIV = 18: DIV >= 0 // timing issues with <17 div
+    DIV = 16: DIV >= 0 // timing issues with <17 div
   )(
     input clk,  // clock
     input rst,  // reset
     input keypad_row[4],
     output keypad_col[4],
-    output io_led2[4],
     output digit_out[4],
     output operator_out[4]
   ) {
@@ -18,13 +17,14 @@ module keypad #(
   
   .clk(clk), .rst(rst) {
     counter ctr (#DIV(DIV), #SIZE(DIGIT_BITS), #TOP(ROWS-1));
-    keypad_decoder decoder;    
+    keypad_decoder decoder;
   }
   sig col[4];
   sig row[4];
   always {
+  operator_out = 0;
+    digit_out = 0;
     keypad_col = 0;
-    io_led2 = 0;
     case (ctr.value) {
       0: keypad_col[3:0] = ~4b1000;
          col = 0;
@@ -47,7 +47,9 @@ module keypad #(
     }
     decoder.col = col;
     decoder.row = row;
-    digit_out = decoder.digit_out;
-    operator_out = decoder.operator_out;
+    //if (row != -1) {
+      digit_out = decoder.digit_out;
+      operator_out = decoder.operator_out;
+    //}
   }
 }

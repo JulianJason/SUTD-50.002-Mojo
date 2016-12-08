@@ -44,7 +44,7 @@ module adderUnit (
           val = a / b; // division
         }                               
       b0100:
-        if ($signed(b) == 0) {
+        if ((b) == 0) {
           val = 1000; // if division by zero, show error
         } else {
           val = $signed(a) - $signed(b) * ($signed(a) / $signed(b));   // modulo, a - (n * int(a/n))
