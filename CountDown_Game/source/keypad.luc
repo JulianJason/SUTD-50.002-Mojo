@@ -4,7 +4,7 @@
 
 module keypad #(
     ROWS = 4 : ROWS > 0,
-    DIV = 16: DIV >= 0 // timing issues with <17 div
+    DIV = 18: DIV >= 0 // timing issues with <17 div
   )(
     input clk,  // clock
     input rst,  // reset

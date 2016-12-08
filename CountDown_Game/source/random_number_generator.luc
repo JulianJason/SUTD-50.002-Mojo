@@ -45,7 +45,8 @@ module random_number_generator #(
     input clk,       // clock
     input rst,       // reset
     input next,      // generate next number flag
-    input seed [32], // seed used on reset
+    input seed [32], // seed used on reset,
+    input difficulty[4],
     output num1[4],  // "random" number output
     output num2[4],
     output num3[4],
@@ -61,15 +62,23 @@ module random_number_generator #(
   }
   
   sig t [32];
+  sig divisor;
   always {
     // modulo using a - (b * floor(a/b))
     num1 = 2 + (w.q[31:23] - 8 * (w.q[31:23]/8));
     num2 = 2 + (w.q[23:15] - 8 * (w.q[23:15]/8));
     num3 = 2 + (w.q[15:7] - 8 * (w.q[15:7]/8));
-    num4 = 2 + (w.q[8:0] - 8 * (w.q[8:0]/8));       
-    operator1 = (w.q[8:0] - 3 * (w.q[8:0]/3));
-    operator2 = (w.q[15:7] - 3 * (w.q[15:7]/3));
-    operator3 = (w.q[23:15] - 3 * (w.q[23:5]/3));
+    num4 = 2 + (w.q[8:0] - 8 * (w.q[8:0]/8));
+    if (difficulty == 0) {
+      divisor = 2;
+    } else if (difficulty == 1) {
+      divisor = 3;
+    } else if (difficulty == 2) {
+      divisor = 4;
+    }
+    operator1 =  (w.q[8:0] - 4 * (w.q[8:0]/4));
+    operator2 = (w.q[15:7] - 4 * (w.q[15:7]/4));
+    operator3 = (w.q[23:15] - 4 * (w.q[23:5]/4));
     t = x.q ^ (x.q << 11);          // calculate intermediate value
     
     if (next) {                     // if we need a new number

@@ -15,8 +15,8 @@ module roundManager (
     output choice2[4],
     output choice3[4],
     output choice4[4],
-    output redResetFlag,
-    output blueResetFlag,
+    output redResetFlag[1],
+    output blueResetFlag[1],
     output destinationValue[16]
   ) {
 .  clk(clk) {
@@ -50,10 +50,11 @@ module roundManager (
         2: temp = temp- redDigit;
         3: temp = temp * redDigit;
         4: temp = temp / redDigit;
+        6: temp = 0;
+            redResetFlag = 1;
         default: temp = temp;
       }
       redValue.d = temp;
-      redResetFlag = 1;
     }
     
     if (blueInputFlag && blueDigit != 0 && blueOperator != 0) {
@@ -63,15 +64,16 @@ module roundManager (
         2: temp = temp- blueDigit;
         3: temp = temp * blueDigit;
         4: temp = temp / blueDigit;
+        6: temp = 0;
+          blueResetFlag = 1;
         default: temp = temp;
       }
       blueValue.d = temp;
-      blueResetFlag = 1;
     }
     
     rng.next = 0;
-    rng.seed = 76545674;
-    
+    rng.seed = 23456213;
+    rng.difficulty = difficulty;
     choice1 = rng.num1;
     choice2 = rng.num2;
     choice3 = rng.num3;
@@ -107,7 +109,7 @@ module roundManager (
         getNewNum.d = 0;
       }
    
-    
+   
     
     redOut = redValue.q;
     blueOut = blueValue.q;

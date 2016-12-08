@@ -57,5 +57,6 @@ module gameManager (
     }
     
     difficulty = difficultyState.q;
+    difficulty = 2;
   }
 }
