@@ -12,8 +12,8 @@
     <src top="true">mojo_top.luc</src>
     <src>Comparator.luc</src>
     <src>ALU.luc</src>
-    <src>keypad_decoder.luc</src>
     <src>Adder.luc</src>
+    <src>keypad_decoder.luc</src>
     <src>notes.luc</src>
     <src>Boolean.luc</src>
     <src>keypad.luc</src>
@@ -21,11 +21,8 @@
     <ucf>7segments.ucf</ucf>
     <ucf>keypad.ucf</ucf>
     <ucf>modified_mojo.ucf</ucf>
-    <component>pn_gen.luc</component>
     <component>decoder.luc</component>
     <component>reset_conditioner.luc</component>
-    <component>pipeline.luc</component>
-    <component>button_conditioner.luc</component>
     <component>counter.luc</component>
   </files>
 </project>
