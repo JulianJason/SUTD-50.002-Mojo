@@ -21,8 +21,6 @@ module gameManager (
       fsm difficultyState = {EASY, MEDIUM, HARD};
     }
     dff confirm[1];
-    button_conditioner spButtonCond;
-    button_conditioner mpbuttonCond;
   }
   always {
     
@@ -34,8 +32,6 @@ module gameManager (
     } else if (hardButton) {
         difficultyState.d = difficultyState.HARD;
     }
-    spButtonCond.in = singlePlayerButton;
-    mpbuttonCond.in = multiplayerButton;
     if (singlePlayerButton) {
       newGameFlag = 1;
       if (confirm.q == 1) {

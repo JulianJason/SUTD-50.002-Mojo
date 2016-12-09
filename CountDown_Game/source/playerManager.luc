@@ -55,23 +55,31 @@ module playerManager (
     operator = secondopOut.q;
     if (firstChoice.q == 0) {
       choices_mled.digit1 = choice1;
+      compare1 = choice1;
     } else {
       choices_mled.digit1 = -1;
+      compare1 = 15;
     }
     if (secondChoice.q == 0) {
       choices_mled.digit2 = choice2;
+      compare2 = choice2;
     } else {
       choices_mled.digit2 = -1;
+      compare2 = 15;
     }
     if (thirdChoice.q == 0) {
       choices_mled.digit3 = choice3;
+      compare3 = choice3;
     } else {
       choices_mled.digit3 = -1;
+      compare3 = 15;
     }
     if (fourthChoice.q == 0) {
       choices_mled.digit4 = choice4;
+      compare4 = choice4;
     } else {
       choices_mled.digit4 = -1;
+      compare4 = 15;
     }
     
     bin_to_dec.binary = currentValue;
@@ -86,28 +94,6 @@ module playerManager (
     
     two_sev_seg = value_mled.seg;
     two_sev_seg_sel = value_mled.sel;
-    
-   
-    if (firstChoice.q == 15) {
-      compare1 = 15;
-    } else {
-      compare1 = choice1;
-    }
-    if (secondChoice.q == 15) {
-      compare2 = 15;
-    } else {
-      compare2 = choice2;
-    }
-    if (thirdChoice.q == 15) {
-      compare3 = 15;
-    } else {
-      compare3 = choice3;
-    }
-    if (fourthChoice.q == 15) {
-      compare4 = 15;
-    } else {
-      compare4 = choice4;
-    }
     
     
     if (playerKeypad.digit_out != 0 && operator != 0 && notFirstDigit.q == 1) {

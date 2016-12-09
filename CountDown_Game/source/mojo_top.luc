@@ -125,10 +125,10 @@ module mojo_top (
                        Judge
 -------------------------------------------------------------------*/
     bindec.binary = roundManager.destinationValue;
-    multi_led.digit1 = bindec.digit2;
-    multi_led.digit2 = bindec.digit1;
-    multi_led.digit3 = bindec.digit0;
-    multi_led.digit4 = -1;
+    multi_led.digit1 = -1;
+    multi_led.digit2 = bindec.digit2;
+    multi_led.digit3 = bindec.digit1;
+    multi_led.digit4 = bindec.digit0;
     four_seg_Green = multi_led.seg;
     four_seg_sel_Green = ~multi_led.sel;
     two_seg_Green = bluePlayer.two_sev_seg;   
