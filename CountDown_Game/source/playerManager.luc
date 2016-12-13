@@ -1,0 +1,187 @@
+/*
+  playerManager are dumb components
+  Its job is to relay data between the components and the game gameManager (both input and output)
+  
+*/
+
+module playerManager (
+    input clk,  // clock
+    input rst,  // reset
+    input keypad_row[4],
+    output keypad_col[4],
+    input choices[4][4],
+    input currentValue[16],
+    input resetFlag,
+    output four_sev_seg[8],
+    output four_sev_seg_sel[4],
+    output two_sev_seg[8],
+    output two_sev_seg_sel[2],
+    output inputFlag,
+    output digit_out[4],
+    output operator_out[4],
+    output verifySignal
+  ) {
+  .clk(clk) { .rst(rst) {
+      keypad playerKeypad;
+      multi_LED_digit choices_mled;
+      multi_LED_digit value_mled(#DIGITS(2)); // set digits to 2
+      counter ctr (#DIV(18), #SIZE(3), #TOP(8-1));
+    }
+    
+    dff notFirstDigit[1];
+    dff opOut[4];
+    dff secondopOut[4];
+    dff firstChoice[4];
+    dff secondChoice[4];
+    dff thirdChoice[4];
+    dff fourthChoice[4];
+  }
+  sig compare[4][4];
+  sig operator[4];
+  binaryToBCD bin_to_dec;
+  always {
+  if (ctr.value == 0)
+    notFirstDigit.d = notFirstDigit.q;
+    opOut.d = opOut.q;
+    secondopOut.d = opOut.q;
+    playerKeypad.keypad_row = keypad_row;    
+    keypad_col = playerKeypad.keypad_col;
+    verifySignal = 0;
+    inputFlag = 0;
+    digit_out = 0;
+    operator_out = 0;
+    operator = secondopOut.q;
+    if (firstChoice.q == 0) {
+      choices_mled.digits[0] = choices[0];
+      compare[0] = choices[0];
+    } else {
+      choices_mled.digits[0] = -1;
+      compare[0] = 15;
+    }
+    if (secondChoice.q == 0) {
+      choices_mled.digits[1] = choices[1];
+      compare[1] = choices[1];
+    } else {
+      choices_mled.digits[1] = -1;
+      compare[1] = 15;
+    }
+    if (thirdChoice.q == 0) {
+      choices_mled.digits[2] = choices[2];
+      compare[2] = choices[2];
+    } else {
+      choices_mled.digits[2] = -1;
+      compare[2] = 15;
+    }
+    if (fourthChoice.q == 0) {
+      choices_mled.digits[3] = choices[3];
+      compare[3] = choices[3];
+    } else {
+      choices_mled.digits[3] = -1;
+      compare[3] = 15;
+    }
+    
+    bin_to_dec.binary = currentValue;
+    value_mled.digits[0] = bin_to_dec.digits[0];
+    value_mled.digits[1] = bin_to_dec.digits[1];
+    
+    
+    four_sev_seg = choices_mled.seg;
+    four_sev_seg_sel = ~choices_mled.sel;
+    
+    two_sev_seg = value_mled.seg;
+    two_sev_seg_sel = value_mled.sel;
+    
+    if (playerKeypad.digit_out != 0 && operator != 0 && notFirstDigit.q == 1) {
+      case (playerKeypad.digit_out[3:0]) {
+        compare[0][3:0]:
+          digit_out = playerKeypad.digit_out;
+          operator_out = operator;
+          inputFlag = 1;
+          opOut.d = 0;
+          secondopOut.d = 0;
+          firstChoice.d = 15;
+        compare[1][3:0]: 
+          digit_out = playerKeypad.digit_out;
+          operator_out = operator;
+          inputFlag = 1;
+          opOut.d = 0;
+          secondChoice.d = 15;
+          secondopOut.d = 0;
+        compare[2][3:0]: 
+          digit_out = playerKeypad.digit_out;
+          operator_out = operator;
+          inputFlag = 1;
+          opOut.d = 0;
+          thirdChoice.d = 15;
+          secondopOut.d = 0;
+        compare[3][3:0]: 
+          digit_out = playerKeypad.digit_out;
+          operator_out = operator;
+          inputFlag = 1;
+          opOut.d = 0;
+          fourthChoice.d = 15;
+          secondopOut.d = 0;
+        default: 
+          digit_out = 0;
+          opOut.d = 0;
+      }
+    }
+    if (playerKeypad.digit_out != 0 && notFirstDigit.q == 0) {
+      case (playerKeypad.digit_out[3:0]) {
+        compare[0][3:0]: 
+          digit_out = playerKeypad.digit_out;
+          operator_out = 1; // ADD
+          inputFlag = 1;
+          notFirstDigit.d = 1;
+          opOut.d = 0;
+          firstChoice.d = 15;
+          secondopOut.d = 0;
+        compare[1][3:0]: 
+          digit_out = playerKeypad.digit_out;
+          operator_out = 1; // ADD
+          inputFlag = 1;
+          notFirstDigit.d = 1;
+          opOut.d = 0;
+          secondChoice.d = 15;
+          secondopOut.d = 0;
+        compare[2][3:0]: 
+          digit_out = playerKeypad.digit_out;
+          operator_out = 1; // add
+          notFirstDigit.d = 1;
+          inputFlag = 1;
+          opOut.d = 0;
+          thirdChoice.d = 15;
+          secondopOut.d = 0;
+        compare[3][3:0]: 
+          digit_out = playerKeypad.digit_out;
+          operator_out = 1; // ADD
+          notFirstDigit.d = 1;
+          inputFlag = 1;
+          opOut.d = 0;
+          fourthChoice.d = 15;
+          secondopOut.d = 0;
+        default: 
+          digit_out = 0;
+          opOut.d = 0;
+      }
+    }
+    if (playerKeypad.operator_out != 0) {
+      opOut.d = playerKeypad.operator_out;
+    }
+    
+    if (resetFlag == 1) {
+      opOut.d = 0;
+      notFirstDigit.d = 0;
+      firstChoice.d = 0;
+      secondChoice.d = 0;
+      thirdChoice.d = 0;
+      fourthChoice.d = 0;
+      secondopOut.d = 0;
+    }
+    
+    
+    if (firstChoice.q == 15 && secondChoice.q == 15 && thirdChoice.q == 15 && fourthChoice.q == 15) {
+      verifySignal = 1;
+    }
+  }
+}

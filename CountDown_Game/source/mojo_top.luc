@@ -1,0 +1,172 @@
+/*
+  TODO connect red and blue to use less pins
+  TODO change gre
+*/
+
+module mojo_top (
+    input clk,              // 50MHz clock
+    input rst_n,            // reset button (active low)
+    input cclk,             // configuration clock, AVR ready when high
+    input newGameButton,
+    input modeButton,
+    input easyButton,
+    input mediumButton,
+    input hardButton,
+    // keypad
+    input keypad_Red_Row[4],
+    output keypad_Red_Col[4],
+    // 4 digit 7-seg
+    output four_seg_Red[8],
+    output four_seg_sel_Red[4],
+    // 2 digit 7-seg    
+    output two_seg_Red[8],
+    output two_seg_sel_Red[2],
+    /// Green IO units 
+    output four_seg_Green[8],
+    output four_seg_sel_Green[4],
+    output two_seg_Green[8],
+    output two_seg_sel_Green[2],
+    // BLUE player IO units
+    input keypad_Blue_Row[4],
+    output keypad_Blue_Col[4],
+    //output four_seg_Blue[8],
+    //output four_seg_sel_Blue[4],
+    output two_seg_Blue[8],
+    output two_seg_sel_Blue[2],
+    output four_seg_Blue[8],
+    output four_seg_sel_Blue[8]
+  ) {
+  
+  sig rst;                  // reset signal
+  
+  .clk(clk) {
+    // The reset conditioner is used to synchronize the reset signal to the FPGA
+    // clock. This ensures the entire FPGA comes out of reset at the same time.
+    reset_conditioner reset_cond;
+    button_conditioner ed_new;
+    button_conditioner ed_easy; 
+    button_conditioner ed_med;
+    button_conditioner ed_hard;
+    button_conditioner ed_mode;
+    .rst(rst) {
+      gameManager gameManager;
+      roundManager roundManager;
+      playerManager redPlayer;
+      playerManager bluePlayer;
+      multi_LED_digit multi_led; 
+    }
+  }
+  binaryToBCD bindec;
+  always {
+    reset_cond.in = ~rst_n; // input raw inverted reset signal
+    rst = reset_cond.out;   // conditioned reset
+    
+    ed_new.in = newGameButton;
+    ed_easy.in = easyButton;
+    ed_med.in = mediumButton;
+    ed_hard.in = hardButton;
+    ed_mode.in = modeButton;
+/*-------------------------------------------------------------------    
+                       Game Manager
+-------------------------------------------------------------------*/
+    gameManager.newGameButton = ed_new.out;
+    gameManager.easyButton = ed_easy.out;
+    gameManager.mediumButton = ed_med.out;
+    gameManager.hardButton = ed_hard.out;
+    gameManager.modeButton = ed_mode.out;
+    roundManager.newGameFlag = gameManager.newGameFlag;
+    roundManager.stateCode = gameManager.stateCode;
+    
+/*-------------------------------------------------------------------    
+                       Red player IO
+-------------------------------------------------------------------*/
+    
+    // keypad
+    redPlayer.keypad_row = keypad_Red_Row;
+    keypad_Red_Col = redPlayer.keypad_col;
+    // 4 seg    
+    four_seg_Red = redPlayer.four_sev_seg;
+    four_seg_sel_Red = redPlayer.four_sev_seg_sel;
+    // 4 seg choices
+    redPlayer.choices[0] = roundManager.choices[0];
+    redPlayer.choices[1] = roundManager.choices[1];
+    redPlayer.choices[2] = roundManager.choices[2];
+    redPlayer.choices[3] = roundManager.choices[3];
+    redPlayer.currentValue = roundManager.redOut;
+    // 2 seg
+    two_seg_Red = redPlayer.two_sev_seg;
+    two_seg_sel_Red = redPlayer.two_sev_seg_sel;
+    // 2 seg current value
+    gameManager.redWin = roundManager.redWinFlag;
+    roundManager.redDigit = redPlayer.digit_out;
+    roundManager.redOperator = redPlayer.operator_out;
+    roundManager.redInputFlag = redPlayer.inputFlag;
+    redPlayer.resetFlag = roundManager.redResetFlag;
+    roundManager.redVerify = redPlayer.verifySignal;
+
+/*-------------------------------------------------------------------    
+                       Blue player IO
+-------------------------------------------------------------------*/
+    
+    
+    // keypad
+    bluePlayer.keypad_row = keypad_Blue_Row;
+    keypad_Blue_Col = bluePlayer.keypad_col;
+    // 4 seg
+    four_seg_Blue = bluePlayer.four_sev_seg;
+    four_seg_sel_Blue = bluePlayer.four_sev_seg_sel;
+    // 2 seg
+    two_seg_Blue = bluePlayer.two_sev_seg;   
+    two_seg_sel_Blue = bluePlayer.two_sev_seg_sel;
+    // 4 seg choices
+    bluePlayer.choices[0] = roundManager.choices[0];
+    bluePlayer.choices[1] = roundManager.choices[1];
+    bluePlayer.choices[2] = roundManager.choices[2];
+    bluePlayer.choices[3] = roundManager.choices[3];
+    bluePlayer.currentValue = roundManager.blueOut;
+    // blue operator
+    gameManager.blueWin = roundManager.blueWinFlag;
+    roundManager.blueDigit = bluePlayer.digit_out;
+    roundManager.blueOperator = bluePlayer.operator_out;
+    roundManager.blueInputFlag = bluePlayer.inputFlag;
+    bluePlayer.resetFlag = roundManager.blueResetFlag;
+    roundManager.blueVerify = bluePlayer.verifySignal;
+    
+
+/*-------------------------------------------------------------------    
+                       Judge
+-------------------------------------------------------------------*/
+    bindec.binary = roundManager.destinationValue;
+    multi_led.digits[0] = -1;
+    multi_led.digits[1] = bindec.digits[2];
+    multi_led.digits[2] = bindec.digits[1];
+    multi_led.digits[3] = bindec.digits[0];
+    four_seg_Green = multi_led.seg;
+    four_seg_sel_Green = ~multi_led.sel;
+    two_seg_Green = bluePlayer.two_sev_seg;   
+    two_seg_sel_Green = ~bluePlayer.two_sev_seg_sel;
+    gameManager.redWin = roundManager.redWinFlag;
+    gameManager.blueWin = roundManager.blueWinFlag;
+    if (roundManager.redWinFlag == 1) {
+      multi_led.digits[1] = 10;
+      multi_led.digits[2] = 13;
+      multi_led.digits[3] = 0;
+      redPlayer.choices[0] = 11;
+    redPlayer.choices[1] = 1;
+    redPlayer.choices[2] = 12;
+    redPlayer.choices[3] = 13;
+      
+    }
+    if (roundManager.blueWinFlag == 1) {
+      multi_led.digits[0] = 8;
+      multi_led.digits[1] = 1;
+      multi_led.digits[2] = 14;
+      multi_led.digits[3] = 13;
+    bluePlayer.choices[0] = 11;
+    bluePlayer.choices[1] = 1;
+    bluePlayer.choices[2] = 12;
+    bluePlayer.choices[3] = 13;
+    
+    }
+  }
+}

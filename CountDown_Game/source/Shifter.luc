@@ -1,0 +1,44 @@
+/* 
+   Shifter unit to shift input [a], [b] digits to the direction specified 
+   
+   test cases based on lab documents 
+   ALUFN position   [5]  [4]  [3]  [2]  [1]  [0]    operation
+                     1    0    0    0    0    0     SHL
+                     1    0    0    0    0    1     SHR
+                     1    0    0    0    1    0     SLA
+                     1    0    0    0    1    1     SRA
+       
+   b = shift count (max 8 shift count)
+       case 000 = shift 1;
+       case 100 = shift 5;
+       case 111 - shift 8;
+*/
+
+module shifterUnit (
+    // ALU inputs
+    input alufn[6] ,
+    input a[8],
+    input b[3],               // shift count max 8 log2 = 3 bits. min shift 1 max shift 7
+    // shifter outputs
+    output shifted[8]
+  ) {
+  
+  sig temp[8];  // temporary variable storage
+  
+  
+  always {
+    case(alufn[3:0]) {
+      b0000:
+        temp = a << b[2:0];
+      b0001:
+        temp = a >> b[2:0];
+      b0010:
+        temp = $signed(a) <<< b[2:0];
+      b0011: 
+        temp = $signed(a) >>> b[2:0];
+      default:
+        temp = b000000000;
+    }
+    shifted = temp[7:0];
+  }
+}

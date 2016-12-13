@@ -1,0 +1,68 @@
+/* COMPLETE DO NOT TOUCH
+  
+*/
+module keypad_decoder (
+    input clk,  // clock
+    input rst,  // reset
+    input row[4],
+    input col[4],
+    output digit_out[4],
+    output operator_out[4]
+  ) {
+
+  always {
+    case (col) {
+      0: case(row) {
+          0: digit_out = 0;
+             operator_out = 1;
+          1: digit_out = 0;
+             operator_out = 2;
+          2: digit_out = 0;
+             operator_out = 3;
+          3: digit_out = 0;
+             operator_out = 4;
+          default: digit_out = 0;
+                   operator_out = 0;
+        }
+      1: case(row) {
+          0: digit_out = 3;
+             operator_out = 0;
+          1: digit_out = 6;
+             operator_out = 0;
+          2: digit_out = 9;
+             operator_out = 0;
+          3: digit_out = 0;
+             operator_out = 5;
+          default: digit_out = 0;
+                   operator_out = 0;
+        }
+      2: case(row) {
+          0: digit_out = 2;
+             operator_out = 0;
+          1: digit_out = 5;
+             operator_out = 0;
+          2: digit_out = 8;
+             operator_out = 0;
+          3: digit_out = 0;
+             operator_out = 0;
+          default: digit_out = 0;
+                   operator_out = 0;
+        }
+      3: case(row) {
+          0: digit_out = 1;
+             operator_out = 0;
+          1: digit_out = 4;
+             operator_out = 0;
+          2: digit_out = 7;
+             operator_out = 0;
+          3: digit_out = -1;
+             operator_out = 6;
+          default: digit_out = 0;
+                     operator_out = 0;
+          }
+        default: digit_out = 0;
+                operator_out = 0;
+      }
+    }
+  }
+  

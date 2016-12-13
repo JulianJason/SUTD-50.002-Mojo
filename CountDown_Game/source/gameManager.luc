@@ -1,0 +1,105 @@
+/*
+  Game manager is the judge for the game
+  This module handles everything and is the so-called "smart" component
+*/
+
+module gameManager (
+    input clk,  // clock
+    input rst,  // reset
+    // input buttons for easy medium hard, new game buttons
+    input newGameButton,
+    input easyButton,
+    input mediumButton,
+    input hardButton,
+    input modeButton,
+    input blueWin,
+    input redWin,
+    output stateCode[3],
+    output newGameFlag
+  ) {
+  .clk(clk) {
+    .rst(rst) {
+      fsm state = {NOT_PLAYING, EASY, MEDIUM, HARD, NEXT_ROUND}; // the multiple playing states 
+    }
+    dff previousState[3];
+    dff blueScore[4];
+    dff redScore[4];
+    dff count[26];
+  }
+  always {
+    newGameFlag = 0;
+    case (state.q) {
+      state.NOT_PLAYING:
+        stateCode = 0;
+        if (newGameButton == 1) {
+          newGameFlag = 1;
+        } else if (easyButton == 1) {
+          state.d = state.EASY;
+          newGameFlag = 1;
+        } else if (mediumButton == 1) {
+          state.d = state.MEDIUM;  
+          newGameFlag = 1;
+        } else if (hardButton == 1) {
+          state.d = state.HARD;  
+          newGameFlag = 1;
+        } else {
+          newGameFlag = 0;
+          }
+      state.EASY:
+        stateCode = 1;
+        if (newGameButton == 1) {
+           state.d = state.NOT_PLAYING;  
+           newGameFlag = 1;
+        }
+        if (blueWin == 1) {
+          blueScore.d = blueScore.q + 1;
+          previousState.d = state.EASY;
+          state.d = state.NEXT_ROUND;
+        } else if (redWin == 1) {
+          redScore.d = redScore.q + 1;
+          previousState.d = state.EASY;
+          state.d = state.NEXT_ROUND;
+        }
+      state.MEDIUM:
+        stateCode = 2;
+        if (newGameButton == 1) {
+         state.d = state.NOT_PLAYING;  
+          newGameFlag = 1; 
+        }
+        if (blueWin == 1) {
+          blueScore.d = blueScore.q + 1;
+          previousState.d = state.MEDIUM;
+          state.d = state.NEXT_ROUND;
+        } else if (redWin == 1) {
+          redScore.d = redScore.q + 1;
+          previousState.d = state.MEDIUM;
+          state.d = state.NEXT_ROUND;
+        }
+      state.HARD:
+        stateCode = 3;
+        if (newGameButton == 1) {
+         state.d = state.NOT_PLAYING;
+          newGameFlag = 1; 
+        }
+        if (blueWin == 1) {
+          blueScore.d = blueScore.q + 1;
+          previousState.d = state.HARD;
+          state.d = state.NEXT_ROUND;
+        } else if (redWin == 1) {
+          redScore.d = redScore.q + 1;
+          previousState.d = state.HARD;
+          state.d = state.NEXT_ROUND;
+        }
+      state.NEXT_ROUND:
+        stateCode = 4;
+        count.d = count.q + 1;
+        if (count.q == 0) {
+          state.d = previousState.q;
+          newGameFlag = 1;
+        }
+      default:
+      stateCode = 0;
+      newGameFlag = 0;
+    }
+  }
+}

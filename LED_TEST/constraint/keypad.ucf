@@ -1,0 +1,8 @@
+NET "keypad<0>"  LOC = P51 | IOSTANDARD = LVTTL;
+NET "keypad<1>"  LOC = P41 | IOSTANDARD = LVTTL;
+NET "keypad<2>"  LOC = P35 | IOSTANDARD = LVTTL;
+NET "keypad<3>"  LOC = P33 | IOSTANDARD = LVTTL;
+NET "keypad<4>"  LOC = P30 | IOSTANDARD = LVTTL;
+NET "keypad<5>"  LOC = P27 | IOSTANDARD = LVTTL;
+NET "keypad<6>"  LOC = P23 | IOSTANDARD = LVTTL;
+NET "keypad<7>"  LOC = P22 | IOSTANDARD = LVTTL;
