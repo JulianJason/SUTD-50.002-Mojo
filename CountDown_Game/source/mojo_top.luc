@@ -9,8 +9,6 @@ module mojo_top (
     input cclk,             // configuration clock, AVR ready when high
     input singlePlayerButton,
     input multiPlayerButton,
-    
-/// Red Player IO units/////////////////////////////////////////////////////////
     // keypad
     input keypad_Red_Row[4],
     output keypad_Red_Col[4],
@@ -47,19 +45,18 @@ module mojo_top (
       roundManager roundManager;
       playerManager redPlayer;
       playerManager bluePlayer;
-      multi_LED_digit multi_led; // delete later
+      multi_LED_digit multi_led; 
     }
   }
   binaryToBCD bindec;
   always {
-  // declare manager at top
-    // if new game, reset everything for 1 cycle
     reset_cond.in = ~rst_n; // input raw inverted reset signal
     rst = reset_cond.out;   // conditioned reset
     
-    gameManager.easyButton = 0;
-    gameManager.hardButton = 0;
-    gameManager.mediumButton = 0;
+
+/*-------------------------------------------------------------------    
+                       Game Manager
+-------------------------------------------------------------------*/
     gameManager.multiplayerButton = multiPlayerButton;
     gameManager.singlePlayerButton = singlePlayerButton;
     gameManager.singlePlayerButton = 0;
@@ -70,7 +67,7 @@ module mojo_top (
 /*-------------------------------------------------------------------    
                        Red player IO
 -------------------------------------------------------------------*/
-    redPlayer.resetFlag = roundManager.redResetFlag;
+    
     // keypad
     redPlayer.keypad_row = keypad_Red_Row;
     keypad_Red_Col = redPlayer.keypad_col;
@@ -82,22 +79,23 @@ module mojo_top (
     redPlayer.choice2 = roundManager.choice2;
     redPlayer.choice3 = roundManager.choice3;
     redPlayer.choice4 = roundManager.choice4;
+    redPlayer.currentValue = roundManager.redOut;
     // 2 seg
     two_seg_Red = redPlayer.two_sev_seg;
     two_seg_sel_Red = redPlayer.two_sev_seg_sel;
     // 2 seg current value
-    redPlayer.currentValue = roundManager.redOut;
-    
+    gameManager.redWin = roundManager.redWinFlag;
+    redPlayer.winFlag = roundManager.redWinFlag;
     roundManager.redDigit = redPlayer.digit_out;
     roundManager.redOperator = redPlayer.operator_out;
     roundManager.redInputFlag = redPlayer.inputFlag;
-    
+    redPlayer.resetFlag = roundManager.redResetFlag;
 
 /*-------------------------------------------------------------------    
                        Blue player IO
 -------------------------------------------------------------------*/
     
-    bluePlayer.resetFlag = roundManager.blueResetFlag;
+    
     // keypad
     bluePlayer.keypad_row = keypad_Blue_Row;
     keypad_Blue_Col = bluePlayer.keypad_col;
@@ -112,13 +110,14 @@ module mojo_top (
     bluePlayer.choice2 = roundManager.choice2;
     bluePlayer.choice3 = roundManager.choice3;
     bluePlayer.choice4 = roundManager.choice4;
-    // bluePlayer.currentValue = roundManager.blueOut[4];
     bluePlayer.currentValue = roundManager.blueOut;
     // blue operator
-    roundManager.blueInputFlag = bluePlayer.inputFlag;
+    gameManager.blueWin = roundManager.blueWinFlag;
+    bluePlayer.winFlag = roundManager.blueWinFlag;
     roundManager.blueDigit = bluePlayer.digit_out;
     roundManager.blueOperator = bluePlayer.operator_out;
-    
+    roundManager.blueInputFlag = bluePlayer.inputFlag;
+    bluePlayer.resetFlag = roundManager.blueResetFlag;
     
 
 /*-------------------------------------------------------------------    

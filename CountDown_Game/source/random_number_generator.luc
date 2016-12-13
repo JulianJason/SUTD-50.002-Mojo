@@ -88,7 +88,7 @@ module random_number_generator #(
       z.d = w.q;
       
       // magic formula from Wikipedia
-      w.d = w.q ^ (w.q >> 19) ^ t ^ (t >> 8);
+      w.d = w.q ^ (w.q >> 9) ^ t ^ (t >> 8);
     }
     
     // Manually reset the flip-flops so we can change the reset value
