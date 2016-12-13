@@ -149,5 +149,18 @@ module mojo_top (
     two_seg_sel_Green = ~bluePlayer.two_sev_seg_sel;
     gameManager.redWin = roundManager.redWinFlag;
     gameManager.blueWin = roundManager.blueWinFlag;
+    if (roundManager.redWinFlag == 1) {
+      multi_led.digits[1] = 10;
+      multi_led.digits[2] = 13;
+      multi_led.digits[3] = 0;
+      
+    }
+    if (roundManager.blueWinFlag == 1) {
+      multi_led.digits[0] = 8;
+      multi_led.digits[1] = 1;
+      multi_led.digits[2] = 14;
+      multi_led.digits[3] = 13;
+    
+    }
   }
 }

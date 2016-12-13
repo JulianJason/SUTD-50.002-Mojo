@@ -19,11 +19,12 @@ module gameManager (
   ) {
   .clk(clk) {
     .rst(rst) {
-      fsm state = {NOT_PLAYING, EASY, MEDIUM, HARD}; // the multiple playing states 
+      fsm state = {NOT_PLAYING, EASY, MEDIUM, HARD, NEXT_ROUND}; // the multiple playing states 
     }
+    dff previousState[3];
     dff blueScore[4];
     dff redScore[4];
-    
+    dff count[26];
   }
   always {
     newGameFlag = 0;
@@ -52,8 +53,12 @@ module gameManager (
         }
         if (blueWin == 1) {
           blueScore.d = blueScore.q + 1;
+          previousState.d = state.EASY;
+          state.d = state.NEXT_ROUND;
         } else if (redWin == 1) {
           redScore.d = redScore.q + 1;
+          previousState.d = state.EASY;
+          state.d = state.NEXT_ROUND;
         }
       state.MEDIUM:
         stateCode = 2;
@@ -63,8 +68,12 @@ module gameManager (
         }
         if (blueWin == 1) {
           blueScore.d = blueScore.q + 1;
+          previousState.d = state.MEDIUM;
+          state.d = state.NEXT_ROUND;
         } else if (redWin == 1) {
           redScore.d = redScore.q + 1;
+          previousState.d = state.MEDIUM;
+          state.d = state.NEXT_ROUND;
         }
       state.HARD:
         stateCode = 3;
@@ -74,10 +83,20 @@ module gameManager (
         }
         if (blueWin == 1) {
           blueScore.d = blueScore.q + 1;
+          previousState.d = state.HARD;
+          state.d = state.NEXT_ROUND;
         } else if (redWin == 1) {
           redScore.d = redScore.q + 1;
+          previousState.d = state.HARD;
+          state.d = state.NEXT_ROUND;
         }
-    
+      state.NEXT_ROUND:
+        stateCode = 4;
+        count.d = count.q + 1;
+        if (count.q == 0) {
+          state.d = previousState.q;
+          newGameFlag = 1;
+        }
       default:
       stateCode = 0;
       newGameFlag = 0;

@@ -213,12 +213,23 @@ module roundManager (
     if (redVerify == 1 && redValue.q == result && blueWon.q == 0) {
       redWinFlag = 1;
       redWon.d = 1;
+        redValue.d = 0;
     }
     if (blueVerify == 1 && blueValue.q == result && redWon.q == 0) {
       blueWinFlag = 1;
       blueWon.d = 1;
+        blueValue.d = 0;
     }
-      
+    if (stateCode == 4) {
+        redOut = 0;
+        blueOut = 0;
+        seed.d = count.q;
+        rng.seed = seed.q;
+        rng.next = 1; 
+        
+        redWon.d = 0;
+        blueWon.d = 0;
+      }
     } else { // below code for idle state
       redOut = 88;
       blueOut = 88;

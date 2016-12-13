@@ -34,7 +34,11 @@ module adderUnit (
       b0000:
         val = a + b;                               // addition
       b0001:
-        val = a - b;                               // subtraction
+        if (b > a) {
+          val = 0;
+        } else {
+          val = a - b;
+        }                               // subtraction
       b0010:
         val = a * b;                               // multiplication
       b0011:
