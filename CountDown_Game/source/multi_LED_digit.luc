@@ -2,14 +2,11 @@
 
 module multi_LED_digit #(
     DIGITS = 4 : DIGITS > 0,
-    DIV = 18: DIV >= 0
+    DIV = 16: DIV >= 0
   )(
     input clk,                // clock
     input rst,                // reset
-    input digit1[4],
-    input digit2[4],
-    input digit3[4],
-    input digit4[4],
+    input digits[DIGITS][4],
     output seg [7],           // LED segments
     output sel [DIGITS]      // Digit select
   ) {
@@ -26,13 +23,7 @@ module multi_LED_digit #(
   
   always {
     // chooses which digit to decode
-    case (ctr.value) {
-      0: led_dec.char = digit1;     // expected C output
-      1: led_dec.char = digit2;          // adder S output
-      2: led_dec.char = digit3;     // expected S output
-      3: led_dec.char = digit4;          // adder S output
-      default: led_dec.char = 9;
-    }
+    led_dec.char = digits[ctr.value];
     
     seg = led_dec.segs;                   // output the decoded value
     digit_dec.in = ctr.value;             // decode active digit to one-hot       

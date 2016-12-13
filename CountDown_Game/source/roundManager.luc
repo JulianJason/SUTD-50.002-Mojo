@@ -1,45 +1,46 @@
 module roundManager (
     input clk,  // clock
     input rst,  // reset
-    input redDigit[16],
+    input redDigit[8],
     input redOperator[6],
     input redInputFlag,
-    input blueDigit[16],
+    input blueDigit[8],
     input blueOperator[6],
     input blueInputFlag,
     input difficulty[4],
     input newGameFlag,
     output redOut[8],
     output blueOut[8],
-    output choice1[4],
-    output choice2[4],
-    output choice3[4],
-    output choice4[4],
+    output choices[4][4],
     output redResetFlag[1],
     output blueResetFlag[1],
-    output destinationValue[16]
+    output destinationValue[8],
+    output redWinFlag,
+    output blueWinFlag
   ) {
 .  clk(clk) {
     .rst(rst) {
       random_number_generator rng;
-    }
     aluUnit alu;
+    }
     dff count[25];  // delay counter
     dff seed[25];
     dff redValue[8];
     dff secondRedValue[8];
     dff blueValue[8];
     dff secondBluevalue[8];
-    dff getNewNum;
   }
-  sig result[10];
-  sig temp[10];
+  sig result[8];
+  sig temp[8];
   always {
-    redValue.d = redValue.q;
-    blueValue.d = blueValue.q;
+  
+    alu.a = 5;
+    alu.b = 7;
+    alu.alufn = 6b000000;
+    redWinFlag = 0;
+    blueWinFlag = 0;
     secondRedValue.d = redValue.q;
     secondBluevalue.d = blueValue.q;
-    getNewNum.d = getNewNum.q;
     seed.d = seed.q;
     redResetFlag = 0;
     blueResetFlag = 0;
@@ -49,26 +50,26 @@ module roundManager (
     if (redInputFlag && redDigit != 0 && redOperator != 0) {
       temp = secondRedValue.q;
       case (redOperator) {
-        1: //temp = temp + redDigit;
-          alu.a = temp;
-          alu.b = redDigit;
-          alu.alufn = 6b000000;
-          temp = alu.result;
-        2: //temp = temp- redDigit;
-          alu.a = temp;
-          alu.b = redDigit;
-          alu.alufn = 6b000001;
-          temp = alu.result;
-        3: //temp = temp * redDigit;
-          alu.a = temp;
-          alu.b = redDigit;
-          alu.alufn = 6b000010;
-          temp = alu.result;
-        4: //temp = temp / redDigit;
-          alu.a = temp;
-          alu.b = redDigit;
-          alu.alufn = 6b000011;
-          temp = alu.result;
+        1: temp = temp + redDigit;
+          //alu.a = temp;
+          //alu.b = redDigit;
+          //alu.alufn = 6b000000;
+          //temp = alu.result;
+        2: temp = temp - redDigit;
+          //alu.a = temp;
+          //alu.b = redDigit;
+          //alu.alufn = 6b000001;
+          //temp = alu.result;
+        3: temp = temp * redDigit;
+          //alu.a = temp;
+          //alu.b = redDigit;
+          //alu.alufn = 6b000010;
+          //temp = alu.result;
+        4: temp = temp / redDigit;
+          //alu.a = temp;
+          //alu.b = redDigit;
+          //alu.alufn = 6b000011;
+          //temp = alu.result;
         6: temp = 0;
            redResetFlag = 1;
         default: temp = temp;
@@ -79,26 +80,26 @@ module roundManager (
     if (blueInputFlag && blueDigit != 0 && blueOperator != 0) {
       temp = secondBluevalue.q;
       case (blueOperator) {
-        1: //temp = temp + blueDigit;
-          alu.a = temp;
-          alu.b = blueDigit;
-          alu.alufn = 6b000011;
-          temp = alu.result;
-        2:// temp = temp- blueDigit;
-          alu.a = temp;
-          alu.b = blueDigit;
-          temp = alu.result;
-          alu.alufn = 6b000011;
-        3: //temp = temp * blueDigit;
-          alu.a = temp;
-          alu.b = blueDigit;
-          alu.alufn = 6b000011;
-          temp = alu.result;
-        4:// temp = temp / blueDigit;
-          alu.a = temp;
-          alu.b = blueDigit;
-          alu.alufn = 6b000011;
-          temp = alu.result;
+        1: temp = temp + blueDigit;
+          //alu.a = temp;
+          //alu.b = blueDigit;
+          //alu.alufn = 6b000011;
+          //temp = alu.result;
+        2: temp = temp- blueDigit;
+          //alu.a = temp;
+          //alu.b = blueDigit;
+          //temp = alu.result;
+          //alu.alufn = 6b000011;
+        3: temp = temp * blueDigit;
+          //alu.a = temp;
+          //alu.b = blueDigit;
+          //alu.alufn = 6b000011;
+          //temp = alu.result;
+        4: temp = temp / blueDigit;
+          //alu.a = temp;
+          //alu.b = blueDigit;
+          //alu.alufn = 6b000011;
+          //temp = alu.result;
         6: temp = 0;
            blueResetFlag = 1;
         default: temp = temp;
@@ -107,92 +108,89 @@ module roundManager (
     }
     
     rng.next = 0;
-    rng.seed = 2121654534513;
-    rng.difficulty = difficulty;
-    choice1 = rng.num1;
-    choice2 = rng.num2;
-    choice3 = rng.num3;
-    choice4 = rng.num4;
-      result = rng.num1;
-      case (rng.operator1) {
-        0:// result = result + rng.num2;
-          alu.a = result;
-         alu.b = rng.num2;
-          alu.alufn = 6b000000;
-          result = alu.result;
-        1:// result = result - rng.num2;
-          alu.a = result;
-          alu.b = rng.num2;
-          alu.alufn = 6b000001;
-          result = alu.result;
-        2: //result = result * rng.num2;
-          alu.a = result;
-          alu.b = rng.num2;
-          alu.alufn = 6b000010;
-          result = alu.result;
-        3:// result = result / rng.num2;
-          alu.a = result;
-          alu.b = rng.num2;
-          alu.alufn = 6b000011;
-          result = alu.result;
+    rng.seed = 8765432245;
+    rng.difficulty = 2;
+    choices[0] = rng.numbers[0];
+    choices[1] = rng.numbers[1];
+    choices[2] = rng.numbers[2];
+    choices[3] = rng.numbers[3];
+      result = rng.numbers[0];
+      case (rng.operators[0]) {
+        0: result = result + rng.numbers[2];
+        //  alu.a = result;
+        // alu.b = rng.num2;
+        //  alu.alufn = 6b000000;
+        //  result = alu.result;
+        1: result = result - rng.numbers[2];
+        //  alu.a = result;
+        //  alu.b = rng.num2;
+        //  alu.alufn = 6b000001;
+        //  result = alu.result;
+        2: result = result * rng.numbers[1];
+        //  alu.a = result;
+        // alu.b = rng.num2;
+        //  alu.alufn = 6b000010;
+        //  result = alu.result;
+        3: result = result / rng.numbers[1];
+        //  alu.a = result;
+        //  alu.b = rng.num2;
+        //  alu.alufn = 6b000011;
+       //   result = alu.result;
         default: result = result;
       }
-      case (rng.operator2) {
-        0: //result = result + rng.num3;
-         alu.a = result;
-          alu.b = rng.num3;
-          alu.alufn = 6b000000;
-          result = alu.result;
-        1:// result = result - rng.num3;
-         alu.a = result;
-         alu.b = rng.num3;
-          alu.alufn = 6b000001;
-          result = alu.result;
-        2: //result = result * rng.num3;
-          alu.a = result;
-          alu.b = rng.num3;
-          alu.alufn = 6b000010;
-          result = alu.result;
-        3:// result = result / rng.num3;
-          alu.a = result;
-          alu.b = rng.num3;
-          alu.alufn = 6b000011;
-          result = alu.result;
+      case (rng.operators[1]) {
+        0: result = result + rng.numbers[2];
+        // alu.a = result;
+        //  alu.b = rng.num[2]
+       //   alu.alufn = 6b000000;
+        //  result = alu.result;
+        1: result = result - rng.numbers[2];
+       //  alu.a = result;
+       //  alu.b = rng.numbers[2]
+        //  alu.alufn = 6b000001;
+        //  result = alu.result;
+        2: result = result * rng.numbers[2];
+        //  alu.a = result;
+        //  alu.b = rng.numbers[2]
+        //  alu.alufn = 6b000010;
+        //  result = alu.result;
+        3: result = result / rng.numbers[2];
+        //  alu.a = result;
+        //  alu.b = rng.numbers[2];
+        //  alu.alufn = 6b000011;
+        //  result = alu.result;
         default: result = result;
       }
-      case (rng.operator3) {
+      case (rng.operators[2]) {
         0:// result = result + rng.num4;
           alu.a = result;
-          alu.b = rng.num4;
+          alu.b = rng.numbers[3];
           alu.alufn = 6b000000;
-          result = alu.result;
+         result = alu.result;
         1:// result = result - rng.num4;
           alu.a = result;
-          alu.b = rng.num4;
+          alu.b = rng.numbers[3];
           alu.alufn = 6b000001;
           result = alu.result;
         2:// result = result * rng.num4;
           alu.a = result;
-          alu.b = rng.num4;
+          alu.b = rng.numbers[3];
           alu.alufn = 6b000010;
           result = alu.result;
         3:// result = result / rng.num4;
           alu.a = result;
-          alu.b = rng.num4;
+          alu.b = rng.numbers[3];
           alu.alufn = 6b000011;
           result = alu.result;
         default: result = result;
     }
       
-      if (result > 100) {
+      if (result > 100 || result < 10) {
         rng.next = 1;
-        getNewNum.d = 1;
       } else {
         rng.next = 0;
-        getNewNum.d = 0;
       }
    
-    
     
     redOut = secondRedValue.q;
     blueOut = secondBluevalue.q;
@@ -206,5 +204,6 @@ module roundManager (
       rng.next = 1;
       seed.d = count.q;
     }
+    rng.next = 0;
   }
 }

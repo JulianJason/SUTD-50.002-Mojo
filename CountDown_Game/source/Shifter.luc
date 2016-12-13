@@ -20,10 +20,10 @@ module shifterUnit (
     input a[8],
     input b[3],               // shift count max 8 log2 = 3 bits. min shift 1 max shift 7
     // shifter outputs
-    output shifted[11]
+    output shifted[8]
   ) {
   
-  sig temp[11];  // temporary variable storage
+  sig temp[8];  // temporary variable storage
   
   
   always {
@@ -39,6 +39,6 @@ module shifterUnit (
       default:
         temp = b000000000;
     }
-    shifted = temp[10:0];
+    shifted = temp[7:0];
   }
 }

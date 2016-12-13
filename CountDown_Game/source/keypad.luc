@@ -4,7 +4,7 @@
 
 module keypad #(
     ROWS = 4 : ROWS > 0,
-    DIV = 19: DIV >= 0 // timing issues with <17 div
+    DIV = 20: DIV >= 0
   )(
     input clk,  // clock
     input rst,  // reset
@@ -17,10 +17,13 @@ module keypad #(
   
   .clk(clk), .rst(rst) {
     counter ctr (#DIV(DIV), #SIZE(DIGIT_BITS), #TOP(ROWS-1));
-    keypad_decoder decoder;
+    dff digitConfirm[4];
+    dff opConfirm[4];
   }
   sig col[4];
   sig row[4];
+  sig digit[4];
+  sig operator[4];
   always {
   operator_out = 0;
     digit_out = 0;
@@ -45,11 +48,70 @@ module keypad #(
       4b0111: row = 3;
       default: row = -1;
     }
-    decoder.col = col;
-    decoder.row = row;
-    //if (row != -1) {
-      digit_out = decoder.digit_out;
-      operator_out = decoder.operator_out;
-    //}
+    
+    
+    case (col) {
+      0: case(row) {
+          0: digit = 0;
+             operator = 1;
+          1: digit = 0;
+             operator = 2;
+          2: digit = 0;
+             operator = 3;
+          3: digit = 0;
+             operator = 4;
+          default: digit = 0;
+                   operator = 0;
+        }
+      1: case(row) {
+          0: digit = 3;
+             operator = 0;
+          1: digit = 6;
+             operator = 0;
+          2: digit = 9;
+             operator = 0;
+          3: digit = 0;
+             operator = 5;
+          default: digit = 0;
+                   operator = 0;
+        }
+      2: case(row) {
+          0: digit = 2;
+             operator = 0;
+          1: digit = 5;
+             operator = 0;
+          2: digit = 8;
+             operator = 0;
+          3: digit = 0;
+             operator = 0;
+          default: digit = 0;
+                   operator = 0;
+        }
+      3: case(row) {
+          0: digit = 1;
+             operator = 0;
+          1: digit = 4;
+             operator = 0;
+          2: digit = 7;
+             operator = 0;
+          3: digit = -1;
+             operator = 6;
+          default: digit = 0;
+                     operator = 0;
+          }
+        default: digit = 0;
+                operator = 0;
+    }
+    if (digit != digitConfirm.q) {
+      digitConfirm.d = digit;
+    } else {
+      digit_out = digit;
+    }
+    
+    if (operator != opConfirm.q) {
+      opConfirm.d = operator;
+    } else {
+      operator_out = operator;
+    }
   }
 }

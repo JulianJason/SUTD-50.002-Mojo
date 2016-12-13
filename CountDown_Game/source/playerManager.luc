@@ -9,10 +9,7 @@ module playerManager (
     input rst,  // reset
     input keypad_row[4],
     output keypad_col[4],
-    input choice1[4],
-    input choice2[4],
-    input choice3[4],
-    input choice4[4],
+    input choices[4][4],
     input currentValue[16],
     input resetFlag,
     input winFlag[2],
@@ -38,10 +35,7 @@ module playerManager (
     dff thirdChoice[4];
     dff fourthChoice[4];
   }
-  sig compare1[4];
-  sig compare2[4];
-  sig compare3[4];
-  sig compare4[4];
+  sig compare[4][4];
   sig operator[4];
   binaryToBCD bin_to_dec;
   always {
@@ -57,39 +51,37 @@ module playerManager (
     operator_out = 0;
     operator = secondopOut.q;
     if (firstChoice.q == 0) {
-      choices_mled.digit1 = choice1;
-      compare1 = choice1;
+      choices_mled.digits[0] = choices[0];
+      compare[0] = choices[0];
     } else {
-      choices_mled.digit1 = -1;
-      compare1 = 15;
+      choices_mled.digits[0] = -1;
+      compare[0] = 15;
     }
     if (secondChoice.q == 0) {
-      choices_mled.digit2 = choice2;
-      compare2 = choice2;
+      choices_mled.digits[1] = choices[1];
+      compare[1] = choices[1];
     } else {
-      choices_mled.digit2 = -1;
-      compare2 = 15;
+      choices_mled.digits[1] = -1;
+      compare[1] = 15;
     }
     if (thirdChoice.q == 0) {
-      choices_mled.digit3 = choice3;
-      compare3 = choice3;
+      choices_mled.digits[2] = choices[2];
+      compare[2] = choices[2];
     } else {
-      choices_mled.digit3 = -1;
-      compare3 = 15;
+      choices_mled.digits[2] = -1;
+      compare[2] = 15;
     }
     if (fourthChoice.q == 0) {
-      choices_mled.digit4 = choice4;
-      compare4 = choice4;
+      choices_mled.digits[3] = choices[3];
+      compare[3] = choices[3];
     } else {
-      choices_mled.digit4 = -1;
-      compare4 = 15;
+      choices_mled.digits[3] = -1;
+      compare[3] = 15;
     }
     
-    bin_to_dec.binary = currentValue[3:0];
-    value_mled.digit1 = bin_to_dec.digit0;
-    value_mled.digit2 = bin_to_dec.digit1;
-    value_mled.digit3 = -1;
-    value_mled.digit4 = -1;
+    bin_to_dec.binary = currentValue;
+    value_mled.digits[0] = bin_to_dec.digits[0];
+    value_mled.digits[1] = bin_to_dec.digits[1];
     
     
     four_sev_seg = choices_mled.seg;
@@ -101,25 +93,25 @@ module playerManager (
     
     if (playerKeypad.digit_out != 0 && operator != 0 && notFirstDigit.q == 1) {
       case (playerKeypad.digit_out[3:0]) {
-        compare1[3:0]:
+        compare[0][3:0]:
           digit_out = playerKeypad.digit_out;
           operator_out = operator;
           inputFlag = 1;
           opOut.d = 0;
           firstChoice.d = 15;
-        compare2[3:0]: 
+        compare[1][3:0]: 
           digit_out = playerKeypad.digit_out;
           operator_out = operator;
           inputFlag = 1;
           opOut.d = 0;
           secondChoice.d = 15;
-        compare3[3:0]: 
+        compare[2][3:0]: 
           digit_out = playerKeypad.digit_out;
           operator_out = operator;
           inputFlag = 1;
           opOut.d = 0;
           thirdChoice.d = 15;
-        compare4[3:0]: 
+        compare[3][3:0]: 
           digit_out = playerKeypad.digit_out;
           operator_out = operator;
           inputFlag = 1;
@@ -132,28 +124,28 @@ module playerManager (
     }
     if (playerKeypad.digit_out != 0 && notFirstDigit.q == 0) {
       case (playerKeypad.digit_out[3:0]) {
-        compare1[3:0]: 
+        compare[0][3:0]: 
           digit_out = playerKeypad.digit_out;
           operator_out = 1; // ADD
           inputFlag = 1;
           notFirstDigit.d = 1;
           opOut.d = 0;
           firstChoice.d = 15;
-        compare2[3:0]: 
+        compare[1][3:0]: 
           digit_out = playerKeypad.digit_out;
           operator_out = 1; // ADD
           inputFlag = 1;
           notFirstDigit.d = 1;
           opOut.d = 0;
           secondChoice.d = 15;
-        compare3[3:0]: 
+        compare[2][3:0]: 
           digit_out = playerKeypad.digit_out;
           operator_out = 1; // add
           notFirstDigit.d = 1;
           inputFlag = 1;
           opOut.d = 0;
           thirdChoice.d = 15;
-        compare4[3:0]: 
+        compare[3][3:0]: 
           digit_out = playerKeypad.digit_out;
           operator_out = 1; // ADD
           notFirstDigit.d = 1;
@@ -178,19 +170,19 @@ module playerManager (
       fourthChoice.d = 0;
     }
     if (winFlag == 1) {
-      choices_mled.digit1 = 7;
-      choices_mled.digit1 = 7;
-      choices_mled.digit1 = 7;
-      choices_mled.digit1 = 7;
-      value_mled.digit1 = 7;
-      value_mled.digit2 = 7;
+      choices_mled.digits[0] = 7;
+      choices_mled.digits[1] = 7;
+      choices_mled.digits[2]= 7;
+      choices_mled.digits[3] = 7;
+      value_mled.digits[0] = 7;
+      value_mled.digits[1] = 7;
     } else if (winFlag == 2) {
-      choices_mled.digit1 = -1;
-      choices_mled.digit1 = -1;
-      choices_mled.digit1 = -1;
-      choices_mled.digit1 = -1;
-      value_mled.digit1 = -1;
-      value_mled.digit2 = -1;
+      choices_mled.digits[0] = -1;
+      choices_mled.digits[1] = -1;
+      choices_mled.digits[2] = -1;
+      choices_mled.digits[3] = -1;
+      value_mled.digits[0] = -1;
+      value_mled.digits[1] = -1;
     }
   }
   

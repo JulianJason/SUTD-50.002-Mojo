@@ -8,9 +8,7 @@ module binaryToBCD #(
     SIZE = 8 : SIZE > 0
   )(
     input binary[SIZE],    // a variable input size binary input. We use SIZE=8 for a,b and SIZE=11 for output
-    output digit2[4],      // hundreds
-    output digit1[4],      // tens
-    output digit0[4]       // ones
+    output digits[3][4]
   ) {
   var i;
   sig binaryInput[SIZE];
@@ -87,8 +85,8 @@ module binaryToBCD #(
   }
   
   // send results to io_LED
-  digit2 = hundreds;
-  digit1 = tens;
-  digit0 = ones;
+  digits[2] = hundreds;
+  digits[1] = tens;
+  digits[0] = ones;
 }
 }

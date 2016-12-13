@@ -1,13 +1,3 @@
-module notes (
-    input clk,  // clock
-    input rst,  // reset
-    output out
-  ) {
-
-  always {
-    out = 0;
-  }
-}
 
 /*
   4-digit seven segment pins

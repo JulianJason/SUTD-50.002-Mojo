@@ -13,17 +13,17 @@
 module adderUnit (
     // ALU inputs
     input alufn[6] ,
-    input a[16],
-    input b[16],
+    input a[8],
+    input b[8],
     // adder outputs
-    output added[11],
+    output added[8],
     output z[1],                // true is all s = 0
     output v[1],                // true if overflow
     output n[1]                 // true if s[7] is equals to 1
   ) {
   
-  sig val[16];                 // 16 bit space to allow multiplication
-  sig minus[9];
+  sig val[8];                 // 16 bit space to allow multiplication
+  sig minus[8];
   sig xb[1];
   always {
   
@@ -60,6 +60,6 @@ module adderUnit (
     
     // if clause to consider for overflow. 32768 is 2^15, which is the max amount a 16 bit signed binary can present.
     
-    added = val[10:0];  // take only the last 10 digits
+    added = val[7:0];  // take only the last 10 digits
   }
 }

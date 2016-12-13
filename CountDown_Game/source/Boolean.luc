@@ -16,9 +16,9 @@ module booleanUnit (
     input a[8],
     input b[8],
     // boolean unit outputs
-    output booleaned[11]
+    output booleaned[8]
   ) {
-  sig temp[11];
+  sig temp[8];
   var i;
   always {
     
@@ -38,6 +38,6 @@ module booleanUnit (
       default:
         temp = b000000000; // return 0 otherwise
     }
-    booleaned = temp[10:0];
+    booleaned = temp[7:0];
   }
 }

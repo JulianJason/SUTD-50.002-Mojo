@@ -5,10 +5,11 @@
 module mojo_top (
     input clk,              // 50MHz clock
     input rst_n,            // reset button (active low)
-    //output led [8],         // 8 user controllable LEDs
     input cclk,             // configuration clock, AVR ready when high
-    input singlePlayerButton,
-    input multiPlayerButton,
+    input newGameButton,
+    input easyButton,
+    input mediumButton,
+    input hardButton,
     // keypad
     input keypad_Red_Row[4],
     output keypad_Red_Col[4],
@@ -40,6 +41,10 @@ module mojo_top (
     // The reset conditioner is used to synchronize the reset signal to the FPGA
     // clock. This ensures the entire FPGA comes out of reset at the same time.
     reset_conditioner reset_cond;
+    edge_detector ed_new (#RISE(1), #FALL(0));
+    edge_detector ed_easy (#RISE(1), #FALL(0));
+    edge_detector ed_med (#RISE(1), #FALL(0));
+    edge_detector ed_hard (#RISE(1), #FALL(0));
     .rst(rst) {
       gameManager gameManager;
       roundManager roundManager;
@@ -53,14 +58,17 @@ module mojo_top (
     reset_cond.in = ~rst_n; // input raw inverted reset signal
     rst = reset_cond.out;   // conditioned reset
     
-
+    ed_new.in = newGameButton;
+    ed_easy.in = easyButton;
+    ed_med.in = mediumButton;
+    ed_hard.in = hardButton;
 /*-------------------------------------------------------------------    
                        Game Manager
 -------------------------------------------------------------------*/
-    gameManager.multiplayerButton = multiPlayerButton;
-    gameManager.singlePlayerButton = singlePlayerButton;
-    gameManager.singlePlayerButton = 0;
-    gameManager.multiplayerButton = 0;
+    gameManager.newGameButton = ed_new.out;
+    gameManager.easyButton = ed_easy.out;
+    gameManager.mediumButton = ed_med.out;
+    gameManager.hardButton = ed_hard.out;
     roundManager.newGameFlag = gameManager.newGameFlag;
     roundManager.difficulty = gameManager.difficulty;
     
@@ -75,10 +83,10 @@ module mojo_top (
     four_seg_Red = redPlayer.four_sev_seg;
     four_seg_sel_Red = redPlayer.four_sev_seg_sel;
     // 4 seg choices
-    redPlayer.choice1 = roundManager.choice1;
-    redPlayer.choice2 = roundManager.choice2;
-    redPlayer.choice3 = roundManager.choice3;
-    redPlayer.choice4 = roundManager.choice4;
+    redPlayer.choices[0] = roundManager.choices[0];
+    redPlayer.choices[1] = roundManager.choices[1];
+    redPlayer.choices[2] = roundManager.choices[2];
+    redPlayer.choices[3] = roundManager.choices[3];
     redPlayer.currentValue = roundManager.redOut;
     // 2 seg
     two_seg_Red = redPlayer.two_sev_seg;
@@ -106,10 +114,10 @@ module mojo_top (
     two_seg_Blue = bluePlayer.two_sev_seg;   
     two_seg_sel_Blue = bluePlayer.two_sev_seg_sel;
     // 4 seg choices
-    bluePlayer.choice1 = roundManager.choice1;
-    bluePlayer.choice2 = roundManager.choice2;
-    bluePlayer.choice3 = roundManager.choice3;
-    bluePlayer.choice4 = roundManager.choice4;
+    bluePlayer.choices[0] = roundManager.choices[0];
+    bluePlayer.choices[1] = roundManager.choices[1];
+    bluePlayer.choices[2] = roundManager.choices[2];
+    bluePlayer.choices[3] = roundManager.choices[3];
     bluePlayer.currentValue = roundManager.blueOut;
     // blue operator
     gameManager.blueWin = roundManager.blueWinFlag;
@@ -124,10 +132,10 @@ module mojo_top (
                        Judge
 -------------------------------------------------------------------*/
     bindec.binary = roundManager.destinationValue;
-    multi_led.digit1 = -1;
-    multi_led.digit2 = bindec.digit2;
-    multi_led.digit3 = bindec.digit1;
-    multi_led.digit4 = bindec.digit0;
+    multi_led.digits[0] = redPlayer.digit_out;
+    multi_led.digits[1] = redPlayer.operator_out;
+    multi_led.digits[2] = bindec.digits[1];
+    multi_led.digits[3] = bindec.digits[0];
     four_seg_Green = multi_led.seg;
     four_seg_sel_Green = ~multi_led.sel;
     two_seg_Green = bluePlayer.two_sev_seg;   
