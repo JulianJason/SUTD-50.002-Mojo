@@ -48,7 +48,7 @@ module random_number_generator #(
     input seed [32], // seed used on reset,
     input stateCode[3],
     output numbers[4][4],  // "random" number output
-    output operators[3][4]   // output target[8]
+    output operators[3][2]   // output target[8]
   ) {
   
   .clk(clk) {
@@ -73,9 +73,9 @@ module random_number_generator #(
       divisor = 4;
     }
     
-    operators[0] = (w.q[8:0] - divisor * (w.q[8:0]/divisor));
-    operators[1] = (w.q[15:7] - divisor * (w.q[15:7]/divisor));
-    operators[2] = (w.q[23:15] - divisor * (w.q[23:5]/divisor));
+    operators[0] = w.q[8:0] - (divisor * (w.q[8:0]/divisor));
+    operators[1] = w.q[15:7] - (divisor * (w.q[15:7]/divisor));
+    operators[2] = w.q[23:15] - (divisor * (w.q[23:15]/divisor));
     t = x.q ^ (x.q << 11);          // calculate intermediate value
     
     if (next) {                     // if we need a new number

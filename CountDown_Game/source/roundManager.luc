@@ -201,8 +201,9 @@ module roundManager (
     if (newGameFlag == 1) {
         redValue.d = 0;
         blueValue.d = 0;
-        rng.next = 1;
-        seed.d = count.q; 
+        seed.d = count.q;
+        rng.seed = seed.q;
+        rng.next = 1; 
         redResetFlag = 1;
         blueResetFlag = 1;
       }

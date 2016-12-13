@@ -24,5 +24,6 @@
     <component>pipeline.luc</component>
     <component>button_conditioner.luc</component>
     <component>counter.luc</component>
+    <component>edge_detector.luc</component>
   </files>
 </project>

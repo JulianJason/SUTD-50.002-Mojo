@@ -19,7 +19,7 @@ module gameManager (
   ) {
   .clk(clk) {
     .rst(rst) {
-      fsm state = {NOT_PLAYING, EASY, MEDIUM, HARD, NEXT_ROUND}; // the multiple playing states 
+      fsm state = {NOT_PLAYING, EASY, MEDIUM, HARD}; // the multiple playing states 
     }
     dff blueScore[4];
     dff redScore[4];
@@ -27,9 +27,6 @@ module gameManager (
   }
   always {
     newGameFlag = 0;
-    if (blueWin == 1 || redWin == 1) {
-      state.d = state.NEXT_ROUND;
-    }
     case (state.q) {
       state.NOT_PLAYING:
         stateCode = 0;
@@ -80,9 +77,7 @@ module gameManager (
         } else if (redWin == 1) {
           redScore.d = redScore.q + 1;
         }
-      state.NEXT_ROUND:
-        stateCode = 0;
-        
+    
       default:
       stateCode = 0;
       newGameFlag = 0;
