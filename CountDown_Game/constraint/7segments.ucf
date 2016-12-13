@@ -32,7 +32,7 @@ NET "four_seg_Blue<2>"  LOC = P114 | IOSTANDARD = LVTTL;
 NET "four_seg_Blue<3>"  LOC = P111 | IOSTANDARD = LVTTL;
 NET "four_seg_Blue<4>"  LOC = P104 | IOSTANDARD = LVTTL;
 NET "four_seg_Blue<5>"  LOC = P115 | IOSTANDARD = LVTTL;
-NET "four_seg_Blue<6>"  LOC = P110 | IOSTANDARD = LVTTL;
+NET "four_seg_Blue<6>"  LOC = P118 | IOSTANDARD = LVTTL;
 NET "four_seg_Blue<7>"  LOC = P116 | IOSTANDARD = LVTTL;
 
 NET "four_seg_sel_Blue<0>" LOC= P105 | IOSTANDARD = LVTTL;

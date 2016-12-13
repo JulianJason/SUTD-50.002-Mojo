@@ -9,6 +9,8 @@ module roundManager (
     input blueInputFlag,
     input stateCode[3],
     input newGameFlag,
+    input redVerify,
+    input blueVerify,
     output redOut[8],
     output blueOut[8],
     output choices[4][4],
@@ -159,26 +161,26 @@ module roundManager (
           default: result = result;
         }
         case (rng.operators[2]) {
-          0:// result = result + rng.num4;
-            alu.a = result;
-            alu.b = rng.numbers[3];
-            alu.alufn = 6b000000;
-           result = alu.result;
-          1:// result = result - rng.num4;
-            alu.a = result;
-            alu.b = rng.numbers[3];
-            alu.alufn = 6b000001;
-            result = alu.result;
-          2:// result = result * rng.num4;
-            alu.a = result;
-            alu.b = rng.numbers[3];
-            alu.alufn = 6b000010;
-            result = alu.result;
-          3:// result = result / rng.num4;
-            alu.a = result;
-            alu.b = rng.numbers[3];
-            alu.alufn = 6b000011;
-            result = alu.result;
+          0: result = result + rng.numbers[3];
+            //alu.a = result;
+            //alu.b = rng.numbers[3];
+           // alu.alufn = 6b000000;
+           //result = alu.result;
+          1: result = result - rng.numbers[3];
+           // alu.a = result;
+          //  alu.b = rng.numbers[3];
+          //  alu.alufn = 6b000001;
+          //  result = alu.result;
+          2: result = result * rng.numbers[3];
+         //   alu.a = result;
+         //   alu.b = rng.numbers[3];
+         //   alu.alufn = 6b000010;
+         //   result = alu.result;
+          3: result = result / rng.numbers[3];
+         //   alu.a = result;
+         //   alu.b = rng.numbers[3];
+         //   alu.alufn = 6b000011;
+         //   result = alu.result;
           default: result = result;
       }
         
@@ -199,9 +201,18 @@ module roundManager (
         redValue.d = 0;
         blueValue.d = 0;
         rng.next = 1;
-        seed.d = count.q;
+        seed.d = count.q; 
+        redResetFlag = 1;
+        blueResetFlag = 1;
       }
-    } else {
+      
+    if (redVerify == 1 && redValue.q == result) {
+      redWinFlag = 1;
+    } else  if (blueVerify == 1 && blueValue.q == result) {
+      blueWinFlag = 1;  
+    }
+      
+    } else { // below code for idle state
       redOut = 88;
       blueOut = 88;
       destinationValue = 88;

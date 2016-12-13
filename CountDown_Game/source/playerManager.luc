@@ -19,7 +19,8 @@ module playerManager (
     output two_sev_seg_sel[2],
     output inputFlag,
     output digit_out[4],
-    output operator_out[4]
+    output operator_out[4],
+    output verifySignal
   ) {
   .clk(clk) { .rst(rst) {
       keypad playerKeypad;
@@ -45,7 +46,7 @@ module playerManager (
     secondopOut.d = opOut.q;
     playerKeypad.keypad_row = keypad_row;    
     keypad_col = playerKeypad.keypad_col;
-    
+    verifySignal = 0;
     inputFlag = 0;
     digit_out = 0;
     operator_out = 0;
@@ -162,7 +163,7 @@ module playerManager (
     }
     
     if (resetFlag == 1) {
-      opOut.d = 0;
+      opOut.d = 1;
       notFirstDigit.d = 0;
       firstChoice.d = 0;
       secondChoice.d = 0;
@@ -170,10 +171,10 @@ module playerManager (
       fourthChoice.d = 0;
     }
     if (winFlag == 1) {
-      choices_mled.digits[0] = 7;
-      choices_mled.digits[1] = 7;
-      choices_mled.digits[2]= 7;
-      choices_mled.digits[3] = 7;
+      choices_mled.digits[0] = 11;
+      choices_mled.digits[1] = 1;
+      choices_mled.digits[2]= 12;
+      choices_mled.digits[3] = 13;
       value_mled.digits[0] = 7;
       value_mled.digits[1] = 7;
     } else if (winFlag == 2) {
@@ -184,6 +185,9 @@ module playerManager (
       value_mled.digits[0] = -1;
       value_mled.digits[1] = -1;
     }
+    
+    if (firstChoice.q == 15 && secondChoice.q == 15 && thirdChoice.q == 15 && fourthChoice.q == 15) {
+      verifySignal = 1;
+    }
   }
-  
 }

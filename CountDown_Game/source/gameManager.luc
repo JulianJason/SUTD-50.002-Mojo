@@ -11,6 +11,7 @@ module gameManager (
     input easyButton,
     input mediumButton,
     input hardButton,
+    input modeButton,
     input blueWin,
     input redWin,
     output stateCode[3],
@@ -41,7 +42,7 @@ module gameManager (
       state.EASY:
         stateCode = 1;
         if (newGameButton == 1) {
-         newGameFlag = 1;    
+           state.d = state.NOT_PLAYING;  
         }
         if (blueWin == 1) {
           blueScore.d = blueScore.q + 1;
@@ -51,22 +52,22 @@ module gameManager (
       state.MEDIUM:
         stateCode = 2;
         if (newGameButton == 1) {
-         newGameFlag = 1;    
+         state.d = state.NOT_PLAYING;   
         }
         if (blueWin == 1) {
-          blueScore.d = blueScore.q + 2;
+          blueScore.d = blueScore.q + 1;
         } else if (redWin == 1) {
-          redScore.d = redScore.q + 2;
+          redScore.d = redScore.q + 1;
         }
       state.HARD:
         stateCode = 3;
         if (newGameButton == 1) {
-         newGameFlag = 1;    
+         state.d = state.NOT_PLAYING;   
         }
         if (blueWin == 1) {
-          blueScore.d = blueScore.q + 3;
+          blueScore.d = blueScore.q + 1;
         } else if (redWin == 1) {
-          redScore.d = redScore.q + 3;
+          redScore.d = redScore.q + 1;
         }
       default:
       stateCode = 0;
