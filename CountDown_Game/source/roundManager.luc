@@ -31,6 +31,7 @@ module roundManager (
     dff secondRedValue[8];
     dff blueValue[8];
     dff secondBluevalue[8];
+    dff playerWon[1];
   }
   sig result[8];
   sig temp[8];
@@ -206,10 +207,13 @@ module roundManager (
         blueResetFlag = 1;
       }
       
-    if (redVerify == 1 && redValue.q == result) {
+    if (redVerify == 1 && redValue.q == result && playerWon.q == 0) {
       redWinFlag = 1;
-    } else  if (blueVerify == 1 && blueValue.q == result) {
+      playerWon.d = 1;
+    }
+    if (blueVerify == 1 && blueValue.q == result && playerWon.q == 0) {
       blueWinFlag = 1;  
+      playerWon.d = 1;
     }
       
     } else { // below code for idle state

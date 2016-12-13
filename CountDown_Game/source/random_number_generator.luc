@@ -72,6 +72,7 @@ module random_number_generator #(
     } else {
       divisor = 4;
     }
+    
     operators[0] = (w.q[8:0] - divisor * (w.q[8:0]/divisor));
     operators[1] = (w.q[15:7] - divisor * (w.q[15:7]/divisor));
     operators[2] = (w.q[23:15] - divisor * (w.q[23:5]/divisor));

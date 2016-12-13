@@ -19,7 +19,7 @@ module gameManager (
   ) {
   .clk(clk) {
     .rst(rst) {
-      fsm state = {NOT_PLAYING, EASY, MEDIUM, HARD}; // the multiple playing states 
+      fsm state = {NOT_PLAYING, EASY, MEDIUM, HARD, NEXT_ROUND}; // the multiple playing states 
     }
     dff blueScore[4];
     dff redScore[4];
@@ -27,22 +27,31 @@ module gameManager (
   }
   always {
     newGameFlag = 0;
+    if (blueWin == 1 || redWin == 1) {
+      state.d = state.NEXT_ROUND;
+    }
     case (state.q) {
       state.NOT_PLAYING:
-      stateCode = 0;
-      if (newGameButton == 1) {
-        newGameFlag = 1;
-      } else if (easyButton == 1) {
-        state.d = state.EASY;
-      } else if (mediumButton == 1) {
-        state.d = state.MEDIUM;  
-      } else if (hardButton == 1) {
-        state.d = state.HARD;  
-      }
+        stateCode = 0;
+        if (newGameButton == 1) {
+          newGameFlag = 1;
+        } else if (easyButton == 1) {
+          state.d = state.EASY;
+          newGameFlag = 1;
+        } else if (mediumButton == 1) {
+          state.d = state.MEDIUM;  
+          newGameFlag = 1;
+        } else if (hardButton == 1) {
+          state.d = state.HARD;  
+          newGameFlag = 1;
+        } else {
+          newGameFlag = 0;
+          }
       state.EASY:
         stateCode = 1;
         if (newGameButton == 1) {
            state.d = state.NOT_PLAYING;  
+           newGameFlag = 1;
         }
         if (blueWin == 1) {
           blueScore.d = blueScore.q + 1;
@@ -52,7 +61,8 @@ module gameManager (
       state.MEDIUM:
         stateCode = 2;
         if (newGameButton == 1) {
-         state.d = state.NOT_PLAYING;   
+         state.d = state.NOT_PLAYING;  
+          newGameFlag = 1; 
         }
         if (blueWin == 1) {
           blueScore.d = blueScore.q + 1;
@@ -62,13 +72,17 @@ module gameManager (
       state.HARD:
         stateCode = 3;
         if (newGameButton == 1) {
-         state.d = state.NOT_PLAYING;   
+         state.d = state.NOT_PLAYING;
+          newGameFlag = 1; 
         }
         if (blueWin == 1) {
           blueScore.d = blueScore.q + 1;
         } else if (redWin == 1) {
           redScore.d = redScore.q + 1;
         }
+      state.NEXT_ROUND:
+        stateCode = 0;
+        
       default:
       stateCode = 0;
       newGameFlag = 0;
