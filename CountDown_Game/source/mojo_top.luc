@@ -139,7 +139,7 @@ module mojo_top (
                        Judge
 -------------------------------------------------------------------*/
     bindec.binary = roundManager.destinationValue;
-    multi_led.digits[0] = 0;
+    multi_led.digits[0] = -1;
     multi_led.digits[1] = bindec.digits[2];
     multi_led.digits[2] = bindec.digits[1];
     multi_led.digits[3] = bindec.digits[0];

@@ -31,7 +31,8 @@ module roundManager (
     dff secondRedValue[8];
     dff blueValue[8];
     dff secondBluevalue[8];
-    dff playerWon[1];
+    dff redWon[1];
+    dff blueWon[1];
   }
   sig result[8];
   sig temp[8];
@@ -116,12 +117,12 @@ module roundManager (
       choices[3] = rng.numbers[3];
         result = rng.numbers[0];
         case (rng.operators[0]) {
-          0: result = result + rng.numbers[2];
+          0: result = result + rng.numbers[1];
           //  alu.a = result;
           // alu.b = rng.num2;
           //  alu.alufn = 6b000000;
           //  result = alu.result;
-          1: result = result - rng.numbers[2];
+          1: result = result - rng.numbers[1];
           //  alu.a = result;
           //  alu.b = rng.num2;
           //  alu.alufn = 6b000001;
@@ -185,6 +186,7 @@ module roundManager (
           default: result = result;
       }
         
+      
         if (result > 100 || result < 10) {
           rng.next = 1;
         } else {
@@ -208,13 +210,13 @@ module roundManager (
         blueResetFlag = 1;
       }
       
-    if (redVerify == 1 && redValue.q == result && playerWon.q == 0) {
+    if (redVerify == 1 && redValue.q == result && blueWon.q == 0) {
       redWinFlag = 1;
-      playerWon.d = 1;
+      redWon.d = 1;
     }
-    if (blueVerify == 1 && blueValue.q == result && playerWon.q == 0) {
-      blueWinFlag = 1;  
-      playerWon.d = 1;
+    if (blueVerify == 1 && blueValue.q == result && redWon.q == 0) {
+      blueWinFlag = 1;
+      blueWon.d = 1;
     }
       
     } else { // below code for idle state

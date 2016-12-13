@@ -73,9 +73,9 @@ module random_number_generator #(
       divisor = 4;
     }
     
-    operators[0] = w.q[8:0] - (divisor * (w.q[8:0]/divisor));
-    operators[1] = w.q[15:7] - (divisor * (w.q[15:7]/divisor));
-    operators[2] = w.q[23:15] - (divisor * (w.q[23:15]/divisor));
+    operators[0] = w.q[31:30] - (divisor * (w.q[31:30] / divisor));
+    operators[1] = w.q[19:18] - (divisor * (w.q[19:18] / divisor));
+    operators[2] = w.q[25:24] - (divisor * (w.q[25:24] / divisor));
     t = x.q ^ (x.q << 11);          // calculate intermediate value
     
     if (next) {                     // if we need a new number
