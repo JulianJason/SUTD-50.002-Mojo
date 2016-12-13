@@ -7,7 +7,7 @@ module roundManager (
     input blueDigit[8],
     input blueOperator[6],
     input blueInputFlag,
-    input difficulty[4],
+    input stateCode[3],
     input newGameFlag,
     output redOut[8],
     output blueOut[8],
@@ -33,177 +33,182 @@ module roundManager (
   sig result[8];
   sig temp[8];
   always {
-  
-    alu.a = 5;
-    alu.b = 7;
+    alu.a = 0;
+    alu.b = 0;
     alu.alufn = 6b000000;
     redWinFlag = 0;
     blueWinFlag = 0;
-    secondRedValue.d = redValue.q;
-    secondBluevalue.d = blueValue.q;
-    seed.d = seed.q;
     redResetFlag = 0;
     blueResetFlag = 0;
-    alu.a = 0;
-    alu.b = 0;
-    alu.alufn = 0;
-    if (redInputFlag && redDigit != 0 && redOperator != 0) {
-      temp = secondRedValue.q;
-      case (redOperator) {
-        1: temp = temp + redDigit;
-          //alu.a = temp;
-          //alu.b = redDigit;
-          //alu.alufn = 6b000000;
-          //temp = alu.result;
-        2: temp = temp - redDigit;
-          //alu.a = temp;
-          //alu.b = redDigit;
-          //alu.alufn = 6b000001;
-          //temp = alu.result;
-        3: temp = temp * redDigit;
-          //alu.a = temp;
-          //alu.b = redDigit;
-          //alu.alufn = 6b000010;
-          //temp = alu.result;
-        4: temp = temp / redDigit;
-          //alu.a = temp;
-          //alu.b = redDigit;
-          //alu.alufn = 6b000011;
-          //temp = alu.result;
-        6: temp = 0;
-           redResetFlag = 1;
-        default: temp = temp;
-      }
-      redValue.d = temp;
-    }
     
-    if (blueInputFlag && blueDigit != 0 && blueOperator != 0) {
-      temp = secondBluevalue.q;
-      case (blueOperator) {
-        1: temp = temp + blueDigit;
-          //alu.a = temp;
-          //alu.b = blueDigit;
-          //alu.alufn = 6b000011;
-          //temp = alu.result;
-        2: temp = temp- blueDigit;
-          //alu.a = temp;
-          //alu.b = blueDigit;
-          //temp = alu.result;
-          //alu.alufn = 6b000011;
-        3: temp = temp * blueDigit;
-          //alu.a = temp;
-          //alu.b = blueDigit;
-          //alu.alufn = 6b000011;
-          //temp = alu.result;
-        4: temp = temp / blueDigit;
-          //alu.a = temp;
-          //alu.b = blueDigit;
-          //alu.alufn = 6b000011;
-          //temp = alu.result;
-        6: temp = 0;
-           blueResetFlag = 1;
-        default: temp = temp;
+    if (stateCode != 0) {
+      secondRedValue.d = redValue.q;
+      secondBluevalue.d = blueValue.q;
+      if (redInputFlag && redDigit != 0 && redOperator != 0) {
+        temp = secondRedValue.q;
+        case (redOperator) {
+          1: temp = temp + redDigit;
+            //alu.a = temp;
+            //alu.b = redDigit;
+            //alu.alufn = 6b000000;
+            //temp = alu.result;
+          2: temp = temp - redDigit;
+            //alu.a = temp;
+            //alu.b = redDigit;
+            //alu.alufn = 6b000001;
+            //temp = alu.result;
+          3: temp = temp * redDigit;
+            //alu.a = temp;
+            //alu.b = redDigit;
+            //alu.alufn = 6b000010;
+            //temp = alu.result;
+          4: temp = temp / redDigit;
+            //alu.a = temp;
+            //alu.b = redDigit;
+            //alu.alufn = 6b000011;
+            //temp = alu.result;
+          6: temp = 0;
+             redResetFlag = 1;
+          default: temp = temp;
+        }
+        redValue.d = temp;
       }
-      blueValue.d = temp;
-    }
-    
-    rng.next = 0;
-    rng.seed = 8765432245;
-    rng.difficulty = 2;
-    choices[0] = rng.numbers[0];
-    choices[1] = rng.numbers[1];
-    choices[2] = rng.numbers[2];
-    choices[3] = rng.numbers[3];
-      result = rng.numbers[0];
-      case (rng.operators[0]) {
-        0: result = result + rng.numbers[2];
-        //  alu.a = result;
-        // alu.b = rng.num2;
-        //  alu.alufn = 6b000000;
-        //  result = alu.result;
-        1: result = result - rng.numbers[2];
-        //  alu.a = result;
-        //  alu.b = rng.num2;
-        //  alu.alufn = 6b000001;
-        //  result = alu.result;
-        2: result = result * rng.numbers[1];
-        //  alu.a = result;
-        // alu.b = rng.num2;
-        //  alu.alufn = 6b000010;
-        //  result = alu.result;
-        3: result = result / rng.numbers[1];
-        //  alu.a = result;
-        //  alu.b = rng.num2;
-        //  alu.alufn = 6b000011;
-       //   result = alu.result;
-        default: result = result;
-      }
-      case (rng.operators[1]) {
-        0: result = result + rng.numbers[2];
-        // alu.a = result;
-        //  alu.b = rng.num[2]
-       //   alu.alufn = 6b000000;
-        //  result = alu.result;
-        1: result = result - rng.numbers[2];
-       //  alu.a = result;
-       //  alu.b = rng.numbers[2]
-        //  alu.alufn = 6b000001;
-        //  result = alu.result;
-        2: result = result * rng.numbers[2];
-        //  alu.a = result;
-        //  alu.b = rng.numbers[2]
-        //  alu.alufn = 6b000010;
-        //  result = alu.result;
-        3: result = result / rng.numbers[2];
-        //  alu.a = result;
-        //  alu.b = rng.numbers[2];
-        //  alu.alufn = 6b000011;
-        //  result = alu.result;
-        default: result = result;
-      }
-      case (rng.operators[2]) {
-        0:// result = result + rng.num4;
-          alu.a = result;
-          alu.b = rng.numbers[3];
-          alu.alufn = 6b000000;
-         result = alu.result;
-        1:// result = result - rng.num4;
-          alu.a = result;
-          alu.b = rng.numbers[3];
-          alu.alufn = 6b000001;
-          result = alu.result;
-        2:// result = result * rng.num4;
-          alu.a = result;
-          alu.b = rng.numbers[3];
-          alu.alufn = 6b000010;
-          result = alu.result;
-        3:// result = result / rng.num4;
-          alu.a = result;
-          alu.b = rng.numbers[3];
-          alu.alufn = 6b000011;
-          result = alu.result;
-        default: result = result;
-    }
       
-      if (result > 100 || result < 10) {
-        rng.next = 1;
-      } else {
-        rng.next = 0;
+      if (blueInputFlag && blueDigit != 0 && blueOperator != 0) {
+        temp = secondBluevalue.q;
+        case (blueOperator) {
+          1: temp = temp + blueDigit;
+            //alu.a = temp;
+            //alu.b = blueDigit;
+            //alu.alufn = 6b000011;
+            //temp = alu.result;
+          2: temp = temp- blueDigit;
+            //alu.a = temp;
+            //alu.b = blueDigit;
+            //temp = alu.result;
+            //alu.alufn = 6b000011;
+          3: temp = temp * blueDigit;
+            //alu.a = temp;
+            //alu.b = blueDigit;
+            //alu.alufn = 6b000011;
+            //temp = alu.result;
+          4: temp = temp / blueDigit;
+            //alu.a = temp;
+            //alu.b = blueDigit;
+            //alu.alufn = 6b000011;
+            //temp = alu.result;
+          6: temp = 0;
+             blueResetFlag = 1;
+          default: temp = temp;
+        }
+        blueValue.d = temp;
       }
-   
-    
-    redOut = secondRedValue.q;
-    blueOut = secondBluevalue.q;
-    
-    count.d = count.q + 1;
-    destinationValue = result; 
-    
+      
+      rng.next = 0;
+      rng.seed = seed.q;
+      rng.stateCode = stateCode;
+      choices[0] = rng.numbers[0];
+      choices[1] = rng.numbers[1];
+      choices[2] = rng.numbers[2];
+      choices[3] = rng.numbers[3];
+        result = rng.numbers[0];
+        case (rng.operators[0]) {
+          0: result = result + rng.numbers[2];
+          //  alu.a = result;
+          // alu.b = rng.num2;
+          //  alu.alufn = 6b000000;
+          //  result = alu.result;
+          1: result = result - rng.numbers[2];
+          //  alu.a = result;
+          //  alu.b = rng.num2;
+          //  alu.alufn = 6b000001;
+          //  result = alu.result;
+          2: result = result * rng.numbers[1];
+          //  alu.a = result;
+          // alu.b = rng.num2;
+          //  alu.alufn = 6b000010;
+          //  result = alu.result;
+          3: result = result / rng.numbers[1];
+          //  alu.a = result;
+          //  alu.b = rng.num2;
+          //  alu.alufn = 6b000011;
+         //   result = alu.result;
+          default: result = result;
+        }
+        case (rng.operators[1]) {
+          0: result = result + rng.numbers[2];
+          // alu.a = result;
+          //  alu.b = rng.num[2]
+         //   alu.alufn = 6b000000;
+          //  result = alu.result;
+          1: result = result - rng.numbers[2];
+         //  alu.a = result;
+         //  alu.b = rng.numbers[2]
+          //  alu.alufn = 6b000001;
+          //  result = alu.result;
+          2: result = result * rng.numbers[2];
+          //  alu.a = result;
+          //  alu.b = rng.numbers[2]
+          //  alu.alufn = 6b000010;
+          //  result = alu.result;
+          3: result = result / rng.numbers[2];
+          //  alu.a = result;
+          //  alu.b = rng.numbers[2];
+          //  alu.alufn = 6b000011;
+          //  result = alu.result;
+          default: result = result;
+        }
+        case (rng.operators[2]) {
+          0:// result = result + rng.num4;
+            alu.a = result;
+            alu.b = rng.numbers[3];
+            alu.alufn = 6b000000;
+           result = alu.result;
+          1:// result = result - rng.num4;
+            alu.a = result;
+            alu.b = rng.numbers[3];
+            alu.alufn = 6b000001;
+            result = alu.result;
+          2:// result = result * rng.num4;
+            alu.a = result;
+            alu.b = rng.numbers[3];
+            alu.alufn = 6b000010;
+            result = alu.result;
+          3:// result = result / rng.num4;
+            alu.a = result;
+            alu.b = rng.numbers[3];
+            alu.alufn = 6b000011;
+            result = alu.result;
+          default: result = result;
+      }
+        
+        if (result > 100 || result < 10) {
+          rng.next = 1;
+        } else {
+          rng.next = 0;
+        }
+     
+      
+      redOut = secondRedValue.q;
+      blueOut = secondBluevalue.q;
+      
+      count.d = count.q + 1;
+      destinationValue = result; 
+      
     if (newGameFlag == 1) {
-      redValue.d = 0;
-      blueValue.d = 0;
-      rng.next = 1;
-      seed.d = count.q;
+        redValue.d = 0;
+        blueValue.d = 0;
+        rng.next = 1;
+        seed.d = count.q;
+      }
+    } else {
+      redOut = 88;
+      blueOut = 88;
+      destinationValue = 88;
+      choices= {8,8,8,8};
+      rng.seed = 0;
+      rng.next = 0;
+      rng.stateCode = 0;
     }
-    rng.next = 0;
   }
 }

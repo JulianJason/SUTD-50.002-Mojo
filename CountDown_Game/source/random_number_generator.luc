@@ -46,7 +46,7 @@ module random_number_generator #(
     input rst,       // reset
     input next,      // generate next number flag
     input seed [32], // seed used on reset,
-    input difficulty[4],
+    input stateCode[3],
     output numbers[4][4],  // "random" number output
     output operators[3][4]   // output target[8]
   ) {
@@ -63,9 +63,11 @@ module random_number_generator #(
     numbers[1] = 2 + w.q[23:21];
     numbers[2] = 2 + w.q[17:15];
     numbers[3] = 2 + w.q[12:10];
-    if (difficulty == 0) {
+    if (stateCode == 0) {
+      divisor = 99;
+    } else if (stateCode == 1) {
       divisor = 2;
-    } else if (difficulty == 1) {
+    } else if (stateCode == 2) {
       divisor = 3;
     } else {
       divisor = 4;

@@ -13,7 +13,7 @@ module gameManager (
     input hardButton,
     input blueWin,
     input redWin,
-    output difficulty[3],
+    output stateCode[3],
     output newGameFlag
   ) {
   .clk(clk) {
@@ -22,50 +22,54 @@ module gameManager (
     }
     dff blueScore[4];
     dff redScore[4];
+    
   }
   always {
     newGameFlag = 0;
     case (state.q) {
       state.NOT_PLAYING:
-      difficulty = 0;
-      if (easyButton == 1 || mediumButton == 1 || hardButton == 1) {
+      stateCode = 0;
+      if (newGameButton == 1) {
         newGameFlag = 1;
+      } else if (easyButton == 1) {
+        state.d = state.EASY;
+      } else if (mediumButton == 1) {
+        state.d = state.MEDIUM;  
+      } else if (hardButton == 1) {
+        state.d = state.HARD;  
       }
-      if (newGameButton) {
-        newGameFlag = 1;
-        }
       state.EASY:
-        difficulty = 1;
-        if (newGameButton) {
+        stateCode = 1;
+        if (newGameButton == 1) {
          newGameFlag = 1;    
         }
-        if (blueWin) {
+        if (blueWin == 1) {
           blueScore.d = blueScore.q + 1;
-        } else if (redWin) {
+        } else if (redWin == 1) {
           redScore.d = redScore.q + 1;
         }
       state.MEDIUM:
-        difficulty = 2;
-        if (newGameButton) {
+        stateCode = 2;
+        if (newGameButton == 1) {
          newGameFlag = 1;    
         }
-        if (blueWin) {
+        if (blueWin == 1) {
           blueScore.d = blueScore.q + 2;
-        } else if (redWin) {
+        } else if (redWin == 1) {
           redScore.d = redScore.q + 2;
         }
       state.HARD:
-        difficulty = 3;
-        if (newGameButton) {
+        stateCode = 3;
+        if (newGameButton == 1) {
          newGameFlag = 1;    
         }
-        if (blueWin) {
+        if (blueWin == 1) {
           blueScore.d = blueScore.q + 3;
-        } else if (redWin) {
+        } else if (redWin == 1) {
           redScore.d = redScore.q + 3;
         }
       default:
-      difficulty = 0;
+      stateCode = 0;
       newGameFlag = 0;
     }
   }

@@ -20,5 +20,7 @@ NET "keypad_Blue_Col<2>"  LOC = P85 | IOSTANDARD = LVTTL;
 NET "keypad_Blue_Col<1>"  LOC = P83 | IOSTANDARD = LVTTL;
 NET "keypad_Blue_Col<0>"  LOC = P81 | IOSTANDARD = LVTTL;
 
-NET "singlePlayerButton"  LOC = P74 | IOSTANDARD = LVTTL;
-NET "multiPlayerButton"  LOC = P78 | IOSTANDARD = LVTTL;
+NET "newGameButton"  LOC = P78 | IOSTANDARD = LVTTL;
+NET "easyButton"  LOC = P74 | IOSTANDARD = LVTTL;
+# NET "mediumButton"  LOC = P78 | IOSTANDARD = LVTTL;
+# NET "hardButton"  LOC = P78 | IOSTANDARD = LVTTL;

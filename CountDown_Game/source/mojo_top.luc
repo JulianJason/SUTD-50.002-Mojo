@@ -1,5 +1,6 @@
 /*
-  TODO check pins
+  TODO connect red and blue to use less pins
+  TODO change gre
 */
 
 module mojo_top (
@@ -41,10 +42,10 @@ module mojo_top (
     // The reset conditioner is used to synchronize the reset signal to the FPGA
     // clock. This ensures the entire FPGA comes out of reset at the same time.
     reset_conditioner reset_cond;
-    edge_detector ed_new (#RISE(1), #FALL(0));
-    edge_detector ed_easy (#RISE(1), #FALL(0));
-    edge_detector ed_med (#RISE(1), #FALL(0));
-    edge_detector ed_hard (#RISE(1), #FALL(0));
+    button_conditioner ed_new;
+    button_conditioner ed_easy; 
+    button_conditioner ed_med;
+    button_conditioner ed_hard;
     .rst(rst) {
       gameManager gameManager;
       roundManager roundManager;
@@ -70,7 +71,7 @@ module mojo_top (
     gameManager.mediumButton = ed_med.out;
     gameManager.hardButton = ed_hard.out;
     roundManager.newGameFlag = gameManager.newGameFlag;
-    roundManager.difficulty = gameManager.difficulty;
+    roundManager.stateCode = gameManager.stateCode;
     
 /*-------------------------------------------------------------------    
                        Red player IO
@@ -132,8 +133,8 @@ module mojo_top (
                        Judge
 -------------------------------------------------------------------*/
     bindec.binary = roundManager.destinationValue;
-    multi_led.digits[0] = redPlayer.digit_out;
-    multi_led.digits[1] = redPlayer.operator_out;
+    multi_led.digits[0] = 0;
+    multi_led.digits[1] = bindec.digits[2];
     multi_led.digits[2] = bindec.digits[1];
     multi_led.digits[3] = bindec.digits[0];
     four_seg_Green = multi_led.seg;
