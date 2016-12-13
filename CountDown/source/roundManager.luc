@@ -1,0 +1,122 @@
+module roundManager (
+    input clk,  // clock
+    input rst,  // reset
+    input redDigit[8],
+    input redOperator[4],
+    input redInputFlag,
+    input blueDigit[8],
+    input blueOperator[4],
+    input blueInputFlag,
+    input difficulty[4],
+    output redOut[8],
+    output blueOut[8],
+    output choice1[4],
+    output choice2[4],
+    output choice3[4],
+    output choice4[4],
+    output redResetFlag[1],
+    output blueResetFlag[1],
+    output destinationValue[16],
+    output redWins[1],
+    output blueWins[1]
+  ) {
+.  clk(clk) {
+    .rst(rst) {
+      random_number_generator rng;
+    }
+    dff count[25];  // delay counter
+    dff seed[25];
+    dff redValue[8];
+    dff secondRedValue[8];
+    dff blueValue[8];
+    dff secondBluevalue[8];
+    dff getNewNum;
+  }
+  sig result[10];
+  sig temp[10];
+  always {
+    redValue.d = redValue.q;
+    blueValue.d = blueValue.q;
+    secondRedValue.d = redValue.q;
+    secondBluevalue.d = blueValue.q;
+    getNewNum.d = getNewNum.q;
+    seed.d = seed.q;
+    redResetFlag = 0;
+    blueResetFlag = 0;
+    if (redInputFlag && redDigit != 0 && redOperator != 0) {
+      temp = secondRedValue.q;
+      case (redOperator) {
+        1: temp = temp + redDigit;
+        2: temp = temp- redDigit;
+        3: temp = temp * redDigit;
+        4: temp = temp / redDigit;
+        6: temp = 0;
+           redResetFlag = 1;
+        default: temp = temp;
+      }
+      redValue.d = temp;
+    }
+    
+    if (blueInputFlag && blueDigit != 0 && blueOperator != 0) {
+      temp = secondBluevalue.q;
+      case (blueOperator) {
+        1: temp = temp + blueDigit;
+        2: temp = temp- blueDigit;
+        3: temp = temp * blueDigit;
+        4: temp = temp / blueDigit;
+        6: temp = 0;
+           blueResetFlag = 1;
+        default: temp = temp;
+      }
+      blueValue.d = temp;
+    }
+    
+    rng.next = 0;
+    rng.seed = 2121654534513;
+    rng.difficulty = difficulty;
+    choice1 = rng.num1;
+    choice2 = rng.num2;
+    choice3 = rng.num3;
+    choice4 = rng.num4;
+    
+    result = rng.num1;
+      case (rng.operator1) {
+        0: result = result + rng.num2;
+        1: result = result - rng.num2;
+        2: result = result * rng.num2;
+        3: result = result / rng.num2;
+        default: result = result;
+      }
+      case (rng.operator2) {
+        0: result = result + rng.num3;
+        1: result = result - rng.num3;
+        2: result = result * rng.num3;
+        3: result = result / rng.num3;
+        default: result = result;
+      }
+      case (rng.operator3) {
+        0: result = result + rng.num4;
+        1: result = result - rng.num4;
+        2: result = result * rng.num4;
+        3: result = result / rng.num4;
+        default: result = result;
+     }
+      
+      if (result > 100 || result < 0) {
+        rng.next = 1;
+        getNewNum.d = 1;
+      } else {
+        rng.next = 0;
+        getNewNum.d = 0;
+      }
+   
+    
+    
+    redOut = secondRedValue.q;
+    blueOut = secondBluevalue.q;
+    
+    count.d = count.q + 1;
+    destinationValue = result; 
+    
+  }
+}

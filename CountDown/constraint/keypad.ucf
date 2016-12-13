@@ -1,0 +1,24 @@
+NET "keypad_Red_Row<3>"  LOC = P26 | IOSTANDARD = LVTTL | PULLUP;
+NET "keypad_Red_Row<2>"  LOC = P29 | IOSTANDARD = LVTTL | PULLUP;
+NET "keypad_Red_Row<1>"  LOC = P32 | IOSTANDARD = LVTTL | PULLUP;
+NET "keypad_Red_Row<0>"  LOC = P34 | IOSTANDARD = LVTTL | PULLUP;
+
+
+NET "keypad_Red_Col<3>"  LOC = P27 | IOSTANDARD = LVTTL;
+NET "keypad_Red_Col<2>"  LOC = P30 | IOSTANDARD = LVTTL;
+NET "keypad_Red_Col<1>"  LOC = P33 | IOSTANDARD = LVTTL;
+NET "keypad_Red_Col<0>"  LOC = P35 | IOSTANDARD = LVTTL;
+
+
+NET "keypad_Blue_Row<3>"  LOC = P87 | IOSTANDARD = LVTTL | PULLUP;
+NET "keypad_Blue_Row<2>"  LOC = P84 | IOSTANDARD = LVTTL | PULLUP;
+NET "keypad_Blue_Row<1>"  LOC = P82 | IOSTANDARD = LVTTL | PULLUP;
+NET "keypad_Blue_Row<0>"  LOC = P80 | IOSTANDARD = LVTTL | PULLUP;
+
+NET "keypad_Blue_Col<3>"  LOC = P88 | IOSTANDARD = LVTTL;
+NET "keypad_Blue_Col<2>"  LOC = P85 | IOSTANDARD = LVTTL;
+NET "keypad_Blue_Col<1>"  LOC = P83 | IOSTANDARD = LVTTL;
+NET "keypad_Blue_Col<0>"  LOC = P81 | IOSTANDARD = LVTTL;
+
+NET "newGameButton"  LOC = P74 | IOSTANDARD = LVTTL;
+NET "easyButton"  LOC = P78 | IOSTANDARD = LVTTL;

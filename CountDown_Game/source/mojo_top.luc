@@ -98,7 +98,6 @@ module mojo_top (
     two_seg_sel_Red = redPlayer.two_sev_seg_sel;
     // 2 seg current value
     gameManager.redWin = roundManager.redWinFlag;
-    redPlayer.winFlag = roundManager.redWinFlag;
     roundManager.redDigit = redPlayer.digit_out;
     roundManager.redOperator = redPlayer.operator_out;
     roundManager.redInputFlag = redPlayer.inputFlag;
@@ -127,7 +126,6 @@ module mojo_top (
     bluePlayer.currentValue = roundManager.blueOut;
     // blue operator
     gameManager.blueWin = roundManager.blueWinFlag;
-    bluePlayer.winFlag = roundManager.blueWinFlag;
     roundManager.blueDigit = bluePlayer.digit_out;
     roundManager.blueOperator = bluePlayer.operator_out;
     roundManager.blueInputFlag = bluePlayer.inputFlag;
@@ -153,6 +151,10 @@ module mojo_top (
       multi_led.digits[1] = 10;
       multi_led.digits[2] = 13;
       multi_led.digits[3] = 0;
+      redPlayer.choices[0] = 11;
+    redPlayer.choices[1] = 1;
+    redPlayer.choices[2] = 12;
+    redPlayer.choices[3] = 13;
       
     }
     if (roundManager.blueWinFlag == 1) {
@@ -160,6 +162,10 @@ module mojo_top (
       multi_led.digits[1] = 1;
       multi_led.digits[2] = 14;
       multi_led.digits[3] = 13;
+    bluePlayer.choices[0] = 11;
+    bluePlayer.choices[1] = 1;
+    bluePlayer.choices[2] = 12;
+    bluePlayer.choices[3] = 13;
     
     }
   }

@@ -1,0 +1,43 @@
+/* 
+    Boolean unit to handle bitwise AND, OR, XOR and "A" LDR for every single bit position 
+   
+    test cases based on lab documents 
+    ALUFN position   [5]  [4]  [3]  [2]  [1]  [0]    operation
+                      0    1    1    0    0    0     AND
+                      0    1    1    1    1    0     OR
+                      0    1    0    1    1    0     XOR 
+                      0    1    0    1    1    1     INV
+                      0    1    1    0    1    0    "A" LDR  
+*/
+
+module booleanUnit (
+    // ALU inputs
+    input alufn[6] ,
+    input a[8],
+    input b[8],
+    // boolean unit outputs
+    output booleaned[11]
+  ) {
+  sig temp[11];
+  var i;
+  always {
+    
+    case (alufn[3:0]) {
+      b1000: 
+        temp = a & b;      // AND
+      b1110:
+        temp = a | b;      // OR
+      b0110:
+        for (i = 0; i < 8; i++) {
+          temp[i] = a[i] ^ b[i];
+        }
+      b0111:
+        temp[7:0] = ~a[7:0];
+      b1010:
+        temp = a;          // currently returns A, no idea what this does
+      default:
+        temp = b000000000; // return 0 otherwise
+    }
+    booleaned = temp[10:0];
+  }
+}

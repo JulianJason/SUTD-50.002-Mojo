@@ -12,7 +12,6 @@ module playerManager (
     input choices[4][4],
     input currentValue[16],
     input resetFlag,
-    input winFlag[2],
     output four_sev_seg[8],
     output four_sev_seg_sel[4],
     output two_sev_seg[8],
@@ -179,21 +178,7 @@ module playerManager (
       fourthChoice.d = 0;
       secondopOut.d = 0;
     }
-    if (winFlag == 1) {
-      choices_mled.digits[0] = 11;
-      choices_mled.digits[1] = 1;
-      choices_mled.digits[2]= 12;
-      choices_mled.digits[3] = 13;
-      value_mled.digits[0] = 6;
-      value_mled.digits[1] = 6;
-    } else if (winFlag == 2) {
-      choices_mled.digits[0] = -1;
-      choices_mled.digits[1] = -1;
-      choices_mled.digits[2] = -1;
-      choices_mled.digits[3] = -1;
-      value_mled.digits[0] = -1;
-      value_mled.digits[1] = -1;
-    }
+    
     
     if (firstChoice.q == 15 && secondChoice.q == 15 && thirdChoice.q == 15 && fourthChoice.q == 15) {
       verifySignal = 1;
